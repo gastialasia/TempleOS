@@ -128,7 +128,7 @@ char printMemory(){
 	unsigned char buffer[32];
     unsigned char data[3];
     if(ok){
-		sys_printMem(pointer,buffer);
+		printMem(pointer,buffer);
         for(int i=0; i < 32; i++){
             uintToBase(buffer[i],data,16);
             printf(data);

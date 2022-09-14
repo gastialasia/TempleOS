@@ -26,7 +26,7 @@ void setScreenMode(int mode);
 
 void storeProgram(char*p1, char*p2);
 
-char * getProgram(char id);
+char * getProgram(int id);
 
 int64_t getLast();
 
@@ -39,5 +39,7 @@ void loadBackup(registersT* regs, registersT* backup);
 void snapshotRegs();
 
 void printMem(uint64_t pointer, unsigned char * buf);
+
+void loadBackupRegs(registersT* regs, registersT *backup);
 
 #endif

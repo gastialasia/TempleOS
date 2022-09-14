@@ -12,9 +12,9 @@ unsigned char last;
 static char screenMode = 1;
 static char * runningPrograms[2] = {"null","null"};
 
-void (*printCharPtr)(char*) = ncPrintChar;
-void (*printPtr)(char*) = ncPrint;
-void (*printHexPtr)(char*) = ncPrintHex;
+void (*printCharPtr)(char) = ncPrintChar;
+void (*printPtr)(const char*) = ncPrint;
+void (*printHexPtr)(uint64_t) = ncPrintHex;
 void (*printRegPtr)(const char *, uint64_t) = ncPrintReg;
 
 registersT primary, secondary;
@@ -35,6 +35,7 @@ int64_t write(int fd, const char *buffer, size_t count)
 	{
 		printCharPtr(buffer[i]);
 	}
+	return DEFAULT_RETVALUE;	
 }
 
 int64_t read(int fd, char *buffer, size_t count)
@@ -185,9 +186,10 @@ void storeProgram(char*p1, char*p2){
 	runningPrograms[1] = p2;
 }
 
-char * getProgram(char id){
+char * getProgram(int id){
 	if (id>1||id<0){
 		return 0;
 	}
 	return runningPrograms[id];
 }
+

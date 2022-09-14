@@ -19,7 +19,7 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2) {
         return write((int) arg0, (const char*) arg1, (size_t) arg2);
     case 3:
         clear();
-        return;
+        break;
     case 4:
 	   	printMem((uint64_t) arg0,(unsigned char*)arg1);
 		break;
@@ -40,7 +40,7 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2) {
 		storeProgram((char*)arg0,(char*)arg1);
 		break;
 	case 11:
-		return getProgram((char)arg0);
+		return (int64_t)getProgram((char)arg0);
     case 12:
         snapshotRegs();
         break;

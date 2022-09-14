@@ -271,7 +271,7 @@ void ncPrintBaseR(uint64_t value, uint32_t base)
     ncPrintR(buffer);
 }
 
-void ncPrintRegParametric(const char*regName, uint64_t regValue, void (*fn)(char*)){
+void ncPrintRegParametric(const char*regName, uint64_t regValue, void (*fn)(const char*)){
 	fn(regName);
 	fn(": ");
 	int digits = uintToBase(regValue, buffer, 16);

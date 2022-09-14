@@ -70,4 +70,6 @@ uint64_t hex2int(char *hex, int *ok);
 
 void printReg(const char *regName, uint64_t regValue);
 
+void printMem(uint64_t pointer,unsigned char*buffer);
+
 #endif
