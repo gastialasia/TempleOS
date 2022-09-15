@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../include/stdlib.h"
 #include "../include/syscallslib.h"
 #include <stdint.h>
@@ -94,9 +96,12 @@ uint64_t hex2int(char *hex, int *ok) {
           return 0;
         }
         // transform hex character to the 4bit equivalent number, using the ascii table indexes
-        if (byte >= '0' && byte <= '9') byte = byte - '0';
-        else if (byte >= 'a' && byte <='f') byte = byte - 'a' + 10;
-        else if (byte >= 'A' && byte <='F') byte = byte - 'A' + 10;
+        if (byte <= '9') 
+            byte = byte - '0';
+        else if (byte >= 'a') 
+            byte = byte - 'a' + 10;
+        else if (byte >= 'A' && byte <='F') 
+            byte = byte - 'A' + 10;
         // shift 4 to make space for new digit, and add the 4 bits of the new digit
         val = (val << 4) | (byte & 0xF);
 	len++;
@@ -108,19 +113,19 @@ void clear(){
     sys_clear();
 }
 
-// Devuelve 1 si son iguales, 0 sino
+// Devuelve 0 si son iguales, 1 sino
 int strcmp(const char *str1, const char *str2){
     int pos=0;
     while(str1[pos]&&str2[pos]){
         if (str1[pos]!=str2[pos]){
-            return 0;
+            return 1;
         }
         pos++;
     }
     if(str1[pos]||str2[pos]){
-        return 0;
+        return 1;
     }
-    return 1;
+    return 0;
 }
 
 // Copia el string de src en dest, y devuelve la cant de caracteres que copio

@@ -1,3 +1,5 @@
+// This is a personal academic project. Dear PVS-Studio, please check it.
+// PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include <stdlib.h>
 #include <shell.h>
 #include <programs.h>
@@ -10,6 +12,8 @@
 static char command1[MAXBUFFER] = "null";
 static char command2[MAXBUFFER] = "null";
 
+int power = 1; // 1 means running, 0 means shutting down the system
+
 void shell(void)
 {
 
@@ -17,7 +21,7 @@ void shell(void)
     char *prevCommand1 = getProgram(0);
     char *prevCommand2 = getProgram(1);
 
-    if (!strcmp(prevCommand1,"null") || !strcmp(prevCommand2,"null"))
+    if (strcmp(prevCommand1,"null") || strcmp(prevCommand2,"null"))
     {
         function_type prog1 = getFuncFromString(prevCommand1);
         function_type prog2 = getFuncFromString(prevCommand2);
@@ -26,7 +30,7 @@ void shell(void)
     setScreenMode(1);
     clear();
     char buffer[LENGTH];
-    while (1)
+    while (power)
     {
         printf("User:$ ");
         int length = scanf(buffer);
@@ -78,43 +82,49 @@ void parser(char *buffer)
 function_type getFuncFromString(char *str)
 {
     function_type toRet;
-    if (strcmp("date", str))
+    if (!strcmp("date", str))
     {
         toRet = &date;
     }
-    else if (strcmp("help", str))
+    else if (!strcmp("help", str))
     {
         toRet = &help;
     }
-    else if (strcmp("fibo", str) || strcmp("fibonacci", str))
+    else if (!strcmp("fibo", str) || !strcmp("fibonacci", str))
     {
         toRet = &fibo;
     }
-    else if (strcmp("primos", str))
+    else if (!strcmp("primos", str))
     {
         toRet = &primos;
     }
-    else if (strcmp("opcode", str))
+    else if (!strcmp("opcode", str))
     {
         toRet = &opcodeProgram;
     }
-    else if (strcmp("divzero", str))
+    else if (!strcmp("divzero", str))
     {
         toRet = &divzeroProgram;
     }
-    else if (strcmp("clear", str))
+    else if (!strcmp("clear", str))
     {
         toRet = &clearProgram;
     }
-    else if (strcmp("inforeg", str))
+    else if (!strcmp("inforeg", str))
     {
         toRet = &infoRegisters;
     }
-    else if (strcmp("printmem", str))
+    else if (!strcmp("printmem", str))
     {
         toRet = &printMemory;
     }
-    else if (strlen(str) == 0 || strcmp("null", str))
+    else if (!strcmp("exit", str))
+    {
+        clear();
+        power = 0;
+        toRet = &nullProgram;
+    }
+    else if (strlen(str) == 0 || !strcmp("null", str))
     {
         toRet = &nullProgram;
     }
