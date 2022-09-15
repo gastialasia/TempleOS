@@ -125,8 +125,8 @@ char printMemory(){
 	scanf(pos);
 	int ok = 1;
 	uint64_t pointer = hex2int(pos,&ok);
-	unsigned char buffer[32];
-    unsigned char data[3];
+	char buffer[32];
+    char data[3];
     if(ok){
 		printMem(pointer,buffer);
         for(int i=0; i < 32; i++){

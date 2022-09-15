@@ -173,8 +173,8 @@ void printReg(const char *regName, uint64_t regValue)
     putchar('\n');
 }
 
-void printMem(uint64_t pointer,unsigned char*buffer){
-    return sys_printMem(printMem,buffer);
+void printMem(uint64_t pointer,char*buffer){
+    return sys_printMem(pointer,buffer);
 }
 
 
