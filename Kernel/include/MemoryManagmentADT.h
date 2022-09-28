@@ -7,5 +7,11 @@
 typedef struct MemoryManagmentCDT * MemoryManagmentADT;
 
 
+MemoryManagmentADT createMemoryManager(void *const memoryForMemoryManager,void *const managedMemory);
+void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAllocate); 
+void freeMem(MemoryManagmentADT const memoryManager, void * block);
+unsigned int heapSize();
+unsigned int heapLeft(MemoryManagmentADT memoryManager);
+unsigned int usedHeap(MemoryManagmentADT memoryManager);
 
 #endif

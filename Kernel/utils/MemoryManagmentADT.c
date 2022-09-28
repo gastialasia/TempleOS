@@ -57,6 +57,88 @@ static void insertBlockIntoFreeList(MMemoryManagmentADT memoryManager, MemBlock 
   
 }
 
+void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAllocate){
+
+  MemBlock * currentBlock,* previousBlock;
+  void* blockToReturn = NULL;
+
+  if(memToAllocate == 0){
+    return NULL;
+  }
+  //Increase size so that it can contain a MemBlock
+  memToAllocate += STRUCT_SIZE;
+  
+  //byte aligment
+  if((memToAllocate & MASK_BYTE_ALIGMENT) != 0){
+    memToAllocate +=(BYTE_ALIGMENT - (memToAllocate & MASK_BYTE_ALIGMENT))
+  }
+  
+  if(memToAllocate < TOTAL_HEAP_SIZE){
+
+    previousBlock = &memoryManager->start;
+    currentBlock = &memoryManager->start.nextMemBlock;
+
+    while((currentBlock->blockSize < memToAllocate) && (currentBlock->nextMemBlock != NULL)){
+      
+      previousBlock = currentBlock;
+      currentBlock = currentBlock->nextMemBlock;
+
+    }
+
+    if(currentBlock = &memoryManager->end){
+      
+      blockToReturn = (void *) (((uint8_t *) previousBlock->nextMemBlock) + STRUCT_SIZE);
+
+      previousBlock->nextMemBlock = currentBlock->nextMemBlock;
+
+      if((currentBlock->blockSize - memToAllocate) > MINIMUM_BLOCK_SIZE){
+        MemBlock *newBlock = (void *) (((uint8_t *) currentBlock) + memToAllocate);
+
+        newBlock->blockSize = currentBlock->blockSize - memToAllocate;
+        currentBlock->blockSize = memToAllocate;
+
+        insertBlockIntoFreeList(newBlock);
+      }
+
+      memoryManager->freeBytesRemaining -=currentBlock->blockSize;
+
+    }
+
+    return blockToReturn;
+
+  }
+
+}
+
+void freeMem(MemoryManagmentADT const memoryManager, void * block){
+
+  if(block == NULL){
+    return;
+  }
+
+  uint8_t * memToFree =((uint8_t *) block);
+  MemBlock * blockToFree;
+
+  memToFree -= STRUCT_SIZE;
+
+  blockToFree = (void *) memToFree;
+
+  insertBlockIntoFreeList(memoryManager,((MemBlock *) blockToFree));
+  memoryManager->freeBytesRemaining += blockToFree->blockSize;
+
+}
+
+unsigned int heapSize(){
+  return TOTAL_HEAP_SIZE;
+}
+
+unsigned int heapLeft(MemoryManagmentADT memoryManager){
+  return memoryManager->freeBytesRemaining;
+}
+
+unsigned int usedHeap(MemoryManagmentADT memoryManager){
+  return heapSize() - usedHeap(memoryManager);
+}
 
 
 #endif
