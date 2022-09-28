@@ -41,6 +41,22 @@ MemoryManagmentADT createMemoryManagment(void * const restrict memForMemoryManag
 
 }
 
+static void insertBlockIntoFreeList(MMemoryManagmentADT memoryManager, MemBlock * blockToInsert){
+
+  MemBlock * blockIterator= &memoryManager->start;
+  unsigned int blockSizeToinsert = blockToInsert->blockSize;
+
+  while (blockIterator->nextMemBlock->blockSize < blockSizeToinsert) {
+    
+    blockIterator = blockIterator->nextMemBlock;
+
+  }
+
+  blockToInsert->nextMemBlock = blockIterator->nextMemBlock;
+  blockIterator->nextMemBlock = blockToInsert;
+  
+}
+
 
 
 #endif
