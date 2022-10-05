@@ -3,7 +3,7 @@
 
 #define BYTE_ALIGMENT 8
 #define MASK_BYTE_ALIGMENT 0x07
-#define TOTAL_HEAP_SIZE 134217728
+#define TOTAL_HEAP_SIZE 134217728 // 128MB 
 typedef struct MemoryManagmentCDT * MemoryManagmentADT;
 
 
