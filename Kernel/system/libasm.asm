@@ -1,6 +1,7 @@
 GLOBAL cpuVendor
 GLOBAL rtcGetter
 GLOBAL saveRegisters
+GLOBAL _xchg
 
 section .text
 	
@@ -66,5 +67,14 @@ saveRegisters:
 	saveRegister 24		; r15
   	ret
 
+_xchg:
+  ; se usa xcgh pq garantiza atomicidad aunque no sea eficiente
+  mov rax,rsi
+  xchg [rdi],eax
+  ret
+
+
+
 section .bss
 struct_reg resb 128
+
