@@ -1,4 +1,5 @@
 #include "../include/semaphore.h"
+#include "../include/scheduler.h"
 
 #define MAX_PROCESS 10
 #define MAX_SEM 10
@@ -6,7 +7,7 @@
 typedef struct Semaphore{
   uint32_t id;
   int value;
-  //pcb * queuqe[MAX_PROCESS]; struct de procesos
+  pcb * queuqe[MAX_PROCESS];// struct de procesos
   uint32_t waiting;
   uint8_t lock;
 }Semaphore;
@@ -81,6 +82,20 @@ int sem_post(Semaphore * sem){
   while (_xchg(&mutexSem,1) != 0);
 
   sem->value++;
-  //falta terminar la parte con los pcb
+  
+  // no hay nadie esperando el semaforo
+  if(sem->waiting == 0){
+    _xchg(&mutexSem, 0);
+    return 0;
+  }
+
+  sem->queuqe[0]->state = 1;
+  sem->waiting--;
+
+  for(int i = 0; i < sem->waiting; i++){
+    sem->queuqe[i] = sem->queuqe[i+1];
+  }
+  _xchg(&mutexSem, 0);
+  return 0;
 
 }
