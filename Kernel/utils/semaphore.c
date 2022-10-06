@@ -45,3 +45,42 @@ Semaphore * sem_open(uint32_t id,int value){
   return sems[semIter];
 
 }
+
+int sem_close(Semaphore * semToClose){
+  
+  if(semToClose->waiting > 0){
+    return -1;
+  }
+
+  while(_xchg(&mutexSem, 1) != 0);
+
+  int semIter = 0;
+  while(semIter < size && sems[semIter]->id != semToClose->id){
+    semIter++;
+  }
+  
+  if(semIter == size){
+    _xchg(&mutexSem, 0);
+    return -1; // INVALID ID
+  }
+  //sejo a todo los sems en "orden", osea sin empacio para facilitar la busqueda mas adelante
+  while(semIter < size-1){
+    sems[semIter] = sems[semIter+1];
+    semIter++;
+  }
+
+  size--;
+  free(semToClose);
+
+  _xchg(&mutexSem, 0);
+  return 1;
+}
+
+int sem_post(Semaphore * sem){
+
+  while (_xchg(&mutexSem,1) != 0);
+
+  sem->value++;
+  //falta terminar la parte con los pcb
+
+}
