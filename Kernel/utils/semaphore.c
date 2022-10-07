@@ -79,7 +79,7 @@ int sem_close(Semaphore * semToClose){
 
 int sem_post(Semaphore * sem){
 
-  while (_xchg(&mutexSem,1) != 0);
+  while (_xchg(&sem->lock,1) != 0);
 
   sem->value++;
   
@@ -97,5 +97,32 @@ int sem_post(Semaphore * sem){
   }
   _xchg(&mutexSem, 0);
   return 0;
-
 }
+
+int sem_wait(Semaphore * sem){
+
+  while(_xchg(&sem->lock, 1) !=0);
+  
+  while (sem->value == 0) {
+    
+    if(sem->waiting == MAX_PROCESS){
+      return -1;
+    }
+
+    // sem->queuqe[sem->waiting++] = frenar proceso algo del scheduler para frenar procesos
+    
+    _xchg(&sem->lock, 0); // suelto el semaforo interno de cada semaforo
+    //corre el scheduler hasta que se pueda ir el procesos
+  }
+
+  //si salgo del while significa que se libero un proceso
+
+  sem->value--;
+
+  //suelto el lock del semaforo por si paso de una
+  _xchg(&sem->lock,0);
+
+  return 0;
+}
+
+
