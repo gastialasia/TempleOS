@@ -84,8 +84,8 @@ void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAlloca
       currentBlock = currentBlock->nextMemBlock;
 
     }
-
-    if(currentBlock = &memoryManager->end){
+    // @TODO: @Pato te olvidaste algo aca que pasa si encuentra un bloque del tamaño justo
+    if(currentBlock == &memoryManager->end){
       
       blockToReturn = (void *) (((uint8_t *) previousBlock->nextMemBlock) + STRUCT_SIZE);
 

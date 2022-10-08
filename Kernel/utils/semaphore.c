@@ -36,6 +36,7 @@ Semaphore * sem_open(uint32_t id,int value){
     sems[semIter] = (Semaphore *) alloc(sizeof(Semaphore));
     sems[semIter]->id = id;
     sems[semIter]->value = value;
+    //agregar pcb @TODO:@pato
     sems[semIter]->waiting = 0;
     sems[semIter]->lock = 0;//unlock
     _xchg(&mutexSem,0);
@@ -95,7 +96,7 @@ int sem_post(Semaphore * sem){
   for(int i = 0; i < sem->waiting; i++){
     sem->queuqe[i] = sem->queuqe[i+1];
   }
-  _xchg(&mutexSem, 0);
+  _xchg(&sem->lock, 0);
   return 0;
 }
 
