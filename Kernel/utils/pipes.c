@@ -26,30 +26,30 @@ typedef struct pipeUserInfo{
 }pipeUserInfo;
 
 pipe * pipes[MAX_PIPES];
-uint32_t size = 0;
+uint32_t pipeSize = 0;
 uint32_t ids = 0; // for unique ids
 
 int createPipes(pipeUserInfo * pui1, pipeUserInfo * pui2){
 
-  if(size == MAX_PIPES){
+  if(pipeSize == MAX_PIPES){
     return -1;
   }
   
-  pipes[size] = (pipe *) alloc(sizeof(pipe));
-  pipes[size]->readPos = 0;
-  pipes[size]->writePos = 0;
-  pipes[size]->readPermition = 1;
-  pipes[size]->writePermition = 1;
-  pipes[size]->bytesToRead = 0;
-  pipes[size]->id = 100+ ids++;
-  pipes[size]->waitingProcess = NULL;
-  pui1->pipe = pipes[size];
+  pipes[pipeSize] = (pipe *) alloc(sizeof(pipe));
+  pipes[pipeSize]->readPos = 0;
+  pipes[pipeSize]->writePos = 0;
+  pipes[pipeSize]->readPermition = 1;
+  pipes[pipeSize]->writePermition = 1;
+  pipes[pipeSize]->bytesToRead = 0;
+  pipes[pipeSize]->id = 100+ ids++;
+  pipes[pipeSize]->waitingProcess = NULL;
+  pui1->pipe = pipes[pipeSize];
   pui1->writable = 0;
   pui1->readable = 1;
-  pui2->pipe = pipes[size];
+  pui2->pipe = pipes[pipeSize];
   pui2->writable = 1;
   pui2->readable = 0;
-  size++;
+  pipeSize++;
   
 }
 
@@ -61,21 +61,21 @@ int openPipeID(pipeUserInfo * user,uint32_t id, uint8_t permisions){
 
   int i =0;
 
-  while(i < size && pipes[i]->id != id){
+  while(i < pipeSize && pipes[i]->id != id){
     i++;
   }
 
   user->readable = permisions? 1:0;
   user->writable = permisions? 0 : 1;
 
-  if(i == size){
+  if(i == pipeSize){
 
-    if(size == MAX_PIPES){
+    if(pipeSize == MAX_PIPES){
       return -1;
     }
 
-    pipes[size] = (pipe *) alloc(sizeof(pipe));
-    user->pipe = pipes[size++];
+    pipes[pipeSize] = (pipe *) alloc(sizeof(pipe));
+    user->pipe = pipes[pipeSize++];
     user->pipe->id = id;
     user->pipe->readPos = 0;
     user->pipe->writePos = 0;
@@ -103,18 +103,18 @@ void deletePipe(pipe * pipe){
 
   int pos = 0;
   
-  while(pos < size && pipes[pos]->id != pipe->id){
+  while(pos < pipeSize && pipes[pos]->id != pipe->id){
     pos++;
   }
 
-  if(pos == size){
+  if(pos == pipeSize){
     return;
   }
 
-  for(;pos<size-1;pos++){
+  for(;pos<pipeSize-1;pos++){
     pipes[pos] = pipes[pos+1];
   }
-  size--;
+  pipeSize--;
 }
 
 
@@ -159,7 +159,7 @@ int pipeWrite(pipeUserInfo * userPipe, char * string){
   while(string[i] != NULL){
     
     if(userPipe->pipe->bytesToRead == PIPE_SIZE){
-      userPipe->pipe->waitingProcess = BlockProcess();
+      //userPipe->pipe->waitingProcess = BlockProcess();
       //corra el scheduler
     }
 
@@ -186,7 +186,7 @@ int pipeRead(pipeUserInfo * userPipe,char * buffer,int limit){
   }
 
   if(userPipe->pipe->bytesToRead == 0){
-    userPipe->pipe->waitingProcess = BlockProcess();
+    //userPipe->pipe->waitingProcess = BlockProcess();
     //corre scheduler
   }
 
