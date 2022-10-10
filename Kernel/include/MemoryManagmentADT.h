@@ -1,5 +1,5 @@
-#ifndef MEMORY_MANAGMENT_H
-#define MEMORY_MANAGMENT_H
+#ifndef MEMORY_MANAGMENT_ADT_H
+#define MEMORY_MANAGMENT_ADT_H
 
 #define NULL ((void *) 0)
 #define BYTE_ALIGMENT 8
@@ -8,7 +8,7 @@
 typedef struct MemoryManagmentCDT * MemoryManagmentADT;
 
 
-MemoryManagmentADT createMemoryManager(void *const memoryForMemoryManager,void *const managedMemory);
+MemoryManagmentADT createMemoryManagment(void * const restrict memForMemoryManagment, void * const restrict managedMem);
 void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAllocate); 
 void freeMem(MemoryManagmentADT const memoryManager, void * block);
 unsigned int heapSize();

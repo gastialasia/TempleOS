@@ -16,9 +16,9 @@ typedef struct MemoryManagmentCDT {
   unsigned int freeBytesRemaining;
 }MemoryManagmentCDT;
 
-static const uint16_t STRUCT_SIZE ((sizeof(MemBlock) +(BYTE_ALIGMENT -1)) & ~MASK_BYTE_ALIGMENT);
+static const uint16_t STRUCT_SIZE = ((sizeof(MemBlock) +(BYTE_ALIGMENT -1)) & ~MASK_BYTE_ALIGMENT);
 
-#define MINIMUM_BLOCK_SIZE ((size_t) (STRUCT_SIZE * 2))
+#define MINIMUM_BLOCK_SIZE ((unsigned int) (STRUCT_SIZE * 2))
 
 MemoryManagmentADT createMemoryManagment(void * const restrict memForMemoryManagment, void * const restrict managedMem){
   
@@ -69,7 +69,7 @@ void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAlloca
   
   //byte aligment
   if((memToAllocate & MASK_BYTE_ALIGMENT) != 0){
-    memToAllocate +=(BYTE_ALIGMENT - (memToAllocate & MASK_BYTE_ALIGMENT))
+    memToAllocate +=(BYTE_ALIGMENT - (memToAllocate & MASK_BYTE_ALIGMENT));
   }
   
   if(memToAllocate < TOTAL_HEAP_SIZE){
@@ -96,7 +96,7 @@ void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAlloca
         newBlock->blockSize = currentBlock->blockSize - memToAllocate;
         currentBlock->blockSize = memToAllocate;
 
-        insertBlockIntoFreeList(newBlock);
+        insertBlockIntoFreeList(memoryManager, newBlock);
       }
 
       memoryManager->freeBytesRemaining -=currentBlock->blockSize;

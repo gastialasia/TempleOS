@@ -4,7 +4,7 @@
 static MemoryManagmentADT mm;
 
 void initMemManager(void *const restrict memoryForMemoryManager, void *const restrict managedMemory){
-  mm = createMemoryManager(memoryForMemoryManager, managedMemory);
+  mm = createMemoryManagment(memoryForMemoryManager, managedMemory);
 }
 
 void * alloc(unsigned int memToAlloc){
