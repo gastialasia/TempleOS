@@ -19,7 +19,6 @@ typedef struct MemoryManagmentCDT {
 static const uint16_t STRUCT_SIZE ((sizeof(MemBlock) +(BYTE_ALIGMENT -1)) & ~MASK_BYTE_ALIGMENT);
 
 #define MINIMUM_BLOCK_SIZE ((size_t) (STRUCT_SIZE * 2))
-#define NULL ((void *) 0)
 
 MemoryManagmentADT createMemoryManagment(void * const restrict memForMemoryManagment, void * const restrict managedMem){
   
