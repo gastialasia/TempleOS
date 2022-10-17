@@ -9,17 +9,17 @@
 
 typedef struct ProcessNode{
   pcb process;
-  struct ProcessList *nextProcess;
+  struct ProcessNode *nextProcess;
 }ProcessNode;
 
 typedef struct WaitingNode{
   pcb * process;
-  struct WaitingList * next;
+  struct WaitingNode * next;
 } WaitingNode;
 
 typedef struct WaitingKeyboardList{
   WaitingNode * current;
-  WaitingNode * next;
+  WaitingNode * tail;
   uint8_t size;
 }WaitingKeyboardList;
 
@@ -44,7 +44,7 @@ static void startingProcess(){
 
 void initScheduler(){
   scheduler = (Scheduler *) alloc(sizeof(Scheduler));
-  scheduler->quantum = QUANTUM;
+  scheduler->quantum = QUANTUM -1;
   scheduler->current = NULL;
   scheduler->startList = NULL;
   scheduler->mutex = 0;
@@ -64,4 +64,21 @@ void initScheduler(){
   starting->process.state = 1; // hacer un enum mejor
   starting->process.priority = 1;
   starting->nextProcess = scheduler->startList;
+
+  waitKeyboard = (WaitingKeyboardList *) alloc(sizeof(WaitingKeyboardList));
+  waitKeyboard->current = (WaitingNode *) alloc(sizeof(WaitingNode));
+  waitKeyboard->current->process = NULL;
+  waitKeyboard->current->next = NULL;
+  waitKeyboard->tail = waitKeyboard->current;
+  waitKeyboard->size = 0;
+
+  WaitingNode * auxNode = waitKeyboard->current;
+  for (int i= 0; i < MAX_WAITING_KEYBOARD; i++) {
+    WaitingNode * newNode = (WaitingNode *) alloc(sizeof(WaitingNode));
+    newNode->process = NULL;
+    newNode->next = NULL;
+    auxNode->next = newNode;
+    auxNode = auxNode->next;
+  }
+
 }

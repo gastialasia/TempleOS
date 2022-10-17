@@ -45,6 +45,7 @@ int createPipes(pipeUserInfo * pui1, pipeUserInfo * pui2){
   pui2->readable = 0;
   pipeSize++;
   
+  return 1;
 }
 
 pipeUserInfo * createPipeUserInfo(){
@@ -97,7 +98,7 @@ int openPipeID(pipeUserInfo * user,uint32_t id, uint8_t permisions){
   return 1;
 }
 
-void deletePipe(pipe * pipe){
+static void deletePipe(pipe * pipe){
 
   int pos = 0;
   
@@ -154,7 +155,7 @@ int pipeWrite(pipeUserInfo * userPipe, char * string){
   }
 
   int i = 0;
-  while(string[i] != NULL){
+  while(string[i]){
     
     if(userPipe->pipe->bytesToRead == PIPE_SIZE){
       //userPipe->pipe->waitingProcess = BlockProcess();

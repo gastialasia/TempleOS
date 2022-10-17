@@ -1,5 +1,6 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
+#include "include/MemoryManagerWrapper.h"
 #include <stdint.h>
 #include <string.h>
 #include <lib.h>
@@ -7,6 +8,7 @@
 #include <naiveConsole.h>
 #include <idtLoader.h>
 #include <syscalls.h>
+#include "include/scheduler.h"
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -19,6 +21,9 @@ static const uint64_t PageSize = 0x1000;
 
 static void * const sampleCodeModuleAddress = (void*)0x400000;
 static void * const sampleDataModuleAddress = (void*)0x500000;
+static void * const heapModuleAddress = (void *) 0x600000;
+static void * const memManagerAddress = (void *) 0x50000;
+
 
 typedef int (*EntryPoint)();
 
@@ -125,6 +130,9 @@ int main()
 	ncPrint("                                    ===");
 	ncNewline();
 	sleep(3000);
+  
+  initMemManager(memManagerAddress,heapModuleAddress);
+  initScheduler();
 
 	runShell();
 	return 0;

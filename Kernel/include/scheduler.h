@@ -3,6 +3,7 @@
 
 #include "MemoryManagerWrapper.h"
 #include "semaphore.h"
+#include "lib.h"
 
 typedef struct pipeUserInfo{
   char readable;
@@ -19,9 +20,11 @@ typedef struct pcb{
   uint64_t stackPointer;
   uint64_t basePointer;
   uint64_t processMemory;
-  PipeUserInfo * stdin;
-  PipeUserInfo * stdout;
-  //falta agregar mas cosas
+  pipeUserInfo * stdin;
+  pipeUserInfo * stdout;
 }pcb;
+
+void initScheduler();
+
 
 #endif

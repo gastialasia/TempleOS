@@ -75,7 +75,7 @@ void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAlloca
   if(memToAllocate < TOTAL_HEAP_SIZE){
 
     previousBlock = &memoryManager->start;
-    currentBlock = &memoryManager->start.nextMemBlock;
+    currentBlock = memoryManager->start.nextMemBlock;
 
     while((currentBlock->blockSize < memToAllocate) && (currentBlock->nextMemBlock != NULL)){
       
@@ -106,6 +106,8 @@ void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAlloca
     return blockToReturn;
 
   }
+  
+  return blockToReturn;
 
 }
 
