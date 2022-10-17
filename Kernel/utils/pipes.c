@@ -1,6 +1,6 @@
 #include <stdint.h>
-#include "../include/scheduler.h"
 #include "../include/MemoryManagerWrapper.h"
+#include "../include/pipes.h"
 
 #define MAX_PIPES 20
 #define PIPE_SIZE 512 // byres de buffer del pipe
@@ -18,12 +18,6 @@ typedef struct pipe{
   uint32_t bytesToRead;
   pcb * waitingProcess; // no se si va no me acuerdo de la consigna pero supongo debido a que son op bloqueantes
 }pipe;
-
-typedef struct pipeUserInfo{
-  char readable;
-  char writable;
-  struct pipe * pipe;
-}pipeUserInfo;
 
 pipe * pipes[MAX_PIPES];
 uint32_t pipeSize = 0;
@@ -51,6 +45,10 @@ int createPipes(pipeUserInfo * pui1, pipeUserInfo * pui2){
   pui2->readable = 0;
   pipeSize++;
   
+}
+
+pipeUserInfo * createPipeUserInfo(){
+  return (pipeUserInfo *) alloc(sizeof(pipeUserInfo));
 }
 
 int openPipeID(pipeUserInfo * user,uint32_t id, uint8_t permisions){

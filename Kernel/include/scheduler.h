@@ -4,13 +4,23 @@
 #include "MemoryManagerWrapper.h"
 #include "semaphore.h"
 
+typedef struct pipeUserInfo{
+  char readable;
+  char writable;
+  struct pipe * pipe;
+}pipeUserInfo;
+
+
 typedef struct pcb{
+  char args[6][21];
   uint32_t pid;
   uint8_t state;
   uint8_t priority;
   uint64_t stackPointer;
   uint64_t basePointer;
   uint64_t processMemory;
+  PipeUserInfo * stdin;
+  PipeUserInfo * stdout;
   //falta agregar mas cosas
 }pcb;
 
