@@ -1,11 +1,12 @@
-
 #include "../include/scheduler.h"
 #include "../include/interrupts.h"
+#include <stdint.h>
 
 
 #define QUANTUM 1
 #define DEFAULT_PROG_MEM 4096
 #define MAX_WAITING_KEYBOARD 15
+#define QUANTUM_RAISING_PRIORITY 5
 
 typedef struct ProcessNode{
   pcb process;
@@ -25,6 +26,7 @@ typedef struct WaitingKeyboardList{
 
 typedef struct Scheduler{
   uint64_t quantum;
+  uint32_t quantumForRaisingAuxPriority;
   uint8_t mutex;
   ProcessNode * current;
   ProcessNode * startList;
@@ -45,6 +47,7 @@ static void startingProcess(){
 void initScheduler(){
   scheduler = (Scheduler *) alloc(sizeof(Scheduler));
   scheduler->quantum = QUANTUM -1;
+  scheduler->quantumForRaisingAuxPriority = QUANTUM_RAISING_PRIORITY;
   scheduler->current = NULL;
   scheduler->startList = NULL;
   scheduler->mutex = 0;
@@ -63,6 +66,7 @@ void initScheduler(){
   starting->process.processMemory = startingProcessMem;
   starting->process.state = 1; // hacer un enum mejor
   starting->process.priority = 1;
+  starting->process.auxPriority = 1;
   starting->nextProcess = scheduler->startList;
 
   waitKeyboard = (WaitingKeyboardList *) alloc(sizeof(WaitingKeyboardList));
@@ -82,3 +86,94 @@ void initScheduler(){
   }
 
 }
+
+
+ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,int argc,char argv[6][21],pipeUserInfo * customStdin,pipeUserInfo * customStdout,uint64_t ip){
+
+  if(node == NULL){
+    ProcessNode * newNode = (ProcessNode *) alloc(sizeof(ProcessNode));
+    newNode->process.pid = pid;
+    newNode->process.priority = priority;
+    newNode->process.auxPriority = priority;
+    newNode->process.stdin = customStdin;
+    newNode->process.stdout = customStdout;
+    newNode->process.state = 1;
+    //@TODO : un string copy para copiar los argumentos y tmb para parsear lo que te pasa a uno x 6x21
+    
+    uint64_t processMemory = (uint64_t) alloc(DEFAULT_PROG_MEM);
+    uint64_t sp = initProcess(processMemory + DEFAULT_PROG_MEM, ip, argc, newNode->process.args);
+    newNode->process.stackPointer = sp;
+    newNode->process.basePointer = processMemory + DEFAULT_PROG_MEM;// no se si aca falta un -1
+    newNode->process.processMemory = processMemory;
+    return newNode;
+  }
+
+  if(node->nextProcess != NULL && priority >= node->nextProcess->process.priority){
+    node->nextProcess = loadProcessData(node->nextProcess,pid,priority,argc,argv,customStdin,customStdout,ip);
+    return node;
+  }
+  
+
+  //Caso donde la prioridad del proceso a añadir es menor
+  ProcessNode * newNode = (ProcessNode *) alloc(sizeof(ProcessNode));
+
+  newNode->nextProcess = node->nextProcess;
+  node->nextProcess = newNode;
+
+  newNode->process.pid = pid;
+  newNode->process.priority = priority;
+  newNode->process.auxPriority = priority;
+  newNode->process.stdin = customStdin;
+  newNode->process.stdout = customStdout;
+  newNode->process.state = 1;
+    //@TODO : un string copy para copiar los argumentos y tmb para parsear lo que te pasa a uno x 6x21
+    
+  uint64_t processMemory = (uint64_t) alloc(DEFAULT_PROG_MEM);
+  uint64_t sp = initProcess(processMemory + DEFAULT_PROG_MEM, ip, argc, newNode->process.args);
+  newNode->process.stackPointer = sp;
+  newNode->process.basePointer = processMemory + DEFAULT_PROG_MEM;// no se si aca falta un -1
+  newNode->process.processMemory = processMemory;
+
+  return node;
+}
+
+
+int createProcess(uint64_t ip,uint8_t priority,uint64_t argc,char argv[6][21],pipeUserInfo * customStdin,pipeUserInfo * customStdout){
+  
+  scheduler->startList = loadProcessData(scheduler->startList, currentPid++,priority,argc, argv, customStdin,customStdout,ip);
+
+  return currentPid-1;
+}
+//@TODO:
+/*
+1)Funcion wrapper pára createProcess para que le pasen siempre un char[6][21]
+2)Hacer el Context Switching
+3)cambiar la syscall de read
+*/
+uint64_t contextSwitching(uint64_t sp){
+
+  if(firstProcess){
+    firstProcess = 0;
+    scheduler->current = scheduler->startList;
+    return scheduler->startList->process.stackPointer;
+  }
+
+  if(scheduler->quantum > 0){
+    scheduler->quantum--;
+    return 0;
+  }
+  scheduler->quantum = QUANTUM -1;
+
+  if(scheduler->quantumForRaisingAuxPriority == 0){
+    //raise auxpriority y resetear la var del scheduler
+  }
+  
+  scheduler->quantumForRaisingAuxPriority--;
+
+  scheduler->current->process.stackPointer = sp;
+
+  //aca decidir cual es el prox process en correr
+
+
+}
+
