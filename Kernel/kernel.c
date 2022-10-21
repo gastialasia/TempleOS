@@ -6,7 +6,7 @@
 #include <lib.h>
 #include <moduleLoader.h>
 #include <naiveConsole.h>
-#include <idtLoader.h>
+#include "include/idtLoader.h"
 #include <syscalls.h>
 #include "include/scheduler.h"
 
@@ -96,7 +96,6 @@ void runShell(){
 int main()
 {
 	ncClear();
-	load_idt();
 	ncPrint("[Kernel Main]");
 	ncNewline();
 	ncPrint("IDT loaded succesfully!");
@@ -129,11 +128,19 @@ int main()
 	ncNewline();
 	ncPrint("                                    ===");
 	ncNewline();
-	sleep(3000);
   
-  initMemManager(memManagerAddress,heapModuleAddress);
-  initScheduler();
 
-	runShell();
+  initMemManager(memManagerAddress,heapModuleAddress);
+  ncPrint("Paso el initmem");
+  initScheduler();
+  ncPrint("paso el initScheduler");
+  createProcessFormatter((uint64_t)sampleCodeModuleAddress, 1, 1, "Shell", NULL, NULL);
+  ncPrint("Se cargo la shell");
+  load_idt();
+  ncClear();
+
+  
+
+  ncPrint("TE pasaste");
 	return 0;
 }

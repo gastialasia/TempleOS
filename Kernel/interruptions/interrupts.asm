@@ -26,7 +26,7 @@ EXTERN syscallDispatcher
 EXTERN saveBackup
 EXTERN ncPrintReg
 EXTERN rebootTerm
-
+EXTERN contextSwitching
 EXTERN printRegPtr	;Este puntero a funcion debe ser desreferenciado para poder ser llamado
 
 SECTION .text
@@ -88,6 +88,18 @@ SECTION .text
 	mov al, 20h
 	out 20h, al
 
+  mov rax, %1
+  cmp rax,0
+  jne .end
+
+.timerTick
+  mov rdi,rsp
+  call contextSwitching
+  cmp rax,0
+  je .end
+  mov rsp,rax
+
+.end:
 	popState
 	sti
 	iretq

@@ -27,7 +27,7 @@ typedef struct WaitingKeyboardList{
 typedef struct Scheduler{
   uint64_t quantum;
   uint32_t quantumForRaisingAuxPriority;
-  uint8_t mutex;
+  uint8_t foregroundInUse;
   ProcessNode * current;
   ProcessNode * startList;
 }Scheduler;
@@ -50,11 +50,10 @@ void initScheduler(){
   scheduler->quantumForRaisingAuxPriority = QUANTUM_RAISING_PRIORITY;
   scheduler->current = NULL;
   scheduler->startList = NULL;
-  scheduler->mutex = 0;
+  scheduler->foregroundInUse = 0;
   currentPid = 1;
   firstProcess = 1;
   
-  //@TODO: Inicialisar la WaitingKeyboardList entera
 
   uint64_t startingProcessMem = (uint64_t) alloc(2048);
 
@@ -86,9 +85,23 @@ void initScheduler(){
   }
 
 }
+static char* copyString(char* destination, const char* source) {
+  if (destination == NULL)
+    return NULL;
 
+  char *ptr = destination;
 
-ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,int argc,char argv[6][21],pipeUserInfo * customStdin,pipeUserInfo * customStdout,uint64_t ip){
+  while (*source != '\0') {
+    *destination = *source;
+    destination++;
+    source++;
+  }
+
+  *destination = '\0';
+  return ptr;
+}
+
+static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,int argc,char argv[6][21],pipeUserInfo * customStdin,pipeUserInfo * customStdout,uint64_t ip){
 
   if(node == NULL){
     ProcessNode * newNode = (ProcessNode *) alloc(sizeof(ProcessNode));
@@ -98,8 +111,9 @@ ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,
     newNode->process.stdin = customStdin;
     newNode->process.stdout = customStdout;
     newNode->process.state = 1;
-    //@TODO : un string copy para copiar los argumentos y tmb para parsear lo que te pasa a uno x 6x21
-    
+    for (int i = 0; i < argc; i++){
+      copyString(newNode->process.args[i], argv[i]);
+    }
     uint64_t processMemory = (uint64_t) alloc(DEFAULT_PROG_MEM);
     uint64_t sp = initProcess(processMemory + DEFAULT_PROG_MEM, ip, argc, newNode->process.args);
     newNode->process.stackPointer = sp;
@@ -126,8 +140,9 @@ ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,
   newNode->process.stdin = customStdin;
   newNode->process.stdout = customStdout;
   newNode->process.state = 1;
-    //@TODO : un string copy para copiar los argumentos y tmb para parsear lo que te pasa a uno x 6x21
-    
+  for (int i = 0; i < argc; i++){
+      copyString(newNode->process.args[i], argv[i]);
+  }
   uint64_t processMemory = (uint64_t) alloc(DEFAULT_PROG_MEM);
   uint64_t sp = initProcess(processMemory + DEFAULT_PROG_MEM, ip, argc, newNode->process.args);
   newNode->process.stackPointer = sp;
@@ -140,13 +155,37 @@ ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,
 
 int createProcess(uint64_t ip,uint8_t priority,uint64_t argc,char argv[6][21],pipeUserInfo * customStdin,pipeUserInfo * customStdout){
   
+  if(priority == 1 && currentPid > 1){
+    scheduler->foregroundInUse = 1;
+  }
   scheduler->startList = loadProcessData(scheduler->startList, currentPid++,priority,argc, argv, customStdin,customStdout,ip);
 
   return currentPid-1;
 }
+
+int createProcessFormatter(uint64_t ip, uint8_t priority, uint64_t argc, char *argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout) {
+  int i = 0, j = 0;
+  char args[6][21];
+  while(i < argc) {
+    int k = 0;
+    while(argv[j]) {
+      args[i][k] = argv[j];
+      j++;
+      k++;
+    }
+    args[i][k] = 0;
+    j++;
+    i++;
+  }
+
+  return createProcess(ip, priority, argc, args, customStdin, customStdout);
+}
+
+
+
 //@TODO:
 /*
-1)Funcion wrapper pára createProcess para que le pasen siempre un char[6][21]
+1)Funcion wrapper pára createProcess para que le pasen siempre un char[6][21] listo
 2)Hacer el Context Switching
 3)cambiar la syscall de read
 */
@@ -165,15 +204,81 @@ uint64_t contextSwitching(uint64_t sp){
   scheduler->quantum = QUANTUM -1;
 
   if(scheduler->quantumForRaisingAuxPriority == 0){
-    //raise auxpriority y resetear la var del scheduler
+    ProcessNode * auxNodeIter = scheduler->startList;
+    while(auxNodeIter != NULL) {
+      if(auxNodeIter->process.auxPriority > 1 && auxNodeIter->process.pid != scheduler->current->process.pid && auxNodeIter->process.state == 1)  
+        auxNodeIter->process.auxPriority--;
+      auxNodeIter = auxNodeIter->nextProcess;
+    }
+    scheduler->quantumForRaisingAuxPriority = QUANTUM_RAISING_PRIORITY;
   }
   
   scheduler->quantumForRaisingAuxPriority--;
 
   scheduler->current->process.stackPointer = sp;
 
-  //aca decidir cual es el prox process en correr
+  ProcessNode *nextProcessCandidate = scheduler->current->nextProcess;
+  ProcessNode *auxNextProcess = nextProcessCandidate;
+  while(auxNextProcess != NULL) {
+    if(nextProcessCandidate->process.state != 1)
+      nextProcessCandidate = auxNextProcess;
+    if(auxNextProcess->process.auxPriority < nextProcessCandidate->process.auxPriority && auxNextProcess->process.state == 1)
+      nextProcessCandidate = auxNextProcess;
+    auxNextProcess = auxNextProcess->nextProcess;
+  }
 
+  ProcessNode * minReadyProcess = scheduler->startList;
+  ProcessNode * auxMinReadyProcess = minReadyProcess;
+  
+  while(auxMinReadyProcess != NULL && auxMinReadyProcess->process.pid != scheduler->current->process.pid){
+    if(auxMinReadyProcess->process.pid == 1 && scheduler->foregroundInUse){
+      if(minReadyProcess->process.pid == 1){
+        minReadyProcess = minReadyProcess->nextProcess;
+      }
+      auxMinReadyProcess = auxMinReadyProcess->nextProcess;
+    }
+    
+    if(minReadyProcess->process.state != 1 && auxMinReadyProcess->process.pid !=1){
+      minReadyProcess = auxMinReadyProcess;
+    }
 
+    if(auxMinReadyProcess->process.auxPriority < minReadyProcess->process.auxPriority && auxMinReadyProcess->process.state == 1){
+      minReadyProcess = auxMinReadyProcess;
+    }
+    auxMinReadyProcess = auxMinReadyProcess->nextProcess;
+  }
+  //no hay proceso anterior que se pueda correr pero el proceso actual se puede vovler a corerr
+  if(minReadyProcess->process.state != 1 && scheduler->current->process.state == 1 && scheduler->current->process.pid !=1){
+    minReadyProcess = scheduler->current;
+  }
+  //proceso en foreground corriendo y me recomienda dummy, lo descarto
+  if(scheduler->foregroundInUse && minReadyProcess->process.pid == 1){
+    minReadyProcess = NULL;
+  }
+  
+  if((nextProcessCandidate == NULL || nextProcessCandidate->process.state != 1) && (minReadyProcess == NULL || minReadyProcess->process.state != 1)){
+    
+    scheduler->current = starting;
+    
+    return scheduler->current->process.stackPointer;
+
+  }else if (nextProcessCandidate == NULL || nextProcessCandidate->process.state != 1) {
+    
+    scheduler->current = minReadyProcess;
+    
+  }else if (minReadyProcess == NULL || minReadyProcess->process.state !=1) {
+    
+    scheduler->current = nextProcessCandidate;
+
+  }else {
+    if(minReadyProcess->process.auxPriority < nextProcessCandidate->process.auxPriority){
+      scheduler->current = minReadyProcess;
+    }else {
+      scheduler->current = nextProcessCandidate;
+    }
+  }
+  scheduler->current->process.auxPriority = scheduler->current->process.priority;
+  
+  return scheduler->current->process.stackPointer;
 }
 
