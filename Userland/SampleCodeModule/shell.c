@@ -4,6 +4,7 @@
 #include <shell.h>
 #include <programs.h>
 #include <stdint.h>
+#include <test_mm.h>
 
 #define LENGTH 100
 #define MAXDIGITS 21
@@ -95,6 +96,10 @@ function_type getFuncFromString(char *str)
     else if (!strcmp("inforeg", str))
     {
         toRet = &infoRegisters;
+    }
+    else if (!strcmp("testmm", str))
+    {
+        toRet = &test_mm;
     }
     else if (!strcmp("printmem", str))
     {
