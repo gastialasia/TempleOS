@@ -144,3 +144,7 @@ void mfree(void * memToFree){
 	return free(memToFree);
 }
 
+void mStatus(unsigned int * status){
+	return memStatus(status);
+}
+

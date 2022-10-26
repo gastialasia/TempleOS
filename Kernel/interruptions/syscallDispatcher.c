@@ -42,6 +42,8 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2) {
         malloc((unsigned int)arg0);
     case 11:
         mfree((void *)arg0);
+    case 12:
+        mStatus((void *)arg0);
     default:
         return -1;
     }

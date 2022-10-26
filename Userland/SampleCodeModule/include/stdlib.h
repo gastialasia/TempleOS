@@ -70,4 +70,6 @@ void * malloc(unsigned int bytes);
 
 void free(void * memToFree);
 
+void memStatus(unsigned int * status);
+
 #endif

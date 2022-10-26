@@ -38,4 +38,6 @@ void * malloc(unsigned int bytes);
 
 void mfree(void * memToFree);
 
+void mStatus(unsigned int * status);
+
 #endif

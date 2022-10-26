@@ -177,4 +177,12 @@ void free(void * memToFree) {
     return sys_free(memToFree);
 }
 
+void memStatus(unsigned int * status) {
+    return sys_memStatus(status);
+}
+
+
+
+
+
 
