@@ -34,4 +34,8 @@ void printMem(uint64_t pointer, unsigned char * buf);
 
 void loadBackupRegs(registersT* regs, registersT *backup);
 
+void * malloc(unsigned int bytes);
+
+void mfree(void * memToFree);
+
 #endif

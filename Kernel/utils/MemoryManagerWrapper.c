@@ -3,7 +3,7 @@
 
 static MemoryManagmentADT mm;
 
-void initMemManager(void *const restrict memoryForMemoryManager, void *const restrict managedMemory){
+void initMemManager(void * const restrict memoryForMemoryManager, void * const restrict managedMemory){
   mm = createMemoryManagment(memoryForMemoryManager, managedMemory);
 }
 

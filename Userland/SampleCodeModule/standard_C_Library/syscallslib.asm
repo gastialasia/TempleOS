@@ -9,6 +9,8 @@ GLOBAL divzero
 GLOBAL opcode
 GLOBAL sys_getLast
 GLOBAL sys_snapshotRegs
+GLOBAL sys_malloc
+GLOBAL sys_free
 
 section .text
 
@@ -54,6 +56,16 @@ sys_getLast:
 
 sys_snapshotRegs:
     mov rax, 9
+    int 80h
+    ret
+
+sys_malloc:
+    mov rax, 10
+    int 80h
+    ret
+
+sys_free:
+    mov rax, 11
     int 80h
     ret
 

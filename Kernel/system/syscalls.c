@@ -2,6 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include <syscalls.h>
 #include <naiveConsole.h>
+#include "../include/MemoryManagerWrapper.h"
 
 #define STDIN 1
 #define DEFAULT_RETVALUE -1
@@ -133,5 +134,13 @@ int64_t getLast(){
 void sleep(int ms)
 {
 	tSleep(ms);
+}
+
+void * malloc(unsigned int bytes){
+	return alloc(bytes);
+}
+
+void mfree(void * memToFree){
+	return free(memToFree);
 }
 

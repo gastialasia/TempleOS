@@ -169,4 +169,12 @@ void printMem(uint64_t pointer,char*buffer){
     return sys_printMem(pointer,buffer);
 }
 
+void * malloc(unsigned int bytes) {
+    return sys_malloc(bytes);
+}
+
+void free(void * memToFree) {
+    return sys_free(memToFree);
+}
+
 
