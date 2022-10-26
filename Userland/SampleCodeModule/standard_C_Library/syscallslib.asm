@@ -4,12 +4,9 @@ GLOBAL sys_printMem
 GLOBAL sys_clear
 GLOBAL sys_date
 GLOBAL sys_sleep
-GLOBAL sys_setScreen
 GLOBAL sys_inforeg
 GLOBAL divzero
 GLOBAL opcode
-GLOBAL sys_storeProgram
-GLOBAL sys_getProgram
 GLOBAL sys_getLast
 GLOBAL sys_snapshotRegs
 
@@ -45,33 +42,18 @@ sys_sleep:
     int 80h
     ret
 
-sys_setScreen:
-    mov rax, 8
-    int 80h
-    ret
-
 sys_inforeg:
     mov rax, 5
     int 80h
     ret
 
-sys_storeProgram:
-    mov rax, 10
-    int 80h
-    ret
-
-sys_getProgram:
-    mov rax, 11
-    int 80h
-    ret
-
 sys_getLast:
-    mov rax,9
+    mov rax, 8
     int 80h
     ret
 
 sys_snapshotRegs:
-    mov rax, 12
+    mov rax, 9
     int 80h
     ret
 

@@ -34,16 +34,8 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2) {
 		sleep((int)arg0);
 		break;
 	case 8:
-		setScreenMode((int)arg0);
-		break;
-	case 9:
 		return getLast();
-	case 10:
-		storeProgram((char*)arg0,(char*)arg1);
-		break;
-	case 11:
-		return (int64_t)getProgram((char)arg0);
-    case 12:
+    case 9:
         snapshotRegs();
         break;
     default:

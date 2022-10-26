@@ -8,26 +8,12 @@
 #define LENGTH 100
 #define MAXDIGITS 21
 #define MAXBUFFER 100
-
-static char command1[MAXBUFFER] = "null";
-static char command2[MAXBUFFER] = "null";
+#define F1_KEY 17
 
 int power = 1; // 1 means running, 0 means shutting down the system
 
 void shell(void)
 {
-
-    // Chequeo si había un programa corriendo antes
-    char *prevCommand1 = getProgram(0);
-    char *prevCommand2 = getProgram(1);
-
-    if (strcmp(prevCommand1,"null") || strcmp(prevCommand2,"null"))
-    {
-        function_type prog1 = getFuncFromString(prevCommand1);
-        function_type prog2 = getFuncFromString(prevCommand2);
-        SplitScreenWrapper(prog1, prog2);
-    }
-    setScreenMode(1);
     clear();
     char buffer[LENGTH];
     while (power)
@@ -36,7 +22,6 @@ void shell(void)
         int length = scanf(buffer);
         buffer[length - 1] = 0;
         parser(buffer);
-        // Acá va el procesamiento de lo que recibio la funcion para ejecutar un programita
     }
 }
 
@@ -46,7 +31,7 @@ void parser(char *buffer)
     char commands[2][100];
     int flag = 0;
     while (buffer[i] != 0)
-    { // faltan chequeos
+    {
         if (buffer[i] == '|')
         {
             commands[j][k] = 0;
@@ -70,12 +55,9 @@ void parser(char *buffer)
     else
     {
         // El flag es 1, entonces hay un pipe
-        strcpy(command1, commands[0]);
-        strcpy(command2, commands[1]);
-        storeProgram(command1, command2);
         function_type prog1 = getFuncFromString(commands[0]);
         function_type prog2 = getFuncFromString(commands[1]);
-        SplitScreenWrapper(prog1, prog2);
+        // openPipe(prog1, prog2); TO DO
     }
 }
 
@@ -149,7 +131,7 @@ void simpleScreenWrapper(char (*fn)(void))
             returnToSingleScreen();
             return;
         }
-        if(getlast() == 17){ //F1
+        if(getlast() == F1_KEY){
             takeSnapShot();
         }
         isRunning = fn();
@@ -162,53 +144,4 @@ void returnToSingleScreen()
     reset_primo();
     reset_fibo();
     sleep(500);
-}
-
-void SplitScreenWrapper(char (*fn1)(void), char (*fn2)(void))
-{
-    char isRunning1 = 1;
-    char isRunning2 = 1;
-    while (isRunning1 || isRunning2)
-    {
-        if (getlast() == 'q')
-        {
-            setScreenMode(1);
-            returnToSingleScreen();
-            storeProgram("null", "null");
-            return;
-        }
-        if(getlast() == 17){ //F1
-            takeSnapShot();
-        }
-        sleep(300);
-        if (isRunning1)
-        {
-            setScreenMode(2);
-            isRunning1 = fn1();
-            if (isRunning1 == 0)
-            {
-                storeProgram("null", command2); // En caso de ya haber terminado el programa, lo borramos de los comandos guardados en el kernel
-            }
-            if (getlast() == 'l')
-            {
-                isRunning1 = 0;
-            }
-            sleep(300);
-            // Hay que chequear porque entra una vez mas de las que deberia
-        }
-        if (isRunning2)
-        {
-            setScreenMode(3);
-            isRunning2 = fn2();
-            if (getlast() == 'r')
-            {
-                isRunning2 = 0;
-            }
-        }
-    }
-    printf("Presione 'q' para volver a la shell");
-    while (getlast() != 'q');
-    setScreenMode(1);
-    returnToSingleScreen();
-    storeProgram("null", "null");
 }

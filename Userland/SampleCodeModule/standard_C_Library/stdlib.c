@@ -128,7 +128,6 @@ int strcmp(const char *str1, const char *str2){
     return 0;
 }
 
-// Copia el string de src en dest, y devuelve la cant de caracteres que copio
 int strcpy(char *dest, const char *src){
     int i;
     for (i=0;src[i];i++){
@@ -144,18 +143,6 @@ char getDateComponent(int value){
 
 void sleep(int secs){
     sys_sleep(secs);
-}
-
-void setScreenMode(int code){
-    sys_setScreen(code);
-}
-
-void storeProgram(char*p1, char*p2){
-    sys_storeProgram(p1,p2);
-}
-
-char * getProgram(char id){
-    return sys_getProgram(id);
 }
 
 unsigned char getlast(){
