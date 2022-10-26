@@ -2,18 +2,13 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include <syscalls.h>
 #include <tools.h>
+#include <naiveConsole.h>
 
 #define ZERO_EXCEPTION_ID 0
 #define OPCODE_EXCEPTION_ID 6
 #define TIMEOUT 3000
 
-extern void (*printCharPtr)(char*);
-extern void (*printPtr)(char*);
-extern void (*printHexPtr)(char*);
-extern char * getScreenModePtr();
-extern char ** getRunningProgramPtr(int index);
-
-void killRunningProgram();
+extern void ncPrint(const char*);
 
 static void zero_division();
 static void opcode();
@@ -26,26 +21,13 @@ void exceptionDispatcher(int exception) {
 }
 
 static void zero_division() {
-	printPtr("ZERO DIVISION ERROR!\n");
-	killRunningProgram();
-
+	ncPrint("ZERO DIVISION ERROR!\n");
 }
 
 static void opcode(){
-	printPtr("OPCODE EXCEPTION!\n");
-	killRunningProgram();
-}
-
-void killRunningProgram(){
-	char screenMode = *getScreenModePtr();
-	if (screenMode>=2) {
-		*getRunningProgramPtr(screenMode-2)="null";
-	}
-
+	ncPrint("OPCODE EXCEPTION!\n");
 }
 
 void rebootTerm(){
-	if (*getScreenModePtr()==1||(*getScreenModePtr()==3 && strcmp(*getRunningProgramPtr(0), "null"))){
-		sleep(TIMEOUT);
-	}
+	sleep(TIMEOUT);
 }

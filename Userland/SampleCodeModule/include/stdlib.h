@@ -52,12 +52,6 @@ int strcpy(char *dest, const char *src);
 
 char getDateComponent(int value);
 
-void setScreenMode(int mode);
-
-void storeProgram(char*p1, char*p2);
-
-char * getProgram(char id);
-
 unsigned char getlast();
 
 int strcpy(char *dest, const char *src);

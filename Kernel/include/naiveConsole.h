@@ -51,8 +51,4 @@ void ncUnSplit();
 
 uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
 
-void ncPrintParametric(const char * str, void (*fn)(char c));
-
-void ncPrintRegParametric(const char*regName, uint64_t regValue, void (*fn)(const char*));
-
 #endif

@@ -22,15 +22,7 @@ int64_t date(char value);
 
 void sleep(int ms);
 
-void setScreenMode(int mode);
-
-void storeProgram(char*p1, char*p2);
-
-char * getProgram(int id);
-
 int64_t getLast();
-
-//void saveBackup();
 
 void saveRegisters(registersT* registers);
 

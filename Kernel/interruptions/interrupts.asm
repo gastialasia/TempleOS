@@ -27,7 +27,7 @@ EXTERN saveBackup
 EXTERN ncPrintReg
 EXTERN rebootTerm
 EXTERN contextSwitching
-EXTERN printRegPtr	;Este puntero a funcion debe ser desreferenciado para poder ser llamado
+EXTERN ncPrintReg	;Este puntero a funcion debe ser desreferenciado para poder ser llamado
 
 SECTION .text
 
@@ -147,7 +147,7 @@ SECTION .text
 %macro printReg 2
 	mov rsi, %1
 	lea rdi, [regsNames + 4 * %2]
-	call [printRegPtr]			;Desreferencio el puntero a funcion
+	call ncPrintReg			;Desreferencio el puntero a funcion
 %endmacro
 
 printAllRegs: 			;Imprime los registros de la instancia en la cual se lo llamó

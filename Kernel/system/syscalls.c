@@ -4,38 +4,20 @@
 #include <naiveConsole.h>
 
 #define STDIN 1
-#define LEFTSCREEN 2
-#define RIGHTSCREEN 3
 #define DEFAULT_RETVALUE -1
 
 static char mayusc = 0;
 unsigned char last;
 
-static char screenMode = 1;
-static char * runningPrograms[2] = {"null","null"};
-
-void (*printCharPtr)(char) = ncPrintChar;
-void (*printPtr)(const char*) = ncPrint;
-void (*printHexPtr)(uint64_t) = ncPrintHex;
-void (*printRegPtr)(const char *, uint64_t) = ncPrintReg;
-
 registersT primary, secondary;
 registersT *primaryBackup = &primary;
 registersT *secondaryBackup = &secondary;
-
-char * getScreenModePtr(){
-	return &screenMode;
-}
-
-char ** getRunningProgramPtr(int index){
-	return &runningPrograms[index];
-}
 
 int64_t write(int fd, const char *buffer, size_t count)
 {
 	for (int i = 0; i < count; i++)
 	{
-		printCharPtr(buffer[i]);
+		ncPrintChar(buffer[i]);
 	}
 	return DEFAULT_RETVALUE;	
 }
@@ -79,7 +61,7 @@ int64_t read(int fd, char *buffer, size_t count)
 			{
 				if (mayusc)
 					key = toMayusc(key);
-				printCharPtr(key);
+				ncPrintChar(key);
 				buffer[k++] = key;
 			}
 			}
@@ -109,9 +91,7 @@ void printMem(uint64_t pointer, unsigned char * buf)
 
 void clear()
 {
-	if(screenMode==1){ //Simple screen
-		ncClear();
-	}
+	ncClear();
 }
 
 int64_t date(char value)
@@ -153,45 +133,5 @@ int64_t getLast(){
 void sleep(int ms)
 {
 	tSleep(ms);
-}
-
-void setScreenMode(int mode)
-{
-	screenMode = mode;
-	switch (mode)
-	{
-	case 2:
-		ncSplit();
-		printCharPtr = ncPrintCharL;
-		printPtr = ncPrintL;
-		printHexPtr = ncPrintHexL;
-		printRegPtr = ncPrintRegL;
-		break;
-	case 3:
-		ncSplit();
-		printCharPtr = ncPrintCharR;
-		printPtr = ncPrintR;
-		printHexPtr = ncPrintHexR;
-		printRegPtr = ncPrintRegR;
-		break;
-	default:
-		ncUnSplit();
-		printCharPtr = ncPrintChar;
-		printPtr = ncPrint;
-		printHexPtr = ncPrintHex;
-		printRegPtr = ncPrintReg;
-	}
-}
-
-void storeProgram(char*p1, char*p2){
-	runningPrograms[0] = p1;
-	runningPrograms[1] = p2;
-}
-
-char * getProgram(int id){
-	if (id>1||id<0){
-		return 0;
-	}
-	return runningPrograms[id];
 }
 
