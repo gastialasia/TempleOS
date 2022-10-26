@@ -15,7 +15,7 @@ void sys_snapshotRegs(void);
 unsigned char sys_getLast();
 void sys_printMem(uint64_t, char*);
 void * sys_malloc(unsigned int bytes);
-void * sys_free(void * memToFree);
+void sys_free(void * memToFree);
 void sys_memStatus(unsigned int * status);
 
 #endif

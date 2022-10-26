@@ -174,7 +174,7 @@ void * malloc(unsigned int bytes) {
 }
 
 void free(void * memToFree) {
-    return sys_free(memToFree);
+    sys_free(memToFree);
 }
 
 void memStatus(unsigned int * status) {

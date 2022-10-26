@@ -1,7 +1,7 @@
 include ../Makefile.inc
 
 MODULE=0000-sampleCodeModule.bin
-SOURCES=$(wildcard [^_]*.c ./standard_C_Library/*.c)
+SOURCES=$(wildcard [^_]*.c ./standard_C_Library/*.c ./tests-TP2/*.c)
 SOURCES_ASM=$(wildcard ./standard_C_Library/*.asm)
 OBJECTS_ASM=$(SOURCES_ASM:.asm=.o)
 
