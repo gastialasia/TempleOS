@@ -13,6 +13,8 @@
 
 int power = 1; // 1 means running, 0 means shutting down the system
 
+int pipeParser(const char *buffer, char commands[2][100]);
+
 void shell(void)
 {
     clear();
@@ -26,7 +28,7 @@ void shell(void)
     }
 }
 
-void parser(char *buffer)
+void parser2(char *buffer)
 {
     int i = 0, j = 0, k = 0;
     char commands[2][100];
@@ -61,6 +63,42 @@ void parser(char *buffer)
         // openPipe(prog1, prog2); TO DO
     }
 }
+
+void parser(const char *buffer){
+    char commands[2][100];
+    int hasPipe = pipeParser(buffer, commands);
+
+    printf(commands[0]);
+    putchar('\n');
+    printf("-----------------\n");
+    printf(commands[1]);
+    putchar('\n');
+    // printf(hasPipe?"Siuu":"Nao nao manito");
+    // putchar('\n');
+}
+
+//receives buffer line and array to fill with commands separated and returns 1 if there was a pipe, 0 otherwise
+int pipeParser(const char *buffer, char commands[2][100]){
+    int i = 0, j = 0, k = 0;
+    int flag = 0;
+    while (buffer[i] != 0){
+        if (buffer[i] == '|')
+        {
+            commands[j][k] = 0;
+            j++;
+            k = 0;
+            flag = 1;
+        }
+        else
+        {
+            commands[j][k++] = buffer[i];
+        }
+        i++;
+    }
+    commands[j][k] = 0;
+    return flag;
+}
+
 
 function_type getFuncFromString(char *str)
 {
