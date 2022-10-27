@@ -85,6 +85,8 @@ void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAlloca
     }
     // @TODO: @Pato te olvidaste algo aca que pasa si encuentra un bloque del tamaño justo
     if(currentBlock == &memoryManager->end){
+      return NULL;
+    }
       
       blockToReturn = (void *) (((uint8_t *) previousBlock->nextMemBlock) + STRUCT_SIZE);
 
@@ -105,11 +107,9 @@ void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAlloca
 
     return blockToReturn;
 
-  }
-  
-  return blockToReturn;
+} 
 
-}
+
 
 void freeMem(MemoryManagmentADT const memoryManager, void * block){
 
@@ -138,7 +138,7 @@ unsigned int heapLeft(MemoryManagmentADT memoryManager){
 }
 
 unsigned int usedHeap(MemoryManagmentADT memoryManager){
-  return heapSize() - usedHeap(memoryManager);
+  return heapSize() - heapLeft(memoryManager);
 }
 
 
