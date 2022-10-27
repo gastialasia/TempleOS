@@ -5,6 +5,15 @@
 
 #define MAX_BLOCKS 128
 
+static void * myMemset(void * destination, int c, int len){
+  uint8_t value = (uint8_t) c;
+  char * origin = (char *) destination;
+  while(len--){
+    origin[len] = value;
+  }
+  return destination;
+}
+
 char test_mm(){ //test_mm(uint64_t argc, char *argv[])
 
   mm_rq mm_rqs[MAX_BLOCKS];
@@ -38,7 +47,7 @@ char test_mm(){ //test_mm(uint64_t argc, char *argv[])
     uint32_t i;
     for (i = 0; i < rq; i++)
       if (mm_rqs[i].address)
-        memset(mm_rqs[i].address, i, mm_rqs[i].size);
+        myMemset(mm_rqs[i].address, i, mm_rqs[i].size);
 
 
     memStatusProgram();
