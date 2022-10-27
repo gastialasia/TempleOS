@@ -14,5 +14,7 @@ char printMemory(void);
 char opcodeProgram();
 char divzeroProgram();
 char clearProgram();
+char memStatusProgram();
+
 
 #endif

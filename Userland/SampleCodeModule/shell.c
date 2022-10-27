@@ -105,6 +105,10 @@ function_type getFuncFromString(char *str)
     {
         toRet = &printMemory;
     }
+    else if (!strcmp("mem", str))
+    {
+        toRet = &memStatusProgram;
+    }
     else if (!strcmp("exit", str))
     {
         clear();

@@ -157,3 +157,18 @@ char clearProgram(){
     clear();
     return 0;
 }
+
+char memStatusProgram(){
+    unsigned int array[3];
+    memStatus(array);
+    printf("Total heap size: ");
+    printInt(array[0]);
+    printf("\n");
+    printf("Heap left: ");
+    printInt(array[1]);
+    printf("\n");
+    printf("Heap occupied: ");
+    printInt(array[2]);
+    printf("\n");
+    return 0;
+}
