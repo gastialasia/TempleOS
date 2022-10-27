@@ -1,6 +1,7 @@
 #include "../include/test_mm.h"
 #include "../include/stdlib.h"
 #include "../include/test_util.h"
+#include <programs.h>
 
 #define MAX_BLOCKS 128
 
@@ -14,11 +15,13 @@ char test_mm(){ //test_mm(uint64_t argc, char *argv[])
   //if (argc != 1) return -1;
 
   //if ((max_memory = satoi(argv[0])) <= 0) return -1;
-  max_memory=120795955;
+  max_memory=127506842;
 
   while (1) {
     rq = 0;
     total = 0;
+
+    memStatusProgram();
 
     // Request as many blocks as we can
     while(rq < MAX_BLOCKS && total < max_memory){
@@ -36,6 +39,9 @@ char test_mm(){ //test_mm(uint64_t argc, char *argv[])
     for (i = 0; i < rq; i++)
       if (mm_rqs[i].address)
         memset(mm_rqs[i].address, i, mm_rqs[i].size);
+
+
+    memStatusProgram();
 
     // Check
     for (i = 0; i < rq; i++)
