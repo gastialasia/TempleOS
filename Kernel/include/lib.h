@@ -29,4 +29,5 @@ char rtcGetter(char value);
 registersT* getRegisters(void);
 
 uint64_t initProcess(uint64_t stackBase, uint64_t ip, uint32_t argc, char argv[6][21]);
+void runScheduler();
 #endif

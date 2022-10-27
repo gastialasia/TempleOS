@@ -282,3 +282,37 @@ uint64_t contextSwitching(uint64_t sp){
   return scheduler->current->process.stackPointer;
 }
 
+void addToKeyboardList(){
+  scheduler->current->process.state = 0;
+  waitKeyboard->tail->process = &scheduler->current->process;
+  waitKeyboard->tail = waitKeyboard->tail->next;
+  waitKeyboard->size++;
+  runScheduler();
+}
+
+void awakeKeyboardList(){
+  
+  if(waitKeyboard->size == 0){
+    return;
+  }
+  waitKeyboard->size--;
+  waitKeyboard->current->process->state = 1;
+  waitKeyboard->current = waitKeyboard->current->next;
+}
+
+pipeUserInfo * getCurrentStdin(){
+  return scheduler->current->process.stdin;
+}
+
+pipeUserInfo * getCurrentStdout(){
+  return scheduler->current->process.stdout;
+}
+
+pcb * getCurrentProcess(){
+  return &scheduler->current->process;
+}
+
+pcb * blockCurrentProcess(){
+  scheduler->current->process.state = 0;
+  return &scheduler->current->process;
+}

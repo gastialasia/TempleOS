@@ -28,4 +28,11 @@ typedef struct pcb{
 void initScheduler(); 
 int createProcess(uint64_t ip,uint8_t priority, uint64_t argc, char argv[6][21], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
 int createProcessFormatter(uint64_t ip, uint8_t priority, uint64_t argc, char *argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout);
-#endif
+void awakeKeyboardList();
+void addToKeyboardList();
+pcb * getCurrentProcess();
+pipeUserInfo * getCurrentStdin();
+pipeUserInfo * getCurrentStdout();
+pcb * blockCurrentProcess();
+
+#endif 

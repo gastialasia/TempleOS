@@ -3,6 +3,7 @@ GLOBAL rtcGetter
 GLOBAL saveRegisters
 GLOBAL _xchg
 GLOBAL initProcess
+GLOBAL runScheduler
 
 section .text
 	
@@ -111,6 +112,10 @@ initProcess:
 	pop rsp
 	pop rbp
 	ret
+
+runScheduler:
+  sti
+  int 20h
 
 section .bss
 struct_reg resb 128

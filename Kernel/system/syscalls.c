@@ -1,8 +1,10 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-#include <syscalls.h>
-#include <naiveConsole.h>
+#include "../include/syscalls.h"
+#include "../include/naiveConsole.h"
 #include "../include/MemoryManagerWrapper.h"
+#include "../include/scheduler.h"
+#include "../include/pipes.h"
 
 #define STDIN 1
 #define DEFAULT_RETVALUE -1
@@ -14,68 +16,101 @@ registersT primary, secondary;
 registersT *primaryBackup = &primary;
 registersT *secondaryBackup = &secondary;
 
-int64_t write(int fd, const char *buffer, size_t count)
-{
-	for (int i = 0; i < count; i++)
-	{
-		ncPrintChar(buffer[i]);
-	}
-	return DEFAULT_RETVALUE;	
+int64_t write(const char *buffer, size_t count){
+
+  pipeUserInfo * stdout = getCurrentStdout();
+  if(!stdout){
+	  for (int i = 0; i < count; i++){
+		  ncPrintChar(buffer[i]);
+	  }
+  } else {
+    pipeWrite(stdout, buffer);
+  }
+	return count;	
 }
 
-int64_t read(int fd, char *buffer, size_t count)
-{
-	if (fd == STDIN)
-	{
-		int k = 0;
-		unsigned char key = 0;
+int64_t read(char *buffer, size_t count) {
+  
+  int k = 0;
+  unsigned char key;
+  pipeUserInfo * stdin = getCurrentStdin();
+  pcb * currentProcess = getCurrentProcess();
+  
+  
+  if(stdin == NULL && currentProcess->priority != 1){
+    buffer[0] = 0;
+    return 0;
+  }
 
-		while (key != '\n' && k < count)
-		{
-			_hlt();
-			key = readKey();
-			switch (key)
-			{
-			case 0:
-				break;
-			case 8: // Borrado
-			{
-				if (k > 0)
-				{
-					ncDeleteChar();
-					k--;
-				}
-				break;
-			}
-			case 14:
-			case 15:
-				mayusc = 1;
-				break;
-			case 17:
-        		loadBackupRegs(primaryBackup, secondaryBackup);
-        		break;
-			case 170:
-			case 182:
-				mayusc = 0;
-				break;
-			default:
-			{
-				if (mayusc)
-					key = toMayusc(key);
-				ncPrintChar(key);
-				buffer[k++] = key;
-			}
-			}
-		}
-		if (key != '\n')
-		{
-			ncNewline();
-		}
-		buffer[k] = 0;
-		return k; // placeholder
-	}
-	return DEFAULT_RETVALUE;
+
+  while (k < count || count == -1) {
+    if(!stdin){
+      addToKeyboardList();
+      key = readKey();
+    }else {
+      key = (unsigned char) pipeRead(stdin, NULL,1);
+    }
+    
+    switch (key) {
+      case (unsigned char) -1:
+        return -1;
+        
+      case 0:
+        if(!stdin)
+          continue;
+        else{ 
+          buffer[k] = 0;
+          return k;
+        }
+        break;
+      
+      
+      case '\n':
+        if(!stdin){
+          ncNewline();
+        }
+        buffer[k] = 0;
+        return k;
+        
+      case 8: // Borrado
+      {
+        if (k > 0)
+        {
+          ncDeleteChar();
+          k--;
+        }
+      break;
+      }
+      
+      case 14:
+      case 15:
+        mayusc = 1;
+        break;
+        
+      case 17:
+        loadBackupRegs(primaryBackup, secondaryBackup);
+        break;
+        
+      case 170:
+      case 182:
+        mayusc = 0;
+        break;
+        
+      default:
+        if (mayusc)
+          key = toMayusc(key);
+        if(!stdin)
+          ncPrintChar(key);
+        if(k < 100)
+          buffer[k] = key;
+        k++;
+        break;
+    }
+  }
+  buffer[k] = 0;
+  return k; // placeholder	
 }
+
 
 void snapshotRegs(){
 	loadBackupRegs(primaryBackup, secondaryBackup);
