@@ -54,20 +54,6 @@ void initScheduler(){
   currentPid = 1;
   firstProcess = 1;
   
-
-  uint64_t startingProcessMem = (uint64_t) alloc(2048);
-
-  uint64_t sp = initProcess(startingProcessMem +2048,(uint64_t)&startingProcess,0,NULL);
-  
-  starting = (ProcessNode *) alloc(sizeof(ProcessNode));
-  starting->process.pid = 0;
-  starting->process.stackPointer = sp;
-  starting->process.processMemory = startingProcessMem;
-  starting->process.state = 1; // hacer un enum mejor
-  starting->process.priority = 1;
-  starting->process.auxPriority = 1;
-  starting->nextProcess = scheduler->startList;
-
   waitKeyboard = (WaitingKeyboardList *) alloc(sizeof(WaitingKeyboardList));
   waitKeyboard->current = (WaitingNode *) alloc(sizeof(WaitingNode));
   waitKeyboard->current->process = NULL;
@@ -82,7 +68,21 @@ void initScheduler(){
     newNode->next = NULL;
     auxNode->next = newNode;
     auxNode = auxNode->next;
-  }
+  } 
+
+  uint64_t startingProcessMem = (uint64_t) alloc(2048);
+
+  uint64_t sp = initProcess(startingProcessMem +2048,(uint64_t)&startingProcess,0,NULL);
+  
+  starting = (ProcessNode *) alloc(sizeof(ProcessNode));
+  starting->process.pid = 0;
+  starting->process.stackPointer = sp;
+  starting->process.processMemory = startingProcessMem;
+  starting->process.state = 1; // hacer un enum mejor
+  starting->process.priority = 1;
+  starting->process.auxPriority = 1;
+  starting->nextProcess = scheduler->startList;
+
 
 }
 static char* copyString(char* destination, const char* source) {
@@ -283,15 +283,18 @@ uint64_t contextSwitching(uint64_t sp){
 }
 
 void addToKeyboardList(){
+  if(waitKeyboard->size == MAX_WAITING_KEYBOARD){
+    return;
+  }
   scheduler->current->process.state = 0;
   waitKeyboard->tail->process = &scheduler->current->process;
   waitKeyboard->tail = waitKeyboard->tail->next;
   waitKeyboard->size++;
   runScheduler();
+  return;
 }
 
 void awakeKeyboardList(){
-  
   if(waitKeyboard->size == 0){
     return;
   }

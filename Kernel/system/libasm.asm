@@ -114,8 +114,8 @@ initProcess:
 	ret
 
 runScheduler:
-  sti
   int 20h
+  ret
 
 section .bss
 struct_reg resb 128
