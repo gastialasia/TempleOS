@@ -72,10 +72,10 @@ void parser(const char *buffer){
     char tokens[5][50]={{0}};
     tokenizeCommand(commands[0], tokens);
 
-    // for(int i=0; tokens[i][0]; i++){
-    //     printf(tokens[i]);
-    //     putchar('\n');
-    // }
+    for(int i=0; tokens[i][0]; i++){
+        printf(tokens[i]);
+        putchar('\n');
+    }
 
     if(!hasPipe){
          
@@ -112,25 +112,15 @@ int pipeParser(const char *buffer, char commands[2][100]){
 
 void tokenizeCommand(const char command[100], char tokens[5][50]){
     int i = 0;
-    printf("flag1");
-    putchar('\n');
-    strcpy(tokens[i++], strtok(command, ' '));
-    printf("flag2");
-    putchar('\n');
+    strcpy(tokens[i++], strtok(command, " "));
     char *token=' ';
     while(token)
     {
-        printf("flag3");
-        putchar('\n');
-        token = strtok(NULL, ' ');
-        if(token){
+        token = strtok(NULL, " ");
+        if(token!=NULL){
             strcpy(tokens[i++], token);
-        } else {
-            tokens[i][0] = 0;
         }
     } 
-    printf("flag4");
-    putchar('\n');
 }
 
 
