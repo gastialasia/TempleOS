@@ -66,6 +66,8 @@ void printReg(const char *regName, uint64_t regValue);
 
 void printMem(uint64_t pointer, char*buffer);
 
+char *strtok(char *srcString, char *delim);
+
 void * malloc(unsigned int bytes);
 
 void free(void * memToFree);

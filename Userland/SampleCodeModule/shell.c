@@ -10,10 +10,12 @@
 #define MAXDIGITS 21
 #define MAXBUFFER 100
 #define F1_KEY 17
+#define NULL ((void *) 0)
 
 int power = 1; // 1 means running, 0 means shutting down the system
 
 int pipeParser(const char *buffer, char commands[2][100]);
+void tokenizeCommand(const char command[100], char tokens[5][50]);
 
 void shell(void)
 {
@@ -23,7 +25,6 @@ void shell(void)
     {
         printf("User:$ ");
         int length = scanf(buffer);
-        buffer[length - 1] = 0;
         parser(buffer);
     }
 }
@@ -68,12 +69,22 @@ void parser(const char *buffer){
     char commands[2][100];
     int hasPipe = pipeParser(buffer, commands);
 
-    printf(commands[0]);
-    putchar('\n');
-    printf("-----------------\n");
-    printf(commands[1]);
-    putchar('\n');
-    // printf(hasPipe?"Siuu":"Nao nao manito");
+    char tokens[5][50]={{0}};
+    tokenizeCommand(commands[0], tokens);
+
+    // for(int i=0; tokens[i][0]; i++){
+    //     printf(tokens[i]);
+    //     putchar('\n');
+    // }
+
+    if(!hasPipe){
+         
+    }
+
+    // printf(commands[0]);
+    // putchar('\n');
+    // printf("-----------------\n");
+    // printf(commands[1]);
     // putchar('\n');
 }
 
@@ -97,6 +108,29 @@ int pipeParser(const char *buffer, char commands[2][100]){
     }
     commands[j][k] = 0;
     return flag;
+}
+
+void tokenizeCommand(const char command[100], char tokens[5][50]){
+    int i = 0;
+    printf("flag1");
+    putchar('\n');
+    strcpy(tokens[i++], strtok(command, ' '));
+    printf("flag2");
+    putchar('\n');
+    char *token=' ';
+    while(token)
+    {
+        printf("flag3");
+        putchar('\n');
+        token = strtok(NULL, ' ');
+        if(token){
+            strcpy(tokens[i++], token);
+        } else {
+            tokens[i][0] = 0;
+        }
+    } 
+    printf("flag4");
+    putchar('\n');
 }
 
 

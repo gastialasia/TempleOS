@@ -151,23 +151,23 @@ SECTION .text
 %endmacro
 
 printAllRegs: 			;Imprime los registros de la instancia en la cual se lo llamó
-	push rdi
-	printReg rsi, 1
-	pop rdi
-	printReg rdi, 0
-	printReg rax, 2
-	printReg rbx, 3
-	printReg rcx, 4
-	printReg rdx, 5
-	printReg r8, 6
-	printReg r9, 7
-	printReg r10, 8
-	printReg r11, 9
-	printReg r12, 10
-	printReg r13, 11
-	printReg r14, 12
-	printReg r15, 13
-	printReg rbp, 16
+;	push rdi
+;	printReg rsi, 1
+;	pop rdi
+;	printReg rdi, 0
+;	printReg rax, 2
+;	printReg rbx, 3
+;	printReg rcx, 4
+;	printReg rdx, 5
+;	printReg r8, 6
+;	printReg r9, 7
+;	printReg r10, 8
+;	printReg r11, 9
+;	printReg r12, 10
+;	printReg r13, 11
+;	printReg r14, 12
+;	printReg r15, 13
+;	printReg rbp, 16
 	ret
 
 _hlt:

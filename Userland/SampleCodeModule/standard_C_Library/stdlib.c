@@ -18,11 +18,11 @@ int strlen(const char * str) {
 }
 
 void putchar(const char c){
-    sys_write(STDIN, &c, 1);
+    sys_write(&c, 1);
 }
 
 void printf(const char * str) {
-    sys_write(STDIN, str, strlen(str));
+    sys_write(str, strlen(str));
 }
 
 void inforeg(registersT * regs){
@@ -65,23 +65,23 @@ uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 void printInt(int num){
     char buffer[10];
     int len = uintToBase(num,buffer,10);
-    sys_write(STDIN, buffer, len);
+    sys_write(buffer, len);
 }
 
 void printInt64(unsigned long num){
     char buffer[20];
     int len = uintToBase(num,buffer,10);
-    sys_write(STDIN, buffer, len);
+    sys_write(buffer, len);
 }
 
 char getchar(){
     char c;
-    sys_read(STDIN,&c,1);
+    sys_read(&c,1);
     return c;
 }
 
 int scanf(char * buffer) {
-    return sys_read(STDIN,buffer,MAXBUFFER);
+    return sys_read(buffer ,-1);
 }
 
 uint64_t hex2int(char *hex, int *ok) {
@@ -168,6 +168,65 @@ void printReg(const char *regName, uint64_t regValue)
 void printMem(uint64_t pointer,char*buffer){
     return sys_printMem(pointer,buffer);
 }
+
+unsigned int is_delim(char c, char *delim)
+{
+    while(*delim != '\0')
+    {
+        if(c == *delim)
+            return 1;
+        delim++;
+    }
+    return 0;
+}
+
+char *strtok(char *srcString, char *delim)
+{
+    static char *backup_string; // start of the next search
+    if(!srcString)
+    {
+        srcString = backup_string;
+    }
+    if(!srcString)
+    {
+        // user is bad user
+        return NULL;
+    }
+    // handle beginning of the string containing delims
+    while(1)
+    {
+        if(is_delim(*srcString, delim))
+        {
+            srcString++;
+            continue;
+        }
+        if(*srcString == '\0')
+        {
+            // we've reached the end of the string
+            return NULL; 
+        }
+        break;
+    }
+    char *ret = srcString;
+    while(1)
+    {
+        if(*srcString == '\0')
+        {
+            /*end of the input string and
+            next exec will return NULL*/
+            backup_string = srcString;
+            return ret;
+        }
+        if(is_delim(*srcString, delim))
+        {
+            *srcString = '\0';
+            backup_string = srcString + 1;
+            return ret;
+        }
+        srcString++;
+    }
+}
+
 
 void * malloc(unsigned int bytes) {
     return sys_malloc(bytes);
