@@ -12,6 +12,7 @@ GLOBAL sys_snapshotRegs
 GLOBAL sys_malloc
 GLOBAL sys_free
 GLOBAL sys_memStatus
+GLOBAL sys_createProcess
 
 section .text
 
@@ -72,6 +73,11 @@ sys_free:
 
 sys_memStatus:
     mov rax, 12
+    int 80h
+    ret
+
+sys_createProcess:
+    mov rax, 13
     int 80h
     ret
 

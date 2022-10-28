@@ -183,3 +183,7 @@ void mStatus(unsigned int * status){
 	return memStatus(status);
 }
 
+int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout){
+  return createProcessFormatter(ip, priority, argc, argv, customStdin, customStdout);
+}
+

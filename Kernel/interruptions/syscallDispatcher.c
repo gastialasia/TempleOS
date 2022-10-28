@@ -5,6 +5,7 @@
 #include <stddef.h>
 #include <syscalls.h>
 #include <naiveConsole.h>
+#include <scheduler.h>
 
 static int syscallnumber;
 
@@ -12,7 +13,7 @@ void syscallsetter(int64_t syscall){
 	syscallnumber = syscall;
 }
 
-int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2) {
+int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3, int64_t arg4, int64_t arg5) {
     switch (syscallnumber)
     {
     case 1:
@@ -46,6 +47,9 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2) {
         break;
     case 12:
         mStatus((void *)arg0);
+        break;
+    case 13:
+        cProcess((uint64_t)arg0, (uint8_t)arg1, (uint64_t)arg2, (char)arg3, (pipeUserInfo *)arg4, (pipeUserInfo *)arg5);
         break;
     default:
         return -1;

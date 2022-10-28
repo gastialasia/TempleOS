@@ -1,6 +1,6 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-#include <stdlib.h>
+#include "./include/stdlib.h"
 #include <shell.h>
 #include <programs.h>
 #include <stdint.h>
@@ -81,6 +81,8 @@ void parser(const char *buffer){
         tokenizeCommand(commands[1], tokens2);
         fun2 = getFuncFromString(tokens2[1]);
     }
+
+    createProcess(fun1, 1, tokenQty1, tokens1, NULL, NULL);
 }
 
 //receives buffer line and array to fill with commands separated and returns 1 if there was a pipe, 0 otherwise

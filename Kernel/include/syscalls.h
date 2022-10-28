@@ -9,6 +9,7 @@
 #include <time.h>
 #include <lib.h>
 #include <tools.h>
+#include <scheduler.h>
 
 int64_t write(const char * buffer, size_t count);
 
@@ -39,5 +40,7 @@ void * malloc(unsigned int bytes);
 void mfree(void * memToFree);
 
 void mStatus(unsigned int * status);
+
+int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout);
 
 #endif

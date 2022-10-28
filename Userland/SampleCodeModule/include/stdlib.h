@@ -21,6 +21,11 @@ typedef struct{
     uint64_t r15;
 } registersT;
 
+typedef struct pipeUserInfo{
+  char readable;
+  char writable;
+  struct pipe * pipe;
+} pipeUserInfo;
 
 int strlen(const char *);
 
@@ -73,5 +78,7 @@ void * malloc(unsigned int bytes);
 void free(void * memToFree);
 
 void memStatus(unsigned int * status);
+
+int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout);
 
 #endif
