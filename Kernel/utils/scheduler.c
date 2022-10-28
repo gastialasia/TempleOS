@@ -292,8 +292,8 @@ static ProcessNode * deleteProcessRec(ProcessNode * node,uint64_t pid){
   if(node->process.pid == pid){
     node->process.state = 2;
     ProcessNode * aux = node->nextProcess;
-    //deleteProcessFromSem(pid);
-    //deleteProcessFromPipe;
+    deleteProcessFromSem(pid);
+    deleteProcessFromPipe(pid);
     free((void *) node->process.processMemory);
     free((void *) node);
     return aux;

@@ -158,8 +158,8 @@ int pipeWrite(pipeUserInfo * userPipe, char * string){
   while(string[i]){
     
     if(userPipe->pipe->bytesToRead == PIPE_SIZE){
-      //userPipe->pipe->waitingProcess = BlockProcess();
-      //corra el scheduler
+      userPipe->pipe->waitingProcess = blockCurrentProcess();
+      runScheduler();
     }
 
     userPipe->pipe->data[userPipe->pipe->writePos++] = string[i++];
@@ -185,8 +185,8 @@ int pipeRead(pipeUserInfo * userPipe,char * buffer,int limit){
   }
 
   if(userPipe->pipe->bytesToRead == 0){
-    //userPipe->pipe->waitingProcess = BlockProcess();
-    //corre scheduler
+    userPipe->pipe->waitingProcess = blockCurrentProcess();
+    runScheduler();
   }
 
   int i = 0;
@@ -209,3 +209,17 @@ int pipeRead(pipeUserInfo * userPipe,char * buffer,int limit){
 
   return i;
 }
+
+void deleteProcessFromPipe(int64_t pid){
+
+  for(int i = 0; i < pipeSize; i++){
+    if(pipes[i]->waitingProcess->pid == pid)
+      pipes[i]->waitingProcess = NULL;
+  }
+
+}
+
+
+
+
+

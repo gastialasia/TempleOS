@@ -110,10 +110,11 @@ int sem_wait(Semaphore * sem){
       return -1;
     }
 
-    // sem->queuqe[sem->waiting++] = frenar proceso algo del scheduler para frenar procesos
+     sem->queuqe[sem->waiting++] = blockCurrentProcess();
     
     _xchg(&sem->lock, 0); // suelto el semaforo interno de cada semaforo
     //corre el scheduler hasta que se pueda ir el procesos
+    runScheduler();
   }
 
   //si salgo del while significa que se libero un proceso
@@ -125,5 +126,27 @@ int sem_wait(Semaphore * sem){
 
   return 0;
 }
+
+
+void deleteProcessFromSem(int64_t pid){
+
+  for(int i = 0; i < size; i++){
+    for(int j = 0 ; j < sems[i]->waiting;j++){
+      if(sems[i]->queuqe[j]->pid == pid){
+        sems[i]->waiting--;
+
+        for(int k = j; k < sems[i]->waiting;k++){
+          sems[i]->queuqe[k] = sems[i]->queuqe[k+1];
+        }
+        return;
+      }
+    }
+  }
+
+
+}
+
+
+
 
 
