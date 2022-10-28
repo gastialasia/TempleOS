@@ -92,9 +92,7 @@ void parser(const char *buffer){
         printf("Lanzo proceso en background\n");
     }
 
-    fun1();
-
-    //createProcess(fun1, priority, tokenQty1, tokens1, NULL, NULL);
+    createProcess(fun1, priority, tokenQty1, tokens1, NULL, NULL);
 
     if(hasPipe){
         tokenizeCommand(commands[1], tokens2);
