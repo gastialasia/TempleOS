@@ -6,10 +6,6 @@
 
 #define LIMIT64 0b0111111111111111111111111111111111111111111111111111111111111111 //2^(63)-1
 
-static uint64_t fibo1=-1; //Lo inicializamos en -1 para que sea declarada la variable en section .data y no en 0 pues estaría en section .bss y al reiniciar el programa se limpiaría la varibale impriendo 2 veces el 0 inicial
-static uint64_t fibo2=1;
-static uint64_t lastPrimo=1;
-
 static char buff[300];
 
 int help(void){
@@ -51,32 +47,27 @@ int date(void){
 int fibo(void){
     // Deja en el buffer el numero convertido a string
     // Devuelve 1 si el programa sigue corriendo, 0 sino
-    if(fibo1==-1)
-        fibo1=0;
-    uint64_t aux = fibo1;
-    fibo1 = fibo2;
-    fibo2 = aux+fibo1;
-    if (aux>LIMIT64){
-        return 0;
+    uint64_t aux=0, fibo1=0, fibo2=1;
+    while(aux<LIMIT64){
+        aux = fibo1;
+        fibo1 = fibo2;
+        fibo2 = aux+fibo1;
+        uintToBase(aux,buff,10);
+        printf(buff);
+        putchar('\n');
+        sleep(400);
     }
-    uintToBase(aux,buff,10);
-    printf(buff);
-    putchar('\n');
-    return 1;
-}
-
-void reset_fibo(){
-    fibo1=0;
-    fibo2=1;
+    return 0;
 }
 
 int primos(void){ //Esta funcion es una criba de Eratosthenes casera
   // deja en el buffer el numeor convertido a string
   // devuelve 1 si el programa no termino, 0 si termino
-    uint64_t j, limit;
+    uint64_t j, limit, lastPrimo=0;
+    int isPrimo;
     for(uint64_t i=lastPrimo+1; i <= LIMIT64; i++){
         limit = i/2;
-        int isPrimo=1;
+        isPrimo=1;
         for(j=2; j <= limit && isPrimo; j++){
             if(i%j==0)
                 isPrimo = 0;
@@ -86,14 +77,10 @@ int primos(void){ //Esta funcion es una criba de Eratosthenes casera
             uintToBase(lastPrimo,buff,10);
             printf(buff);
             putchar('\n');
-            return 1;
         }
+        sleep(200);
     }
     return 0;
-}
-
-void reset_primo(){
-    lastPrimo=1;
 }
 
 int infoRegisters(){

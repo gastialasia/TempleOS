@@ -31,42 +31,6 @@ void shell(void)
     }
 }
 
-void parser2(char *buffer)
-{
-    int i = 0, j = 0, k = 0;
-    char commands[2][100];
-    int flag = 0;
-    while (buffer[i] != 0)
-    {
-        if (buffer[i] == '|')
-        {
-            commands[j][k] = 0;
-            j++;
-            k = 0;
-            flag = 1;
-        }
-        else if (buffer[i] != ' ')
-        {
-            commands[j][k++] = buffer[i];
-        }
-
-        i++;
-    }
-    commands[j][k] = 0;
-    if (flag == 0)
-    {
-        // No hay pipe
-        simpleScreenWrapper(getFuncFromString(commands[0]));
-    }
-    else
-    {
-        // El flag es 1, entonces hay un pipe
-        function_type prog1 = getFuncFromString(commands[0]);
-        function_type prog2 = getFuncFromString(commands[1]);
-        // openPipe(prog1, prog2); TO DO
-    }
-}
-
 void parser(const char *buffer){
     char commands[2][100];
     int hasPipe = pipeParser(buffer, commands);
@@ -77,26 +41,34 @@ void parser(const char *buffer){
 
     function_type fun1, fun2;
 
-    fun1 = getFuncFromString(tokens1[0]);
+    int isBuiltIn = 0;
 
-    int priority = FOREGROUND;
+    fun1 = getFuncFromString(tokens1[0], &isBuiltIn);
 
-    if (!strcmp(tokens1[tokenQty1-1],"&")){
-        priority = BACKGROUND;
-        tokenQty1--; // Decremento nro de argumentos porque el & no cuenta
-    }
+    if(!isBuiltIn){
+        int priority = FOREGROUND;
 
-    if (priority==FOREGROUND){
-        printf("Lanzo proceso en foreground\n");
+        if (!strcmp(tokens1[tokenQty1-1],"&")){
+            priority = BACKGROUND;
+            tokenQty1--; // Decremento nro de argumentos porque el & no cuenta
+        }
+
+        if (priority==FOREGROUND){
+            printf("Lanzo proceso en foreground\n");
+        } else {
+            printf("Lanzo proceso en background\n");
+        }
+
+        createProcess(fun1, priority, tokenQty1, tokens1, NULL, NULL);
     } else {
-        printf("Lanzo proceso en background\n");
+        fun1();
     }
 
-    createProcess(fun1, priority, tokenQty1, tokens1, NULL, NULL);
+    isBuiltIn=0;
 
     if(hasPipe){
         tokenizeCommand(commands[1], tokens2);
-        fun2 = getFuncFromString(tokens2[1]);
+        fun2 = getFuncFromString(tokens2[1], &isBuiltIn);
     }
     
 }
@@ -139,24 +111,28 @@ int tokenizeCommand(const char command[100], char tokens[5][50]){
 }
 
 
-function_type getFuncFromString(char *str)
+function_type getFuncFromString(char *str, int * isBuiltIn)
 {
     function_type toRet;
     if (!strcmp("date", str))
     {
         toRet = &date;
+        *isBuiltIn=1;
     }
     else if (!strcmp("help", str))
     {
         toRet = &help;
+        *isBuiltIn=1;
     }
     else if (!strcmp("fibo", str) || !strcmp("fibonacci", str))
     {
         toRet = &fibo;
+        *isBuiltIn=1;
     }
     else if (!strcmp("primos", str))
     {
         toRet = &primos;
+        *isBuiltIn=1;
     }
     else if (!strcmp("opcode", str))
     {
@@ -169,10 +145,12 @@ function_type getFuncFromString(char *str)
     else if (!strcmp("clear", str))
     {
         toRet = &clearProgram;
+        *isBuiltIn=1;
     }
     else if (!strcmp("inforeg", str))
     {
         toRet = &infoRegisters;
+        *isBuiltIn=1;
     }
     else if (!strcmp("testmm", str))
     {
@@ -181,13 +159,16 @@ function_type getFuncFromString(char *str)
     else if (!strcmp("printmem", str))
     {
         toRet = &printMemory;
+        *isBuiltIn=1;
     }
     else if (!strcmp("mem", str))
     {
         toRet = &memStatusProgram;
+        *isBuiltIn=1;
     }
     else if (!strcmp("exit", str))
     {
+        *isBuiltIn=1;
         clear();
         power = 0;
         toRet = &nullProgram;
@@ -195,10 +176,12 @@ function_type getFuncFromString(char *str)
     else if (strlen(str) == 0 || !strcmp("null", str))
     {
         toRet = &nullProgram;
+        *isBuiltIn=1;
     }
     else
     {
         toRet = &invalid;
+        *isBuiltIn=1;
     }
     return toRet;
 }
@@ -227,7 +210,5 @@ void simpleScreenWrapper(char (*fn)(void))
 void returnToSingleScreen()
 {
     clear();
-    reset_primo();
-    reset_fibo();
     sleep(500);
 }
