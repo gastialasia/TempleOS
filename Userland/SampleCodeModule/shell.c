@@ -15,7 +15,7 @@
 int power = 1; // 1 means running, 0 means shutting down the system
 
 int pipeParser(const char *buffer, char commands[2][100]);
-void tokenizeCommand(const char command[100], char tokens[5][50]);
+int tokenizeCommand(const char command[100], char tokens[5][50]);
 
 void shell(void)
 {
@@ -69,23 +69,18 @@ void parser(const char *buffer){
     char commands[2][100];
     int hasPipe = pipeParser(buffer, commands);
 
-    char tokens[5][50]={{0}};
-    tokenizeCommand(commands[0], tokens);
+    char tokens1[5][50]={{0}};
+    char tokens2[5][50]={{0}};
+    int tokenQty1 = tokenizeCommand(commands[0], tokens1);
 
-    for(int i=0; tokens[i][0]; i++){
-        printf(tokens[i]);
-        putchar('\n');
+    function_type fun1, fun2;
+
+    fun1 = getFuncFromString(tokens1[0]);
+
+    if(hasPipe){
+        tokenizeCommand(commands[1], tokens2);
+        fun2 = getFuncFromString(tokens2[1]);
     }
-
-    if(!hasPipe){
-         
-    }
-
-    // printf(commands[0]);
-    // putchar('\n');
-    // printf("-----------------\n");
-    // printf(commands[1]);
-    // putchar('\n');
 }
 
 //receives buffer line and array to fill with commands separated and returns 1 if there was a pipe, 0 otherwise
@@ -110,7 +105,8 @@ int pipeParser(const char *buffer, char commands[2][100]){
     return flag;
 }
 
-void tokenizeCommand(const char command[100], char tokens[5][50]){
+//Returns token count
+int tokenizeCommand(const char command[100], char tokens[5][50]){
     int i = 0;
     strcpy(tokens[i++], strtok(command, " "));
     char *token=' ';
@@ -120,7 +116,8 @@ void tokenizeCommand(const char command[100], char tokens[5][50]){
         if(token!=NULL){
             strcpy(tokens[i++], token);
         }
-    } 
+    }
+    return i;
 }
 
 

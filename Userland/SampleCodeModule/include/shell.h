@@ -1,7 +1,7 @@
 #ifndef _shell_
 #define _shell_
 
-typedef char (*function_type)(void);
+typedef int (*function_type)(void);
 
 void shell(void);
 void parser(const char *buffer);

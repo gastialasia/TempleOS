@@ -1,20 +1,20 @@
 #ifndef _programs_
 #define _programs_
 
-char fibo(void);
+int fibo(void);
 void reset_fibo(void);
-char primos(void);
+int primos(void);
 void reset_primo(void);
-char help(void);
-char date(void);
-char invalid(void);
-char infoRegisters(void);
-char nullProgram();
-char printMemory(void);
-char opcodeProgram();
-char divzeroProgram();
-char clearProgram();
-char memStatusProgram();
+int help(void);
+int date(void);
+int invalid(void);
+int infoRegisters(void);
+int nullProgram();
+int printMemory(void);
+int opcodeProgram();
+int divzeroProgram();
+int clearProgram();
+int memStatusProgram();
 
 
 #endif

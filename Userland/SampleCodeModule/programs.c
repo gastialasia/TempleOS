@@ -12,17 +12,17 @@ static uint64_t lastPrimo=1;
 
 static char buff[300];
 
-char help(void){
+int help(void){
     printf("Commands:\n-fibonacci\n-primos\n-printmem\n-date\n-opcode\n-divzero\n-null\n-help\n-clear\n");
     return 0;
 }
 
-char invalid(void){
+int invalid(void){
     printf("Invalid command: try 'help'\n");
     return 0;
 }
 
-char date(void){
+int date(void){
     int values[5] = {7,8,9,4,2}; //En orden: D, M, Y, H, M
     char buffer[3]; // Cada numero de la fecha no va a tener más de dos digitos, 3 contando el cero null terminated
     for (int i=0;i<5;i++){
@@ -48,7 +48,7 @@ char date(void){
     return 0;
 }
 
-char fibo(void){
+int fibo(void){
     // Deja en el buffer el numero convertido a string
     // Devuelve 1 si el programa sigue corriendo, 0 sino
     if(fibo1==-1)
@@ -70,7 +70,7 @@ void reset_fibo(){
     fibo2=1;
 }
 
-char primos(void){ //Esta funcion es una criba de Eratosthenes casera
+int primos(void){ //Esta funcion es una criba de Eratosthenes casera
   // deja en el buffer el numeor convertido a string
   // devuelve 1 si el programa no termino, 0 si termino
     uint64_t j, limit;
@@ -96,7 +96,7 @@ void reset_primo(){
     lastPrimo=1;
 }
 
-char infoRegisters(){
+int infoRegisters(){
     registersT regs;
     inforeg(&regs);
     printReg("rax",regs.rax);
@@ -117,11 +117,11 @@ char infoRegisters(){
     return 0;
 }
 
-char nullProgram(){
+int nullProgram(){
     return 0;
 }
 
-char printMemory(){
+int printMemory(){
 	char pos[8] ={0};
 	printf("Ingrese 8 caracteres en hexa\n");
 	scanf(pos);
@@ -143,22 +143,22 @@ char printMemory(){
 	return 0;
 }
 
-char opcodeProgram(){
+int opcodeProgram(){
     opcode();
     return 0;
 }
 
-char divzeroProgram(){
+int divzeroProgram(){
     divzero();
     return 0;
 }
 
-char clearProgram(){
+int clearProgram(){
     clear();
     return 0;
 }
 
-char memStatusProgram(){
+int memStatusProgram(){
     unsigned int array[3];
     memStatus(array);
     printf("Total heap size: ");
