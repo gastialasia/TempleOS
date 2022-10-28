@@ -1,6 +1,7 @@
 #include "../include/scheduler.h"
 #include "../include/interrupts.h"
 #include <stdint.h>
+#include <stdlib.h>
 
 
 #define QUANTUM 1
@@ -281,6 +282,38 @@ uint64_t contextSwitching(uint64_t sp){
   
   return scheduler->current->process.stackPointer;
 }
+
+static ProcessNode * deleteProcessRec(ProcessNode * node,uint64_t pid){
+
+  if(node == NULL){
+    return node;
+  }
+
+  if(node->process.pid == pid){
+    node->process.state = 2;
+    ProcessNode * aux = node->nextProcess;
+    //deleteProcessFromSem(pid);
+    //deleteProcessFromPipe;
+    free((void *) node->process.processMemory);
+    free((void *) node);
+    return aux;
+  }
+
+  node->nextProcess = deleteProcessRec(node->nextProcess, pid);
+  return node;
+}
+
+void exitCurrentProcess(){
+
+  if(scheduler->current->process.priority == 1){
+    scheduler->foregroundInUse = 0;
+  }
+
+  scheduler->startList = deleteProcessRec(scheduler->startList, scheduler->current->process.pid);
+}
+
+
+
 
 void addToKeyboardList(){
   if(waitKeyboard->size == MAX_WAITING_KEYBOARD){
