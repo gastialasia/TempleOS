@@ -5,14 +5,23 @@
 #define DIFF 'A'-'a'
 #define MIN 'a'
 #define MAX 'z'
-#define PIPE_KEY 125
+#define SLASH_ASCII 125
 #define PIPE_ASCII 124
+#define SEVEN_ASCII 55
+#define AMPERSAND_ASCII 38
+
+char isPipe(char c);
+char isAlpha(char c);
+char isAmpersand(char c);
+
 
 char toMayusc(char c){
     if(isAlpha(c)){
         return c + DIFF;
     } else if (isPipe(c)) {
         return PIPE_ASCII;
+    } else if (isAmpersand(c)) {
+        return AMPERSAND_ASCII;
     }
     return c;
 }
@@ -22,7 +31,11 @@ char isAlpha(char c){
 }
 
 char isPipe(char c){
-    return c==PIPE_KEY;
+    return c==SLASH_ASCII;
+}
+
+char isAmpersand(char c){
+    return c==SEVEN_ASCII;
 }
 
 // Devuelve 0 si son iguales, 1 sino

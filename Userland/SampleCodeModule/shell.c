@@ -11,6 +11,8 @@
 #define MAXBUFFER 100
 #define F1_KEY 17
 #define NULL ((void *) 0)
+#define FOREGROUND 1
+#define BACKGROUND 2
 
 int power = 1; // 1 means running, 0 means shutting down the system
 
@@ -77,12 +79,26 @@ void parser(const char *buffer){
 
     fun1 = getFuncFromString(tokens1[0]);
 
+    int priority = FOREGROUND;
+
+    if (!strcmp(tokens1[tokenQty1-1],"&")){
+        priority = BACKGROUND;
+        tokenQty1--; // Decremento nro de argumentos porque el & no cuenta
+    }
+
+    if (priority==FOREGROUND){
+        printf("Lanzo proceso en foreground\n");
+    } else {
+        printf("Lanzo proceso en background\n");
+    }
+
+    //createProcess(fun1, priority, tokenQty1, tokens1, NULL, NULL);
+
     if(hasPipe){
         tokenizeCommand(commands[1], tokens2);
         fun2 = getFuncFromString(tokens2[1]);
     }
-
-    createProcess(fun1, 1, tokenQty1, tokens1, NULL, NULL);
+    
 }
 
 //receives buffer line and array to fill with commands separated and returns 1 if there was a pipe, 0 otherwise
