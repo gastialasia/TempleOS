@@ -244,3 +244,8 @@ int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv, pipeU
     return sys_createProcess(ip, priority, argc, argv, customStdin, customStdout);
 }
 
+void exit(){
+    sys_exit();
+}
+
+

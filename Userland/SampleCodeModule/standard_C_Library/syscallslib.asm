@@ -13,6 +13,7 @@ GLOBAL sys_malloc
 GLOBAL sys_free
 GLOBAL sys_memStatus
 GLOBAL sys_createProcess
+GLOBAL sys_exit
 
 section .text
 
@@ -78,6 +79,11 @@ sys_memStatus:
 
 sys_createProcess:
     mov rax, 13
+    int 80h
+    ret
+
+sys_exit:
+    mov rax, 14
     int 80h
     ret
 

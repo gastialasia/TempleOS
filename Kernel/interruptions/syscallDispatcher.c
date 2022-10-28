@@ -49,7 +49,10 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
         mStatus((void *)arg0);
         break;
     case 13:
-        cProcess((uint64_t)arg0, (uint8_t)arg1, (uint64_t)arg2, (char)arg3, (pipeUserInfo *)arg4, (pipeUserInfo *)arg5);
+        return cProcess((uint64_t)arg0, (uint8_t)arg1, (uint64_t)arg2, (char)arg3, (pipeUserInfo *)arg4, (pipeUserInfo *)arg5);
+        break;
+    case 14:
+        eProcess();
         break;
     default:
         return -1;

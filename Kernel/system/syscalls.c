@@ -187,3 +187,10 @@ int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv, pipeUserI
   return createProcessFormatter(ip, priority, argc, argv, customStdin, customStdout);
 }
 
+void eProcess(){
+  closeUserPipe(getCurrentStdin());
+  closeUserPipe(getCurrentStdout());
+  exitCurrentProcess();
+}
+
+
