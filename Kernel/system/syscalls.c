@@ -193,4 +193,8 @@ void eProcess(){
   exitCurrentProcess();
 }
 
+int currentPID(){
+  return getCurrentPID();
+}
+
 

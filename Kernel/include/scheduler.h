@@ -32,6 +32,7 @@ void awakeKeyboardList();
 void addToKeyboardList();
 void exitCurrentProcess();
 pcb * getCurrentProcess();
+int getCurrentPID();
 pipeUserInfo * getCurrentStdin();
 pipeUserInfo * getCurrentStdout();
 pcb * blockCurrentProcess();

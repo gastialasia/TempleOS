@@ -248,4 +248,8 @@ void exit(){
     sys_exit();
 }
 
+int getpid(){
+    return sys_getpid();
+}
+
 

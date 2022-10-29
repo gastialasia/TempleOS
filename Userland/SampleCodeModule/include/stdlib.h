@@ -83,4 +83,6 @@ int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv, pipeU
 
 void exit();
 
+int getpid();
+
 #endif

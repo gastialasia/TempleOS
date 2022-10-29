@@ -45,4 +45,6 @@ int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv, pipeUserI
 
 void eProcess();
 
+int currentPID();
+
 #endif

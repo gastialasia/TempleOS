@@ -14,6 +14,7 @@ GLOBAL sys_free
 GLOBAL sys_memStatus
 GLOBAL sys_createProcess
 GLOBAL sys_exit
+GLOBAL sys_getpid
 
 section .text
 
@@ -84,6 +85,11 @@ sys_createProcess:
 
 sys_exit:
     mov rax, 14
+    int 80h
+    ret
+
+sys_getpid:
+    mov rax, 15
     int 80h
     ret
 

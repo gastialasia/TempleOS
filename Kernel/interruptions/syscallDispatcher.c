@@ -54,6 +54,9 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
     case 14:
         eProcess();
         break;
+    case 15:
+        return currentPID();
+        break;
     default:
         return -1;
     }

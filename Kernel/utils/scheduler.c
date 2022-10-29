@@ -37,7 +37,7 @@ Scheduler * scheduler;
 WaitingKeyboardList * waitKeyboard;
 uint8_t firstProcess;// como no tengo que guardar el sp del primer procesos necesito saber si es el primer procesos
 ProcessNode * starting; // primer proceso q lo unico que va a ser es un hlt y nada mas
-uint64_t currentPid;
+uint32_t currentPid;
 
 static void startingProcess(){
   while (1) {
@@ -312,9 +312,6 @@ void exitCurrentProcess(){
   scheduler->startList = deleteProcessRec(scheduler->startList, scheduler->current->process.pid);
 }
 
-
-
-
 void addToKeyboardList(){
   if(waitKeyboard->size == MAX_WAITING_KEYBOARD){
     return;
@@ -346,6 +343,10 @@ pipeUserInfo * getCurrentStdout(){
 
 pcb * getCurrentProcess(){
   return &scheduler->current->process;
+}
+
+int getCurrentPID(){
+  return scheduler->current->process.pid;
 }
 
 pcb * blockCurrentProcess(){
