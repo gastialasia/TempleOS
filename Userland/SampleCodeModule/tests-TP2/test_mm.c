@@ -26,9 +26,12 @@ char test_mm(){ //test_mm(uint64_t argc, char *argv[])
   //if ((max_memory = satoi(argv[0])) <= 0) return -1;
   max_memory=127506842;
 
-  int pid = getpid();
-  printInt(pid);
-  putchar('\n');
+  // int pid = getpid();
+  // printInt(pid);
+  // putchar('\n');
+
+  ps();
+  sleep(10000);
 
   while (1) {
     rq = 0;

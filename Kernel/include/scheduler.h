@@ -36,5 +36,6 @@ int getCurrentPID();
 pipeUserInfo * getCurrentStdin();
 pipeUserInfo * getCurrentStdout();
 pcb * blockCurrentProcess();
+void getAllProcesses(char * buf);
 
 #endif 

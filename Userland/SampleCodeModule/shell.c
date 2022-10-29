@@ -22,6 +22,7 @@ int tokenizeCommand(const char command[100], char tokens[5][50]);
 void shell(void)
 {
     clear();
+    ps();
     char buffer[LENGTH];
     while (power)
     {

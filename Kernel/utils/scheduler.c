@@ -1,5 +1,6 @@
 #include "../include/scheduler.h"
 #include "../include/interrupts.h"
+#include "../include/tools.h"
 #include <stdint.h>
 #include <stdlib.h>
 
@@ -86,7 +87,7 @@ void initScheduler(){
 
 
 }
-static char* copyString(char* destination, const char* source) {
+static char* strcpy(char* destination, const char* source) {
   if (destination == NULL)
     return NULL;
 
@@ -102,6 +103,23 @@ static char* copyString(char* destination, const char* source) {
   return ptr;
 }
 
+static char* strcat(char* destination, const char* source)
+{
+    // make `ptr` point to the end of the destination string
+    char* ptr = destination + strlen(destination);
+ 
+    // appends characters of the source to the destination string
+    while (*source != '\0') {
+        *ptr++ = *source++;
+    }
+ 
+    // null terminate destination string
+    *ptr = '\0';
+ 
+    // the destination is returned by standard `strcat()`
+    return destination;
+}
+
 static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,int argc,char argv[6][21],pipeUserInfo * customStdin,pipeUserInfo * customStdout,uint64_t ip){
 
   if(node == NULL){
@@ -113,7 +131,7 @@ static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t pr
     newNode->process.stdout = customStdout;
     newNode->process.state = 1;
     for (int i = 0; i < argc; i++){
-      copyString(newNode->process.args[i], argv[i]);
+      strcpy(newNode->process.args[i], argv[i]);
     }
     uint64_t processMemory = (uint64_t) alloc(DEFAULT_PROG_MEM);
     uint64_t sp = initProcess(processMemory + DEFAULT_PROG_MEM, ip, argc, newNode->process.args);
@@ -142,7 +160,7 @@ static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t pr
   newNode->process.stdout = customStdout;
   newNode->process.state = 1;
   for (int i = 0; i < argc; i++){
-      copyString(newNode->process.args[i], argv[i]);
+      strcpy(newNode->process.args[i], argv[i]);
   }
   uint64_t processMemory = (uint64_t) alloc(DEFAULT_PROG_MEM);
   uint64_t sp = initProcess(processMemory + DEFAULT_PROG_MEM, ip, argc, newNode->process.args);
@@ -352,4 +370,24 @@ int getCurrentPID(){
 pcb * blockCurrentProcess(){
   scheduler->current->process.state = 0;
   return &scheduler->current->process;
+}
+
+void getAllProcesses(char * buf) {
+  strcat(buf, "PID  name  priority\n");
+  ProcessNode * current = scheduler->current;
+  while(current != NULL){
+    uint32_t pid = current->process.pid;
+    char pidStr[6];
+    uintToBase(pid, pidStr, 10);
+    strcat(buf, pidStr);
+    strcat(buf, "   ");
+    strcat(buf, current->process.args[0]); //El primer argumento es el nombre del proceso
+    strcat(buf, "   ");
+    uint32_t priority = current->process.priority;
+    char priorityStr[6];
+    uintToBase(priority, priorityStr, 10);
+    strcat(buf, priorityStr);
+    strcat(buf, "\n");
+    current = scheduler->current->nextProcess;
+  }
 }

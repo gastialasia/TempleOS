@@ -20,5 +20,6 @@ void sys_memStatus(unsigned int * status);
 int sys_createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout);
 void sys_exit();
 int sys_getpid();
+void sys_ps(char * buffer);
 
 #endif

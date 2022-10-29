@@ -252,4 +252,11 @@ int getpid(){
     return sys_getpid();
 }
 
+void ps(){
+    char buffer[1000];
+    sys_ps(buffer);
+    printf(buffer);
+    putchar('\n');
+}
+
 

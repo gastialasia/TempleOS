@@ -15,6 +15,7 @@ GLOBAL sys_memStatus
 GLOBAL sys_createProcess
 GLOBAL sys_exit
 GLOBAL sys_getpid
+GLOBAL sys_ps
 
 section .text
 
@@ -93,11 +94,18 @@ sys_getpid:
     int 80h
     ret
 
+sys_ps:
+  mov rax, 16
+  int 80h
+  ret
+
 divzero:
   mov rax, 4
   xor rbx, rbx
   div rbx
   ret
+
+ 
 
 opcode:
   ud2   ;undefined instruction, para tirar el opcode exception.
