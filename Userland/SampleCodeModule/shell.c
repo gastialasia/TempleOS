@@ -22,7 +22,6 @@ int tokenizeCommand(const char command[100], char tokens[5][50]);
 void shell(void)
 {
     clear();
-    ps();
     char buffer[LENGTH];
     while (power)
     {
@@ -165,6 +164,11 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     else if (!strcmp("mem", str))
     {
         toRet = &memStatusProgram;
+        *isBuiltIn=1;
+    }
+    else if (!strcmp("ps", str))
+    {
+        toRet = &psProgram;
         *isBuiltIn=1;
     }
     else if (!strcmp("exit", str))

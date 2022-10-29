@@ -13,6 +13,7 @@ int opcodeProgram();
 int divzeroProgram();
 int clearProgram();
 int memStatusProgram();
+int psProgram();
 
 
 #endif

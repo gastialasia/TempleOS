@@ -256,7 +256,8 @@ void ps(){
     char buffer[1000];
     sys_ps(buffer);
     printf(buffer);
-    putchar('\n');
+    buffer[0]=0;
+    return 0;
 }
 
 

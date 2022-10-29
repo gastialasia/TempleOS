@@ -159,3 +159,8 @@ int memStatusProgram(){
     printf("\n");
     return 0;
 }
+
+int psProgram(){
+    ps();
+    return 0;
+}
