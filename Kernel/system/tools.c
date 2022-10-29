@@ -85,3 +85,11 @@ uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
 
 	return digits;
 }
+
+int strlen(const char * str) {
+    int len=0;
+    while(str[len]!=0){
+        len++;
+    }
+    return len;
+}
