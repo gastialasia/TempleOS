@@ -428,3 +428,31 @@ void normalizeSpaces(char *buf, char *data, int field){
   }
   strcat(buf, "  ");
 }
+
+static pcb *getPCB(ProcessNode *node, uint32_t pid){
+  if(node == NULL)
+    return NULL;
+
+  if(node->process.pid == pid)
+    return &node->process;
+  
+  return getPCB(node->nextProcess, pid);
+}
+
+void changeProcessState(uint32_t pid){
+  if(pid<1)
+    return;
+
+  pcb * process = getPCB(scheduler->startList, pid);
+  if(process == NULL)
+    return NULL;
+
+  if(process->state == 1){
+    process->state = 0;
+    
+    if(scheduler->current->process.pid == pid)
+      runScheduler();
+  } else if (process->state == 0) {
+    process->state = 1;
+  }
+}
