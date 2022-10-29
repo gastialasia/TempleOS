@@ -10,6 +10,15 @@
 #define MAX_WAITING_KEYBOARD 15
 #define QUANTUM_RAISING_PRIORITY 5
 
+//Column fields
+#define NAME 0
+#define ID 1
+#define PRIORITY 2
+#define RSP 3
+#define RBP 4
+#define FOREGROUND 5
+#define STATE 6
+
 typedef struct ProcessNode{
   pcb process;
   struct ProcessNode *nextProcess;
@@ -39,6 +48,8 @@ WaitingKeyboardList * waitKeyboard;
 uint8_t firstProcess;// como no tengo que guardar el sp del primer procesos necesito saber si es el primer procesos
 ProcessNode * starting; // primer proceso q lo unico que va a ser es un hlt y nada mas
 uint32_t currentPid;
+
+void normalizeSpaces(char *buf, char *data, int field);
 
 static void startingProcess(){
   while (1) {
@@ -373,21 +384,47 @@ pcb * blockCurrentProcess(){
 }
 
 void getAllProcesses(char * buf) {
-  strcat(buf, "PID  name  priority\n");
+  strcat(buf, "Name        ID  Priority  RSP       RBP       Foreground  State\n");
   ProcessNode * current = scheduler->current;
   while(current != NULL){
+    normalizeSpaces(buf, current->process.args[0], NAME);
+
     uint32_t pid = current->process.pid;
     char pidStr[6];
     uintToBase(pid, pidStr, 10);
-    strcat(buf, pidStr);
-    strcat(buf, "   ");
-    strcat(buf, current->process.args[0]); //El primer argumento es el nombre del proceso
-    strcat(buf, "   ");
+    normalizeSpaces(buf, pidStr, ID);
+
     uint32_t priority = current->process.priority;
-    char priorityStr[6];
+    char priorityStr[3];
     uintToBase(priority, priorityStr, 10);
-    strcat(buf, priorityStr);
+    normalizeSpaces(buf, priorityStr, PRIORITY);
+
+    uint32_t rsp = current->process.stackPointer;
+    char rspStr[10];
+    uintToBase(rsp, rspStr, 16);
+    normalizeSpaces(buf, rspStr, RSP);
+
+    uint32_t rbp = current->process.basePointer;
+    char rbpStr[10];
+    uintToBase(rbp, rbpStr, 16);
+    normalizeSpaces(buf, rbpStr, RBP);
+
+    normalizeSpaces(buf, priority==1?"yes":"no", FOREGROUND);
+
+    uint8_t state = current->process.state;
+    normalizeSpaces(buf, state==1?"running":"blocked", STATE);
+
     strcat(buf, "\n");
     current = scheduler->current->nextProcess;
   }
+}
+
+void normalizeSpaces(char *buf, char *data, int field){
+  static int fields[]={10, 2, 8, 8, 8, 10, 7};
+  int n = fields[field]-strlen(data);
+  strcat(buf, data);
+  for(int i=0; i<n; i++){
+    strcat(buf, " ");
+  }
+  strcat(buf, "  ");
 }
