@@ -17,7 +17,7 @@ void sys_printMem(uint64_t, char*);
 void * sys_malloc(unsigned int bytes);
 void sys_free(void * memToFree);
 void sys_memStatus(unsigned int * status);
-int sys_createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char * argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout);
+int sys_createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char * argv[], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
 void sys_exit();
 int sys_getpid();
 void sys_ps(char * buffer);

@@ -131,7 +131,7 @@ static char* strcat(char* destination, const char* source)
     return destination;
 }
 
-static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,int argc,char argv[6][21],pipeUserInfo * customStdin,pipeUserInfo * customStdout,uint64_t ip){
+static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,int argc,char argv[ARG_QTY][ARG_LEN],pipeUserInfo * customStdin,pipeUserInfo * customStdout,uint64_t ip){
 
   if(node == NULL){
     ProcessNode * newNode = (ProcessNode *) alloc(sizeof(ProcessNode));
@@ -183,7 +183,7 @@ static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t pr
 }
 
 
-int createProcess(uint64_t ip,uint8_t priority,uint64_t argc,char argv[6][21],pipeUserInfo * customStdin,pipeUserInfo * customStdout){
+int createProcess(uint64_t ip,uint8_t priority,uint64_t argc,char argv[ARG_QTY][ARG_LEN],pipeUserInfo * customStdin,pipeUserInfo * customStdout){
   
   if(priority == 1 && currentPid > 1){
     scheduler->foregroundInUse = 1;
@@ -192,28 +192,6 @@ int createProcess(uint64_t ip,uint8_t priority,uint64_t argc,char argv[6][21],pi
 
   return currentPid-1;
 }
-
-int createProcessFormatter(uint64_t ip, uint8_t priority, uint64_t argc, char *argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout) {
-  ncPrint(argv);
-  ncPrint("\n");
-  int i = 0, j = 0;
-  char args[6][21];
-  while(i < argc) {
-    int k = 0;
-    while(argv[j]) {
-      args[i][k] = argv[j];
-      j++;
-      k++;
-    }
-    args[i][k] = 0;
-    j++;
-    i++;
-  }
-
-  return createProcess(ip, priority, argc, args, customStdin, customStdout);
-}
-
-
 
 //@TODO:
 /*

@@ -41,7 +41,7 @@ void mfree(void * memToFree);
 
 void mStatus(unsigned int * status);
 
-int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout);
+int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv[], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
 
 void eProcess();
 

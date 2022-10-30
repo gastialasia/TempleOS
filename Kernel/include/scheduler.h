@@ -5,6 +5,9 @@
 #include "semaphore.h"
 #include "lib.h"
 
+#define ARG_LEN 21
+#define ARG_QTY 6
+
 typedef struct pipeUserInfo{
   char readable;
   char writable;
@@ -13,7 +16,7 @@ typedef struct pipeUserInfo{
 
 
 typedef struct pcb{
-  char args[6][21];
+  char args[ARG_QTY][ARG_LEN];
   uint32_t pid;
   uint8_t state;
   uint8_t priority;
@@ -26,8 +29,7 @@ typedef struct pcb{
 }pcb;
 
 void initScheduler(); 
-int createProcess(uint64_t ip,uint8_t priority, uint64_t argc, char argv[6][21], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
-int createProcessFormatter(uint64_t ip, uint8_t priority, uint64_t argc, char *argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout);
+int createProcess(uint64_t ip,uint8_t priority, uint64_t argc, char argv[ARG_QTY][ARG_LEN], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
 void awakeKeyboardList();
 void addToKeyboardList();
 void exitCurrentProcess();

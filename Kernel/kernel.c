@@ -133,7 +133,7 @@ int main()
   ncPrint("Paso el initmem");
   initScheduler();
   ncPrint("paso el initScheduler");
-  createProcessFormatter((uint64_t)sampleCodeModuleAddress, 1, 1, "Shell", NULL, NULL);
+  createProcess((uint64_t)sampleCodeModuleAddress, 1, 1, "shell", NULL, NULL);
   ncPrint("Se cargo la shell");
   load_idt();
   ncClear();

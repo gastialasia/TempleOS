@@ -7,17 +7,18 @@
 #include <test_mm.h>
 
 #define LENGTH 100
-#define MAXDIGITS 21
 #define MAXBUFFER 100
 #define F1_KEY 17
 #define NULL ((void *) 0)
 #define FOREGROUND 1
 #define BACKGROUND 2
+#define ARG_LEN 21
+#define ARG_QTY 6
 
 int power = 1; // 1 means running, 0 means shutting down the system
 
 int pipeParser(const char *buffer, char commands[2][100]);
-int tokenizeCommand(const char command[100], char tokens[5][50]);
+int tokenizeCommand(const char command[100], char tokens[ARG_QTY][ARG_LEN]);
 
 void shell(void)
 {
@@ -35,8 +36,8 @@ void parser(const char *buffer){
     char commands[2][100];
     int hasPipe = pipeParser(buffer, commands);
 
-    char tokens1[5][50]={{0}};
-    char tokens2[5][50]={{0}};
+    char tokens1[ARG_QTY][ARG_LEN]={{0}};
+    char tokens2[ARG_QTY][ARG_LEN]={{0}};
     int tokenQty1 = tokenizeCommand(commands[0], tokens1);
 
     function_type fun1, fun2;
@@ -47,6 +48,8 @@ void parser(const char *buffer){
 
     if(!isBuiltIn){
         int priority = FOREGROUND;
+
+        printf(tokens1[tokenQty1-1]);
 
         if (!strcmp(tokens1[tokenQty1-1],"&")){
             priority = BACKGROUND;
@@ -95,7 +98,7 @@ int pipeParser(const char *buffer, char commands[2][100]){
 }
 
 //Returns token count
-int tokenizeCommand(const char command[100], char tokens[5][50]){
+int tokenizeCommand(const char command[100], char tokens[ARG_QTY][ARG_LEN]){
     int i = 0;
     strcpy(tokens[i++], strtok(command, " "));
     char *token=' ';

@@ -240,7 +240,7 @@ void memStatus(unsigned int * status) {
     return sys_memStatus(status);
 }
 
-int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char * argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout){
+int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char * argv[], pipeUserInfo *customStdin, pipeUserInfo *customStdout){
     return sys_createProcess(ip, priority, argc, argv, customStdin, customStdout);
 }
 

@@ -30,8 +30,8 @@ char test_mm(int argc, char * argv[]){ //test_mm(uint64_t argc, char *argv[])
   // printInt(pid);
   // putchar('\n');
 
-  ps();
-  sleep(10000);
+  // ps();
+  // sleep(10000);
 
   while (1) {
     rq = 0;
