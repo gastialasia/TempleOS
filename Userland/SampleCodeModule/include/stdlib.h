@@ -87,4 +87,6 @@ int getpid();
 
 int kill(uint32_t pid);
 
+int block(uint32_t pid);
+
 #endif

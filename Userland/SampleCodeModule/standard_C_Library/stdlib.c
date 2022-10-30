@@ -280,7 +280,11 @@ int atoi(const char* S)
 }
 
 int nice(uint32_t pid, uint8_t newPriority){
-    sys_changepriority(pid, newPriority);
+    return sys_changepriority(pid, newPriority);
+}
+
+int block(uint32_t pid){
+    return sys_changestate(pid);
 }
 
 

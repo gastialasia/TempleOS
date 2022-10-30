@@ -66,6 +66,9 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
     case 18:
         return changeProcessPriority((uint32_t)arg0, (uint8_t)arg1);
         break;
+    case 19:
+        return changeProcessState((uint32_t)arg0);
+        break;
     default:
         return -1;
     }

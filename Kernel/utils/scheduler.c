@@ -420,13 +420,13 @@ static pcb *getPCB(ProcessNode *node, uint32_t pid){
   return getPCB(node->nextProcess, pid);
 }
 
-void changeProcessState(uint32_t pid){
+int changeProcessState(uint32_t pid){
   if(pid<1)
-    return;
+    return 0 ;
 
   pcb * process = getPCB(scheduler->startList, pid);
   if(process == NULL)
-    return NULL;
+    return 0;
 
   if(process->state == 1){
     process->state = 0;
@@ -436,6 +436,7 @@ void changeProcessState(uint32_t pid){
   } else if (process->state == 0) {
     process->state = 1;
   }
+  return 1;
 }
 
 int killPid(uint32_t pid){

@@ -15,8 +15,6 @@
 #define ARG_LEN 21
 #define ARG_QTY 6
 
-int power = 1; // 1 means running, 0 means shutting down the system
-
 int pipeParser(const char *buffer, char commands[2][100]);
 int tokenizeCommand(const char command[100], char tokens[ARG_QTY][ARG_LEN]);
 
@@ -24,11 +22,13 @@ void shell(void)
 {
     clear();
     char buffer[LENGTH];
-    while (power)
+    while (1)
     {
         printf("User:$ ");
         int length = scanf(buffer);
-        parser(buffer);
+        if (length!=0){
+            parser(buffer);
+        }
     }
 }
 
@@ -175,16 +175,9 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
         toRet = &niceProgram;
         *isBuiltIn=1;
     }
-    else if (!strcmp("exit", str))
+    else if (!strcmp("block", str))
     {
-        *isBuiltIn=1;
-        clear();
-        power = 0;
-        toRet = &nullProgram;
-    }
-    else if (strlen(str) == 0 || !strcmp("null", str))
-    {
-        toRet = &nullProgram;
+        toRet = &blockProgram;
         *isBuiltIn=1;
     }
     else

@@ -7,7 +7,6 @@ int help(void);
 int date(void);
 int invalid(void);
 int infoRegisters(void);
-int nullProgram();
 int printMemory(void);
 int opcodeProgram();
 int divzeroProgram();
@@ -16,5 +15,6 @@ int memStatusProgram();
 int psProgram();
 int killProgram(int argc, char args[6][21]);
 int niceProgram(int argc, char args[6][21]);
+int blockProgram(int argc, char args[6][21]);
 
 #endif

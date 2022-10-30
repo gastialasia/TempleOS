@@ -39,7 +39,7 @@ pipeUserInfo * getCurrentStdin();
 pipeUserInfo * getCurrentStdout();
 pcb * blockCurrentProcess();
 void getAllProcesses(char * buf);
-void changeProcessState(uint32_t pid);
+int changeProcessState(uint32_t pid);
 int killPid(uint32_t pid);
 int changeProcessPriority(uint32_t pid, uint8_t newPriority);
 

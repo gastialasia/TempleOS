@@ -104,10 +104,6 @@ int infoRegisters(){
     return 0;
 }
 
-int nullProgram(){
-    return 0;
-}
-
 int printMemory(){
 	char pos[8] ={0};
 	printf("Ingrese 8 caracteres en hexa\n");
@@ -201,4 +197,21 @@ int niceProgram(int argc, char args[6][21]){
         printf("Error on reasigning priority\n");
     }
     return 0;
+}
+
+int blockProgram(int argc, char args[6][21]){
+    if (argc!=2){
+        printf("Invalid argunment quantity\n");
+        return 0;
+    }
+    uint32_t pid = atoi(args[1]);
+    if (pid==1){
+        printf("Shell can't be blocked\n");
+        return 0;
+    }
+    if (!block(pid)) {
+        printf("Error on changing process state\n");
+    }
+    return 0;
+
 }
