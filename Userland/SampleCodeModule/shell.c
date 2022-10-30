@@ -170,6 +170,11 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
         toRet = &killProgram;
         *isBuiltIn=1;
     }
+    else if (!strcmp("nice", str))
+    {
+        toRet = &niceProgram;
+        *isBuiltIn=1;
+    }
     else if (!strcmp("exit", str))
     {
         *isBuiltIn=1;

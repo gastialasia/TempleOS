@@ -49,4 +49,6 @@ int currentPID();
 
 int pKill(uint32_t pid);
 
+int nice(uint32_t pid, uint8_t newPriority);
+
 #endif

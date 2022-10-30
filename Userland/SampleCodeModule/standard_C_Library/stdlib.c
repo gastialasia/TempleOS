@@ -279,4 +279,8 @@ int atoi(const char* S)
     return num;
 }
 
+int nice(uint32_t pid, uint8_t newPriority){
+    sys_changepriority(pid, newPriority);
+}
+
 

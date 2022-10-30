@@ -17,6 +17,7 @@ GLOBAL sys_exit
 GLOBAL sys_getpid
 GLOBAL sys_ps
 GLOBAL sys_kill
+GLOBAL sys_changepriority
 
 section .text
 
@@ -102,6 +103,11 @@ sys_ps:
 
 sys_kill:
   mov rax, 17
+  int 80h
+  ret
+
+sys_changepriority:
+  mov rax, 18
   int 80h
   ret
 

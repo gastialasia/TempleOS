@@ -183,3 +183,22 @@ int killProgram(int argc, char args[6][21]){
     }
     return 0;
 }
+
+int niceProgram(int argc, char args[6][21]){
+    if (argc!=3){
+        printf("Invalid argunment quantity\n");
+        return 0;
+    }
+    uint32_t pid = atoi(args[1]);
+
+    uint8_t newPriority = (uint8_t)atoi(args[2]);
+
+    if (pid==1){
+        printf("Shell's priority can't be modified\n");
+        return 0;
+    }
+    if (!nice(pid, newPriority)) {
+        printf("Error on reasigning priority\n");
+    }
+    return 0;
+}
