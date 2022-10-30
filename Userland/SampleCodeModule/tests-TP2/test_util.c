@@ -48,21 +48,21 @@ int64_t satoi(char* str){
   return res * sign;
 }
 
-// //Dummies
-// void bussy_wait(uint64_t n){
-//   uint64_t i;
-//   for (i = 0; i < n; i++);
-// }
+//Dummies
+void bussy_wait(uint64_t n){
+  uint64_t i;
+  for (i = 0; i < n; i++);
+}
 
-// void endless_loop(){
-//   while(1);
-// }
+void endless_loop(){
+  while(1);
+}
 
-// void endless_loop_print(uint64_t wait){
-//   int64_t pid = my_getpid();
+void endless_loop_print(uint64_t wait){
+  int64_t pid = getpid();
 
-//   while(1){
-//     printf("%d ",pid);
-//     bussy_wait(wait);
-//   }
-// }
+  while(1){
+    printf("%d ",pid);
+    bussy_wait(wait);
+  }
+}

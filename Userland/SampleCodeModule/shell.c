@@ -5,6 +5,7 @@
 #include <programs.h>
 #include <stdint.h>
 #include <test_mm.h>
+#include <test_processes.h>
 
 #define LENGTH 100
 #define MAXBUFFER 100
@@ -149,6 +150,10 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     else if (!strcmp("testmm", str))
     {
         toRet = &test_mm;
+    }
+    else if (!strcmp("testproc", str))
+    {
+        toRet = &test_processes;
     }
     else if (!strcmp("printmem", str))
     {

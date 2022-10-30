@@ -3,6 +3,8 @@
 
 #include <stdint.h>
 
+#define NULL ((void *) 0)
+
 typedef struct{
 	uint64_t rax;
     uint64_t rbx;

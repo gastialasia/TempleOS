@@ -3,6 +3,7 @@
 #include "../include/tools.h"
 #include <stdint.h>
 #include <stdlib.h>
+#include <naiveConsole.h>
 
 
 #define QUANTUM 1
@@ -156,7 +157,6 @@ static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t pr
     node->nextProcess = loadProcessData(node->nextProcess,pid,priority,argc,argv,customStdin,customStdout,ip);
     return node;
   }
-  
 
   //Caso donde la prioridad del proceso a añadir es menor
   ProcessNode * newNode = (ProcessNode *) alloc(sizeof(ProcessNode));
@@ -184,7 +184,6 @@ static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t pr
 
 
 int createProcess(uint64_t ip,uint8_t priority,uint64_t argc,char argv[ARG_QTY][ARG_LEN],pipeUserInfo * customStdin,pipeUserInfo * customStdout){
-  
   if(priority == 1 && currentPid > 1){
     scheduler->foregroundInUse = 1;
   }
