@@ -14,6 +14,7 @@ int divzeroProgram();
 int clearProgram();
 int memStatusProgram();
 int psProgram();
+int killProgram(int argc, char args[6][21]);
 
 
 #endif

@@ -260,4 +260,23 @@ void ps(){
     return 0;
 }
 
+int kill(uint32_t pid){
+    return sys_kill(pid);
+}
+
+int atoi(const char* S)
+{
+    int num = 0;
+ 
+    int i = 0;
+ 
+    while (S[i] && (S[i] >= '0' && S[i] <= '9'))
+    {
+        num = num * 10 + (S[i] - '0');
+        i++;
+    }
+ 
+    return num;
+}
+
 

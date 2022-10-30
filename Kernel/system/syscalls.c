@@ -202,4 +202,10 @@ int currentPID(){
   return getCurrentPID();
 }
 
+int pKill(uint32_t pid){
+  return killPid(pid);
+}
+
+
+
 

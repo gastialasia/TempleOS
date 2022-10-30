@@ -49,21 +49,13 @@ void parser(const char *buffer){
     if(!isBuiltIn){
         int priority = FOREGROUND;
 
-        printf(tokens1[tokenQty1-1]);
-
         if (!strcmp(tokens1[tokenQty1-1],"&")){
             priority = BACKGROUND;
             tokenQty1--; // Decremento nro de argumentos porque el & no cuenta
         }
-
-        if (priority==FOREGROUND){
-            printf("Lanzo proceso en foreground\n");
-        } else {
-            printf("Lanzo proceso en background\n");
-        }
         createProcess(fun1, priority, tokenQty1, tokens1, NULL, NULL);
     } else {
-        fun1();
+        fun1(tokenQty1, tokens1);
     }
 
     isBuiltIn=0;
@@ -171,6 +163,11 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     else if (!strcmp("ps", str))
     {
         toRet = &psProgram;
+        *isBuiltIn=1;
+    }
+    else if (!strcmp("kill", str))
+    {
+        toRet = &killProgram;
         *isBuiltIn=1;
     }
     else if (!strcmp("exit", str))

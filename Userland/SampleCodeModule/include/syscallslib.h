@@ -21,5 +21,6 @@ int sys_createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char * argv[
 void sys_exit();
 int sys_getpid();
 void sys_ps(char * buffer);
+int sys_kill(uint32_t pid);
 
 #endif

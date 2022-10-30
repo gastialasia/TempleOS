@@ -292,13 +292,14 @@ uint64_t contextSwitching(uint64_t sp){
   return scheduler->current->process.stackPointer;
 }
 
-static ProcessNode * deleteProcessRec(ProcessNode * node,uint64_t pid){
+static ProcessNode * deleteProcessRec(ProcessNode * node,uint64_t pid, int * found){
 
   if(node == NULL){
     return node;
   }
 
   if(node->process.pid == pid){
+    *found = 1;
     node->process.state = 2;
     ProcessNode * aux = node->nextProcess;
     deleteProcessFromSem(pid);
@@ -308,7 +309,7 @@ static ProcessNode * deleteProcessRec(ProcessNode * node,uint64_t pid){
     return aux;
   }
 
-  node->nextProcess = deleteProcessRec(node->nextProcess, pid);
+  node->nextProcess = deleteProcessRec(node->nextProcess, pid, found);
   return node;
 }
 
@@ -317,8 +318,8 @@ void exitCurrentProcess(){
   if(scheduler->current->process.priority == 1){
     scheduler->foregroundInUse = 0;
   }
-
-  scheduler->startList = deleteProcessRec(scheduler->startList, scheduler->current->process.pid);
+  int found;
+  scheduler->startList = deleteProcessRec(scheduler->startList, scheduler->current->process.pid, &found);
 }
 
 void addToKeyboardList(){
@@ -435,4 +436,13 @@ void changeProcessState(uint32_t pid){
   } else if (process->state == 0) {
     process->state = 1;
   }
+}
+
+int killPid(uint32_t pid){
+  int found = 0;
+  if (pid>1){
+    scheduler->startList = deleteProcessRec(scheduler->startList, pid, &found);
+  }
+  return found;
+
 }

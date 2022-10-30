@@ -85,4 +85,6 @@ void exit();
 
 int getpid();
 
+int kill(uint32_t pid);
+
 #endif

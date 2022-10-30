@@ -164,3 +164,22 @@ int psProgram(){
     ps();
     return 0;
 }
+
+int killProgram(int argc, char args[6][21]){
+    if (argc!=2){
+        printf("Invalid argunment quantity\n");
+        return 0;
+    }
+    char * pidPtr = args[1];
+    uint32_t pid = atoi(pidPtr);
+    if (pid==1){
+        printf("Shell can't be killed\n");
+        return 0;
+    }
+    if (!kill(pid)) {
+        printf("No such process with pid ");
+        printf(pidPtr);
+        putchar('\n');
+    }
+    return 0;
+}

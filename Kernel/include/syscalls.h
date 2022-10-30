@@ -47,4 +47,6 @@ void eProcess();
 
 int currentPID();
 
+int pKill(uint32_t pid);
+
 #endif

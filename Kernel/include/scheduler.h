@@ -40,5 +40,6 @@ pipeUserInfo * getCurrentStdout();
 pcb * blockCurrentProcess();
 void getAllProcesses(char * buf);
 void changeProcessState(uint32_t pid);
+int killPid(uint32_t pid);
 
 #endif 

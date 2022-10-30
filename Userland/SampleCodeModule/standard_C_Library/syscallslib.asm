@@ -16,6 +16,7 @@ GLOBAL sys_createProcess
 GLOBAL sys_exit
 GLOBAL sys_getpid
 GLOBAL sys_ps
+GLOBAL sys_kill
 
 section .text
 
@@ -96,6 +97,11 @@ sys_getpid:
 
 sys_ps:
   mov rax, 16
+  int 80h
+  ret
+
+sys_kill:
+  mov rax, 17
   int 80h
   ret
 

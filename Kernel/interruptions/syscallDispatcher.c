@@ -60,6 +60,9 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
     case 16:
         getAllProcesses((char *)arg0);
         break;
+    case 17:
+        return pKill((uint32_t)arg0);
+        break;
     default:
         return -1;
     }
