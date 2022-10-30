@@ -14,7 +14,7 @@ static void * myMemset(void * destination, int c, int len){
   return destination;
 }
 
-char test_mm(){ //test_mm(uint64_t argc, char *argv[])
+char test_mm(int argc, char * argv[]){ //test_mm(uint64_t argc, char *argv[])
 
   mm_rq mm_rqs[MAX_BLOCKS];
   uint8_t rq;
@@ -24,7 +24,7 @@ char test_mm(){ //test_mm(uint64_t argc, char *argv[])
   //if (argc != 1) return -1;
 
   //if ((max_memory = satoi(argv[0])) <= 0) return -1;
-  max_memory=127506842;
+  max_memory=0.7*134217728;
 
   // int pid = getpid();
   // printInt(pid);

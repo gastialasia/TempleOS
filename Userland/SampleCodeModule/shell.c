@@ -58,7 +58,6 @@ void parser(const char *buffer){
         } else {
             printf("Lanzo proceso en background\n");
         }
-
         createProcess(fun1, priority, tokenQty1, tokens1, NULL, NULL);
     } else {
         fun1();

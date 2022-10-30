@@ -194,6 +194,8 @@ int createProcess(uint64_t ip,uint8_t priority,uint64_t argc,char argv[6][21],pi
 }
 
 int createProcessFormatter(uint64_t ip, uint8_t priority, uint64_t argc, char *argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout) {
+  ncPrint(argv);
+  ncPrint("\n");
   int i = 0, j = 0;
   char args[6][21];
   while(i < argc) {
@@ -385,7 +387,7 @@ pcb * blockCurrentProcess(){
 
 void getAllProcesses(char * buf) {
   strcat(buf, "Name        ID  Priority  RSP       RBP       Foreground  State\n");
-  ProcessNode * current = scheduler->current;
+  ProcessNode * current = scheduler->startList;
   while(current != NULL){
     normalizeSpaces(buf, current->process.args[0], NAME);
 
@@ -415,7 +417,7 @@ void getAllProcesses(char * buf) {
     normalizeSpaces(buf, state==1?"running":"blocked", STATE);
 
     strcat(buf, "\n");
-    current = scheduler->current->nextProcess;
+    current = current->nextProcess;
   }
 }
 

@@ -240,7 +240,7 @@ void memStatus(unsigned int * status) {
     return sys_memStatus(status);
 }
 
-int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout){
+int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char * argv, pipeUserInfo *customStdin, pipeUserInfo *customStdout){
     return sys_createProcess(ip, priority, argc, argv, customStdin, customStdout);
 }
 
@@ -253,7 +253,7 @@ int getpid(){
 }
 
 void ps(){
-    char buffer[1000];
+    static char buffer[3000];
     sys_ps(buffer);
     printf(buffer);
     buffer[0]=0;
