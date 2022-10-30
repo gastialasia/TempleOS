@@ -450,13 +450,6 @@ int killPid(uint32_t pid){
 int changeProcessPriority(uint32_t pid, uint8_t newPriority){
   if(pid<1)
     return 1; //Error: invalid parameter
-
-  // pcb * process = getPCB(scheduler->startList, pid);
-  // if(process == NULL)
-  //   return NULL;
-
-  // process->priority = newPriority;
-  // process->auxPriority = newPriority;
   
   //Reordenar la lista
   ProcessNode * auxList = scheduler->startList;
