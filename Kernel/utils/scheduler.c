@@ -446,3 +446,98 @@ int killPid(uint32_t pid){
   return found;
 
 }
+
+void changeProcessPriority(uint32_t pid, uint8_t newPriority){
+  if(pid<1)
+    return;
+
+  pcb * process = getPCB(scheduler->startList, pid);
+  if(process == NULL)
+    return NULL;
+
+  process->priority = newPriority;
+  process->auxPriority = newPriority;
+  
+  //Reordenar la lista
+  ProcessNode * auxList = scheduler->startList;
+  while(auxList->nextProcess->process.pid != pid){
+    auxList = auxList->nextProcess;
+  }
+  ProcessNode *chosenOne = auxList->nextProcess;
+  auxList->nextProcess = chosenOne->nextProcess;
+  auxList = scheduler->startList;
+  while(auxList->nextProcess != NULL && newPriority >= auxList->nextProcess->process.priority){
+    auxList = auxList->nextProcess;
+  }
+  ProcessNode *aux = auxList->nextProcess;
+  auxList->nextProcess = chosenOne;
+  chosenOne->nextProcess = aux;
+}
+
+//Acá va el codigo ineficiente que quiere poner pato
+
+
+// //Es O(N) soy una locura
+
+// //caso 1 del xournal
+// int reOrderList(uint32_t pid, uint8_t newPriority){ 
+//   ProcessNode * current = scheduler->startList;
+//   ProcessNode * aux = NULL;
+//   ProcessNode * chosenOne = NULL;
+
+//   while(current != NULL){
+//     if(current->nextProcess == NULL){
+//       //Dependiendo en que caso estoy hago una cosa u otra
+//       //Primer caso: me guardo el nodo como aux porque todavía no tengo el chosenOne
+
+//       chosenOne->nextProcess = current->nextProcess;
+//       current->nextProcess = chosenOne;
+//       chosenOne->process.priority = newPriority;
+//       chosenOne->process.auxPriority = newPriority;
+//       return 0;
+//     }
+
+//     if(current->nextProcess->process.priority > newPriority){
+//       aux = 
+//     }
+
+//     if(current->nextProcess->process.pid == pid){
+//       //Dependiendo del caso hago una cosa u otra
+//       chosenOne = current->nextProcess;
+//       current->nextProcess = current->nextProcess->nextProcess;
+//     } else {
+//       current = current->nextProcess;
+//     }
+//   }
+// }
+
+// //caso 2 del xournal
+// int reOrderList(uint32_t pid, uint8_t newPriority){ 
+//   ProcessNode * current = scheduler->startList;
+//   ProcessNode * aux = NULL;
+//   ProcessNode * chosenOne = NULL;
+
+//   while(current != NULL){
+//     if(current->nextProcess == NULL || current->nextProcess->process.priority > newPriority){
+//       //Dependiendo en que caso estoy hago una cosa u otra
+//       //Primer caso: me guardo el nodo como aux porque todavía no tengo el chosenOne
+//       if(chosenOne == NULL){
+//         return 1; //Error: no existia un proceso con ese pid
+//       }
+
+//       chosenOne->nextProcess = current->nextProcess;
+//       current->nextProcess = chosenOne;
+//       chosenOne->process.priority = newPriority;
+//       chosenOne->process.auxPriority = newPriority;
+//       return 0;
+//     }
+
+//     if(current->nextProcess->process.pid == pid){
+//       //Dependiendo del caso hago una cosa u otra
+//       chosenOne = current->nextProcess;
+//       current->nextProcess = current->nextProcess->nextProcess;
+//     } else {
+//       current = current->nextProcess;
+//     }
+//   }
+// }
