@@ -148,7 +148,7 @@ static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t pr
     uint64_t processMemory = (uint64_t) alloc(DEFAULT_PROG_MEM);
     uint64_t sp = initProcess(processMemory + DEFAULT_PROG_MEM, ip, argc, newNode->process.args);
     newNode->process.stackPointer = sp;
-    newNode->process.basePointer = processMemory + DEFAULT_PROG_MEM;// no se si aca falta un -1
+    newNode->process.basePointer = processMemory + DEFAULT_PROG_MEM -1;// no se si aca falta un -1
     newNode->process.processMemory = processMemory;
     return newNode;
   }
@@ -176,9 +176,8 @@ static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t pr
   uint64_t processMemory = (uint64_t) alloc(DEFAULT_PROG_MEM);
   uint64_t sp = initProcess(processMemory + DEFAULT_PROG_MEM, ip, argc, newNode->process.args);
   newNode->process.stackPointer = sp;
-  newNode->process.basePointer = processMemory + DEFAULT_PROG_MEM;// no se si aca falta un -1
+  newNode->process.basePointer = processMemory + DEFAULT_PROG_MEM -1;// no se si aca falta un -1
   newNode->process.processMemory = processMemory;
-
   return node;
 }
 

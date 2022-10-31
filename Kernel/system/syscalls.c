@@ -8,6 +8,9 @@
 
 #define STDIN 1
 #define DEFAULT_RETVALUE -1
+#define F1 17
+#define F2 18
+
 
 static char mayusc = 0;
 unsigned char last;
@@ -92,8 +95,13 @@ int64_t read(char *buffer, size_t count) {
         mayusc = 1;
         break;
         
-      case 17:
+      case F1:
         loadBackupRegs(primaryBackup, secondaryBackup);
+        break;
+      
+      case F2:
+        ncPrint("AAAAAA\n\n");
+        eProcess();
         break;
         
       case 170:
