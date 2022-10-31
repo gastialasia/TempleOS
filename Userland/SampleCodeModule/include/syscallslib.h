@@ -25,5 +25,9 @@ int sys_kill(uint32_t pid);
 int sys_changepriority(uint32_t pid, uint8_t newPriority);
 int sys_changestate(uint32_t pid);
 void sys_yield();
+Semaphore *sys_semOpen(uint32_t id,int value);
+int sys_semClose(Semaphore * sem);
+int sys_semPost(Semaphore * sem);
+int sys_semWait(Semaphore * sem);
 
 #endif

@@ -5,12 +5,12 @@
 #include "../include/MemoryManagerWrapper.h"
 #include "../include/scheduler.h"
 #include "../include/pipes.h"
+#include "../include/semaphore.h"
 
 #define STDIN 1
 #define DEFAULT_RETVALUE -1
 #define F1 17
 #define F2 18
-
 
 static char mayusc = 0;
 unsigned char last;
@@ -222,6 +222,23 @@ int nice(uint32_t pid, uint8_t newPriority){
 void rScheduler(){
   runScheduler();
 }
+
+semPointer semOpen(uint32_t id,int value){
+  return sem_open(id, value);
+}
+
+int semClose(semPointer semToClose){
+  return sem_close(semToClose);
+}
+
+int semWait(semPointer sem){
+  return sem_wait(sem);
+}
+
+int semPost(semPointer sem){
+  return sem_post(sem);
+}
+
 
 
 

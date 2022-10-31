@@ -72,6 +72,18 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
     case 20:
         rScheduler();
         break;
+    case 21:
+        return (int64_t) semOpen((uint32_t)arg0,(int)arg1);
+        break;
+    case 22:
+        return semClose((semPointer)arg0);
+        break;
+    case 23:
+        return semPost((semPointer)arg0);
+        break;
+    case 24:
+        return semWait((semPointer)arg0);
+        break;
     default:
         return -1;
     }

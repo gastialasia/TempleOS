@@ -291,4 +291,20 @@ void yield(){
     sys_yield();
 }
 
+Semaphore *semOpen(uint32_t id,int value){
+    return sys_semOpen(id, value);
+}
+
+int semClose(Semaphore * sem){
+    return sys_semClose(sem);
+}
+
+int semPost(Semaphore * sem){
+    return sys_semPost(sem);
+}
+
+int semWait(Semaphore * sem){
+    return sys_semWait(sem);
+}
+
 

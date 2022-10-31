@@ -20,6 +20,10 @@ GLOBAL sys_kill
 GLOBAL sys_changepriority
 GLOBAL sys_changestate
 GLOBAL sys_yield
+GLOBAL sys_semOpen
+GLOBAL sys_semClose
+GLOBAL sys_semPost
+GLOBAL sys_semWait
 
 section .text
 
@@ -123,13 +127,31 @@ sys_yield:
   int 80h
   ret
 
+sys_semOpen:
+  mov rax, 21
+  int 80h
+  ret
+
+sys_semClose:
+  mov rax, 22
+  int 80h
+  ret
+
+sys_semPost:
+  mov rax, 23
+  int 80h
+  ret
+
+sys_semWait:
+  mov rax, 24
+  int 80h
+  ret
+
 divzero:
   mov rax, 4
   xor rbx, rbx
   div rbx
   ret
-
- 
 
 opcode:
   ud2   ;undefined instruction, para tirar el opcode exception.

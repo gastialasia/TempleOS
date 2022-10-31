@@ -29,6 +29,11 @@ typedef struct pipeUserInfo{
   struct pipe * pipe;
 } pipeUserInfo;
 
+typedef struct Semaphore {
+  uint32_t id;
+  int value;
+} Semaphore;
+
 int strlen(const char *);
 
 int strcmp(const char *str1, const char *str2);
@@ -92,5 +97,13 @@ int kill(uint32_t pid);
 int block(uint32_t pid);
 
 void yield();
+
+Semaphore *semOpen(uint32_t id,int value);
+
+int semClose(Semaphore * sem);
+
+int semPost(Semaphore * sem);
+
+int semWait(Semaphore * sem);
 
 #endif

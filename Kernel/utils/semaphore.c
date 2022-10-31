@@ -1,8 +1,8 @@
 #include "../include/semaphore.h"
 #include "../include/scheduler.h"
 
-#define MAX_PROCESS 10
 #define MAX_SEM 10
+#define MAX_PROCESS 10
 
 typedef struct Semaphore{
   uint32_t id;

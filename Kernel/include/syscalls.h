@@ -53,4 +53,12 @@ int nice(uint32_t pid, uint8_t newPriority);
 
 void rScheduler();
 
+semPointer semOpen(uint32_t id,int value);
+
+int semClose(semPointer semToClose);
+
+int semPost(semPointer sem);
+
+int semWait(semPointer sem);
+
 #endif
