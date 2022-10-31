@@ -2,35 +2,27 @@
 #include "../include/stdlib.h"
 #include "../include/test_processes.h"
 
-int64_t test_processes(uint64_t argc, char *argv[]){
+int64_t test_processes(uint64_t argc, char argv[6][21]){
   uint8_t rq;
   uint8_t alive = 0;
   uint8_t action;
   uint64_t max_processes;
   char * argvAux[] = {0};
 
-  // printf("checkpoint1\n");
-
   if (argc != 2) return -1;
-
-  // printf("checkpoint2\n");
-
-  printf(argv[1]);
-  sleep(10000);
 
   if ((max_processes = atoi(argv[1])) <= 0) return -1;
 
-  // printf("checkpoint3\n");
-
   p_rq p_rqs[max_processes];
+
+  char aux[6][21];
+  strcpy(aux[0], "_loop");
 
   while (1){
 
-    printf("Iiiii loquita sapee\n");
-
     // Create max_processes processes
     for(rq = 0; rq < max_processes; rq++){
-      p_rqs[rq].pid = createProcess(endless_loop, 3, 0, "loop", NULL, NULL);
+      p_rqs[rq].pid = createProcess(endless_loop, 3, 1, aux, NULL, NULL);
 
       if (p_rqs[rq].pid == -1){
         printf("test_processes: ERROR creating process\n");
@@ -40,6 +32,10 @@ int64_t test_processes(uint64_t argc, char *argv[]){
         alive++;
       }
     }
+
+    ps();
+
+    sleep(5000);
 
     // Randomly kills, blocks or unblocks processes until every one has been killed
     while (alive > 0){
@@ -72,7 +68,7 @@ int64_t test_processes(uint64_t argc, char *argv[]){
       }
 
       // Randomly unblocks processes
-      for(rq = 0; rq < max_processes; rq++)
+      for(rq = 0; rq < max_processes; rq++){
         if (p_rqs[rq].state == BLOCKED && GetUniform(100) % 2){
           if(block(p_rqs[rq].pid) == -1){
             printf("test_processes: ERROR unblocking process\n");
@@ -80,6 +76,11 @@ int64_t test_processes(uint64_t argc, char *argv[]){
           }
           p_rqs[rq].state = RUNNING; 
         }
+      }
+
+      ps();
+
+        sleep(5000);
     } 
   }
 }

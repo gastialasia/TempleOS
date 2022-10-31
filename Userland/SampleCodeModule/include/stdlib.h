@@ -81,7 +81,7 @@ void free(void * memToFree);
 
 void memStatus(unsigned int * status);
 
-int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char * argv[], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
+int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
 
 void exit();
 

@@ -10,6 +10,6 @@ typedef struct P_rq{
   enum State state;
 }p_rq;
 
-int64_t test_processes(uint64_t argc, char *argv[]);
+int64_t test_processes(uint64_t argc, char argv[6][21]);
 
 #endif
