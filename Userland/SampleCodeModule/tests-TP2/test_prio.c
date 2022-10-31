@@ -21,29 +21,21 @@ void test_prio(){
   for(i = 0; i < TOTAL_PROCESSES; i++)
     nice(pids[i], prio[i]);
 
-  sleep(3000);
-
   bussy_wait(WAIT);
   printf("\nBLOCKING...\n");
 
   for(i = 0; i < TOTAL_PROCESSES; i++)
     block(pids[i]);
 
-  sleep(3000);
-
   printf("CHANGING PRIORITIES WHILE BLOCKED...\n");
 
   for(i = 0; i < TOTAL_PROCESSES; i++)
     nice(pids[i], MEDIUM);
 
-  sleep(3000);
-
   printf("UNBLOCKING...\n");
 
   for(i = 0; i < TOTAL_PROCESSES; i++)
     block(pids[i]);
-
-  sleep(3000);
 
   bussy_wait(WAIT);
   printf("\nKILLING...\n");
@@ -51,5 +43,5 @@ void test_prio(){
   for(i = 0; i < TOTAL_PROCESSES; i++)
     kill(pids[i]);
 
-  sleep(3000);
+  exit();
 }

@@ -103,7 +103,7 @@ int64_t read(char *buffer, size_t count) {
         ncPrint("AAAAAA\n\n");
         eProcess();
         break;
-        
+
       case 170:
       case 182:
         mayusc = 0;
@@ -204,6 +204,7 @@ void eProcess(){
   closeUserPipe(getCurrentStdin());
   closeUserPipe(getCurrentStdout());
   exitCurrentProcess();
+  runScheduler();
 }
 
 int currentPID(){

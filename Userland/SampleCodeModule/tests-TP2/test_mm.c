@@ -73,6 +73,6 @@ char test_mm(int argc, char argv[6][21]){ //test_mm(uint64_t argc, char *argv[])
         free(mm_rqs[i].address);
   }
 
-  return 0;
+  exit();
 
 }

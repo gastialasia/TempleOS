@@ -35,7 +35,7 @@ int64_t test_processes(uint64_t argc, char argv[6][21]){
 
     ps();
 
-    sleep(5000);
+    sleep(3000);
 
     // Randomly kills, blocks or unblocks processes until every one has been killed
     while (alive > 0){
@@ -80,7 +80,7 @@ int64_t test_processes(uint64_t argc, char argv[6][21]){
 
       ps();
 
-        sleep(5000);
+        sleep(3000);
     } 
   }
 }
