@@ -91,4 +91,6 @@ int kill(uint32_t pid);
 
 int block(uint32_t pid);
 
+void yield();
+
 #endif

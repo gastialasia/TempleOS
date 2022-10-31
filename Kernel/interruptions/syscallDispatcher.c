@@ -69,6 +69,9 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
     case 19:
         return changeProcessState((uint32_t)arg0);
         break;
+    case 20:
+        rScheduler();
+        break;
     default:
         return -1;
     }

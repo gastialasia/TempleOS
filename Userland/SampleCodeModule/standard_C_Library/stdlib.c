@@ -287,4 +287,8 @@ int block(uint32_t pid){
     return sys_changestate(pid);
 }
 
+void yield(){
+    sys_yield();
+}
+
 

@@ -24,5 +24,6 @@ void sys_ps(char * buffer);
 int sys_kill(uint32_t pid);
 int sys_changepriority(uint32_t pid, uint8_t newPriority);
 int sys_changestate(uint32_t pid);
+void sys_yield();
 
 #endif

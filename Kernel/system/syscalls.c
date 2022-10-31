@@ -219,6 +219,10 @@ int nice(uint32_t pid, uint8_t newPriority){
   return changeProcessPriority(pid, newPriority);
 }
 
+void rScheduler(){
+  runScheduler();
+}
+
 
 
 

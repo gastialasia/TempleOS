@@ -19,6 +19,7 @@ GLOBAL sys_ps
 GLOBAL sys_kill
 GLOBAL sys_changepriority
 GLOBAL sys_changestate
+GLOBAL sys_yield
 
 section .text
 
@@ -114,6 +115,11 @@ sys_changepriority:
 
 sys_changestate:
   mov rax, 19
+  int 80h
+  ret
+
+sys_yield:
+  mov rax, 20
   int 80h
   ret
 
