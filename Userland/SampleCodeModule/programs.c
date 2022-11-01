@@ -8,17 +8,17 @@
 
 static char buff[300];
 
-int help(void){
-    printf("Commands:\n-fibonacci\n-primos\n-printmem\n-date\n-opcode\n-divzero\n-null\n-help\n-clear\n");
+int help(int argc, char argv[6][21]){
+    printf("-fibonacci\n-primos\n-date\n-opcode\n-divzero\n-help\n-clear\n-mem\n-ps\n-kill [pid])\n-nice [pid] [priority]\n-block [pid]\n-sem\n-cat [input]\n-wc [input]\n-filter [input]\n-pipe\n-phylo\n-testmm [max memory]\n-testproc [max processes]\n-testprio\n-testsync FALTA VER ARGUMENTOS\n-testsync FALTA VER ARGUMENTOS\n-testnosync\n");
     return 0;
 }
 
-int invalid(void){
+int invalid(int argc, char argv[6][21]){
     printf("Invalid command: try 'help'\n");
     return 0;
 }
 
-int date(void){
+int date(int argc, char argv[6][21]){
     int values[5] = {7,8,9,4,2}; //En orden: D, M, Y, H, M
     char buffer[3]; // Cada numero de la fecha no va a tener más de dos digitos, 3 contando el cero null terminated
     for (int i=0;i<5;i++){
@@ -44,7 +44,7 @@ int date(void){
     return 0;
 }
 
-int fibo(void){
+int fibo(int argc, char argv[6][21]){
     // Deja en el buffer el numero convertido a string
     // Devuelve 1 si el programa sigue corriendo, 0 sino
     uint64_t aux=0, fibo1=0, fibo2=1;
@@ -60,7 +60,7 @@ int fibo(void){
     return 0;
 }
 
-int primos(void){ //Esta funcion es una criba de Eratosthenes casera
+int primos(int argc, char argv[6][21]){ //Esta funcion es una criba de Eratosthenes casera
   // deja en el buffer el numeor convertido a string
   // devuelve 1 si el programa no termino, 0 si termino
     uint64_t j, limit, lastPrimo=0;
@@ -83,7 +83,7 @@ int primos(void){ //Esta funcion es una criba de Eratosthenes casera
     return 0;
 }
 
-int infoRegisters(){
+int infoRegisters(int argc, char argv[6][21]){
     registersT regs;
     inforeg(&regs);
     printReg("rax",regs.rax);
@@ -104,7 +104,7 @@ int infoRegisters(){
     return 0;
 }
 
-int printMemory(){
+int printMemory(int argc, char argv[6][21]){
 	char pos[8] ={0};
 	printf("Ingrese 8 caracteres en hexa\n");
 	scanf(pos);
@@ -126,22 +126,22 @@ int printMemory(){
 	return 0;
 }
 
-int opcodeProgram(){
+int opcodeProgram(int argc, char argv[6][21]){
     opcode();
     return 0;
 }
 
-int divzeroProgram(){
+int divzeroProgram(int argc, char argv[6][21]){
     divzero();
     return 0;
 }
 
-int clearProgram(){
+int clearProgram(int argc, char argv[6][21]){
     clear();
     return 0;
 }
 
-int memStatusProgram(){
+int memStatusProgram(int argc, char argv[6][21]){
     unsigned int array[3];
     memStatus(array);
     printf("Total heap size: ");
@@ -156,7 +156,7 @@ int memStatusProgram(){
     return 0;
 }
 
-int psProgram(){
+int psProgram(int argc, char argv[6][21]){
     ps();
     return 0;
 }
@@ -215,7 +215,7 @@ int blockProgram(int argc, char args[6][21]){
     return 0;
 }
 
-void semProgram(int argc, char args[6][21]){
+int semProgram(int argc, char args[6][21]){
     if(argc != 1){
         printf("sem program does not require arguments\n");
         return;
@@ -227,7 +227,7 @@ void semProgram(int argc, char args[6][21]){
 }
 
 //Creates a process that block waiting sem with id 15
-void testsem(){
+int testsem(int argc, char argv[6][21]){
     Semaphore * aux = semOpen(15, 0);
     if(aux == NULL){
         printf("Error on creating semaphore\n");
