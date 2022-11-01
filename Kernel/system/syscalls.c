@@ -29,7 +29,11 @@ int64_t write(const char *buffer, size_t count){
   // }
   if(!stdout){
 	  for (int i = 0; i < count; i++){
-		  ncPrintChar(buffer[i]);
+      if (buffer[i]=='~'){
+        ncTogglePrintColor();
+      } else {
+        ncPrintChar(buffer[i]);
+      }
 	  }
   } else {
     pipeWrite(stdout, buffer);
@@ -79,7 +83,7 @@ int64_t read(char *buffer, size_t count) {
         }
         buffer[k] = 0;
         return k;
-        
+
       case 8: // Borrado
       {
         if (k > 0)

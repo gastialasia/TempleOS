@@ -27,7 +27,7 @@ void shell(void)
     char buffer[LENGTH];
     while (1)
     {
-        printf("User:$ ");
+        printf("~User~:$ ");
         int length = scanf(buffer);
         if (length!=0){
             parser(buffer);

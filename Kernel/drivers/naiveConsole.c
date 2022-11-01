@@ -3,13 +3,24 @@
 #include <naiveConsole.h>
 #include <tools.h>
 
+#define WHITE_ON_BLACK 0x0F
+#define GREEN_ON_BLACK 0x02
+
 static char buffer[64] = { '0' };
 static const uint32_t width = 80;
 static const uint32_t height = 25 ;
 static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideo = (uint8_t*)0xB8000;
 
-// ncPrint (normal, left y right)
+static char color = WHITE_ON_BLACK;
+
+void ncTogglePrintColor(){
+	if (color==WHITE_ON_BLACK) {
+		color=GREEN_ON_BLACK;
+	} else {
+		color=WHITE_ON_BLACK;
+	}
+}
 
 void ncPrint(const char * string){
 	int i;
@@ -31,7 +42,9 @@ void ncPrintChar(char character)
 	}
 
 	*currentVideo = character;
-	currentVideo += 2;
+	currentVideo += 1;
+	*currentVideo = color; //1111=F blanco, 0000=0 negro -> 1er: fondo, 2do: letra
+	currentVideo += 1;
 }
 
 // ncDeleteChar(normal)
