@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-uint64_t test_sync(uint64_t argc, const char argv[6][21]);
-
+void test_sync();
+void test_no_sync();
 #endif

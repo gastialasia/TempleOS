@@ -244,13 +244,14 @@ uint64_t contextSwitching(uint64_t sp){
         minReadyProcess = minReadyProcess->nextProcess;
       }
       auxMinReadyProcess = auxMinReadyProcess->nextProcess;
+      continue;
     }
     
-    if(minReadyProcess->process.state != 1 && auxMinReadyProcess->process.pid !=1){
+    if(minReadyProcess->process.state != 1 &&(!scheduler->foregroundInUse || auxMinReadyProcess->process.pid !=1)){
       minReadyProcess = auxMinReadyProcess;
     }
 
-    if(auxMinReadyProcess->process.auxPriority < minReadyProcess->process.auxPriority && auxMinReadyProcess->process.state == 1){
+    if(auxMinReadyProcess->process.auxPriority < minReadyProcess->process.auxPriority && minReadyProcess->process.state == 1){
       minReadyProcess = auxMinReadyProcess;
     }
     auxMinReadyProcess = auxMinReadyProcess->nextProcess;

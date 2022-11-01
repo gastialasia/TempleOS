@@ -24,9 +24,6 @@ int64_t write(const char *buffer, size_t count){
   pipeUserInfo * stdout = getCurrentStdout();
   pcb * currentProcess = getCurrentProcess();
 
-  if(stdout == NULL && currentProcess->priority != 1){
-    return 0;
-  }
   if(!stdout){
 	  for (int i = 0; i < count; i++){
       if (buffer[i]=='~'){

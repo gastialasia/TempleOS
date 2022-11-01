@@ -86,7 +86,7 @@ int sem_post(Semaphore * sem){
   
   // no hay nadie esperando el semaforo
   if(sem->waiting == 0){
-    _xchg(&mutexSem, 0);
+    _xchg(&sem->lock, 0);
     return 0;
   }
 

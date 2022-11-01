@@ -2,88 +2,115 @@
 #include "../include/stdlib.h"
 #include "../include/test_util.h"
 #include <programs.h>
+#include <stdint.h>
+#include "../include/syscallslib.h"
+static void incWithSem();
 
-#define SEM_ID "sem"
+static void incWithoutSem();
+
+
+static int processWrapper(char * name){
+  char argv[6][21];
+  argv[0][0] = 'i';
+  argv[0][1] = 'n';
+  argv[0][2] = 'c';
+  argv[0][3] = 0;
+
+  if(*name == 'i'){
+    return createProcess((uint64_t)&incWithSem,2, 2, argv, NULL, NULL);
+  }else
+    return createProcess((uint64_t)&incWithoutSem,2, 2, argv, NULL, NULL);
+}
+
 #define TOTAL_PAIR_PROCESSES 2
+#define SEM 50
+#define N 100
 
-int64_t global=0;  //shared memory
+int64_t global;  //shared memory
 
 void slowInc(int64_t *p, int64_t inc){
-  // printf("Entreeeeeeeeeeeeeeee\n");
-  // printInt((int)inc);
-  uint64_t aux = *p;
-  yield(); //This makes the race condition highly probable
+  uint32_t pid = getpid();
+  int64_t aux = *p;
   aux += inc;
+  for (int i = 0; i < 500000*(pid % 5 + 1); i++);
+  sys_yield();
   *p = aux;
-  // printInt((int)*p);
 }
 
-uint64_t my_process_inc(uint64_t argc, char argv[6][21]){
-  uint64_t n;
-  int64_t inc;
-  int8_t use_sem;
-
-  if (argc != 4) exit();
-
-  if ((n = satoi(argv[1])) <= 0) exit();
-  if ((inc = satoi(argv[2])) == 0) exit();
-  if ((use_sem = satoi(argv[3])) < 0) exit();
-
-  if (use_sem)
-    if (!semOpen(SEM_ID, 1)){
-      printf("test_sync: ERROR opening semaphore\n");
-      exit();
-    }
-
+void inc(){
   uint64_t i;
-  for (i = 0; i < n; i++){
-    if (use_sem) semWait(SEM_ID);
-    slowInc(&global, inc);
-    if (use_sem) semPost(SEM_ID);
-  }
+  int64_t value = getpid() % 2 ? 1 : -1;
 
-  if (use_sem) semClose(SEM_ID);
-  
-  exit();
-}
+  Semaphore *sem = semOpen(SEM, 1);
 
-uint64_t test_sync(uint64_t argc, const char argv[6][21]){ //{n, use_sem, 0}
-  uint64_t pids[2 * TOTAL_PAIR_PROCESSES];
-
-  if (argc != 2) exit();
-
-  char argvDec[6][21]; // = {"proc_inc", "500", "1", vec};
-  strcpy(argvDec[0], "proc_inc");
-  strcpy(argvDec[1], "20");
-  strcpy(argvDec[2], "1");
-  strcpy(argvDec[3], argv[1]);
-   char argvInc[6][21]; // = {"proc_inc", "500", "1", vec};
-  strcpy(argvInc[0], "proc_inc");
-  strcpy(argvInc[1], "20");
-  strcpy(argvInc[2], "-1");
-  strcpy(argvInc[3], argv[1]);
-
-  global = 0;
-
-  uint64_t i;
-  for(i = 0; i < TOTAL_PAIR_PROCESSES; i++){
-    pids[i] = createProcess(my_process_inc, 3, 4, argvDec, NULL, NULL);
-    pids[i + TOTAL_PAIR_PROCESSES] = createProcess(my_process_inc, 3, 4, argvInc, NULL, NULL);
+  if (sem == NULL){
+    printf("ERROR OPENING SEM\n");
+    exit(0);
   }
   
-  ps();
-
-  for(i = 0; i < TOTAL_PAIR_PROCESSES; i++){
-    // my_wait(pids[i]);
-    // my_wait(pids[i + TOTAL_PAIR_PROCESSES]);
-    sleep(10000);
+  for (i = 0; i < N; i++) {
+    semWait(sem);
+    slowInc(&global, value);
+    semPost(sem);
   }
-
+  semWait(sem);
+  printf("soy el inc:");
+  printInt(getpid());
+  putchar('\n');
+  
+  char resultStr[20];
   printf("Final value: ");
-  char * resultStr[10];
   uintToBase(global, resultStr, 10);
   printf(resultStr);
   putchar('\n');
+  semPost(sem);
+  exit(0);
+}
 
-  exit();
+void ninc(){
+  uint64_t i;
+  int64_t value = getpid() % 2 ? 1 : -1;
+
+  for (i = 0; i < N; i++) {
+    slowInc(&global, value);
+  }
+  
+  char resultStr[20];
+  printf("Final value: ");
+  uintToBase(global, resultStr, 10);
+  printf(resultStr);
+  putchar('\n');
+  exit(0);
+}
+
+void test_sync(){
+  uint64_t i;
+
+  global = 0;
+
+  Semaphore *sem = semOpen(SEM, 1);
+
+  printf("CREATING PROCESSES...(WITH SEM)\n");
+
+  for(i = 0; i < TOTAL_PAIR_PROCESSES; i++){
+    processWrapper("i");
+    processWrapper("i");
+  }
+
+  semClose(sem);
+  exit(0);
+}
+
+void test_no_sync(){
+  uint64_t i;
+
+  global = 0;
+
+  printf("CREATING PROCESSES...(WITHOUT SEM)\n");
+
+  for(i = 0; i < TOTAL_PAIR_PROCESSES; i++){
+    processWrapper("n");
+    processWrapper("n");
+  }
+  exit(0);
 }
