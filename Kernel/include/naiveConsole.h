@@ -28,4 +28,6 @@ void ncClear();
 
 void ncTogglePrintColor();
 
+// void ncToggleCursor();
+
 #endif

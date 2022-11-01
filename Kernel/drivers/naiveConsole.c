@@ -11,6 +11,7 @@ static const uint32_t width = 80;
 static const uint32_t height = 25 ;
 static uint8_t * const video = (uint8_t*)0xB8000;
 static uint8_t * currentVideo = (uint8_t*)0xB8000;
+// static showCursor=0;
 
 static char color = WHITE_ON_BLACK;
 
@@ -21,6 +22,10 @@ void ncTogglePrintColor(){
 		color=WHITE_ON_BLACK;
 	}
 }
+
+// void ncToggleCursor(){
+// 	showCursor = !showCursor;
+// }
 
 void ncPrint(const char * string){
 	int i;
@@ -45,6 +50,8 @@ void ncPrintChar(char character)
 	currentVideo += 1;
 	*currentVideo = color; //1111=F blanco, 0000=0 negro -> 1er: fondo, 2do: letra
 	currentVideo += 1;
+	*currentVideo = ' ';
+	*(currentVideo+1) = 0xF0;
 }
 
 // ncDeleteChar(normal)
@@ -52,6 +59,8 @@ void ncPrintChar(char character)
 void ncDeleteChar(){
 	currentVideo -=2;
 	*currentVideo = ' ';
+	*(currentVideo+3)= 0x0F;
+	*(currentVideo+1)= 0xF0;
 }
 
 // ncMoveLines (normal, left y right)
@@ -126,7 +135,9 @@ void ncClear()
 {
 	int i;
 
-	for (i = 0; i < height * width; i++)
+	for (i = 0; i < height * width; i++){
 		video[i * 2] = ' ';
+		video[(i * 2)+1] = WHITE_ON_BLACK;
+	}
 	currentVideo = video;
 }

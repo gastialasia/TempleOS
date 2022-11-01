@@ -22,11 +22,11 @@ registersT *secondaryBackup = &secondary;
 int64_t write(const char *buffer, size_t count){
 
   pipeUserInfo * stdout = getCurrentStdout();
-  // pcb * currentProcess = getCurrentProcess();
+  pcb * currentProcess = getCurrentProcess();
 
-  // if(stdout == NULL && currentProcess->priority != 1){
-  //   return 0;
-  // }
+  if(stdout == NULL && currentProcess->priority != 1){
+    return 0;
+  }
   if(!stdout){
 	  for (int i = 0; i < count; i++){
       if (buffer[i]=='~'){
@@ -42,7 +42,6 @@ int64_t write(const char *buffer, size_t count){
 }
 
 int64_t read(char *buffer, size_t count) {
-  
   int k = 0;
   unsigned char key;
   pipeUserInfo * stdin = getCurrentStdin();
