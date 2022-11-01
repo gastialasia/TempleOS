@@ -6,6 +6,7 @@
 #include <syscalls.h>
 #include <naiveConsole.h>
 #include <scheduler.h>
+#include <semaphore.h>
 
 static int syscallnumber;
 
@@ -83,6 +84,9 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
         break;
     case 24:
         return semWait((semPointer)arg0);
+        break;
+    case 25:
+        getAllSems((char *)arg0);
         break;
     default:
         return -1;

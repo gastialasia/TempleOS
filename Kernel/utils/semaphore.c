@@ -1,8 +1,13 @@
 #include "../include/semaphore.h"
 #include "../include/scheduler.h"
+#include "../include/tools.h"
 
 #define MAX_SEM 10
 #define MAX_PROCESS 10
+
+#define ID 0
+#define VALUE 1
+#define WAITING_PIDS 2
 
 typedef struct Semaphore{
   uint32_t id;
@@ -16,6 +21,7 @@ Semaphore * sems[MAX_SEM];
 uint32_t size = 0;
 uint8_t mutexSem = 0;
 
+void normalizeTable(char *buf, char *data, int field);
 
 // acorde a la de c si no existe se crea uno nuevo, si no se retorna el existente que coincida con la id
 Semaphore * sem_open(uint32_t id,int value){
@@ -127,9 +133,7 @@ int sem_wait(Semaphore * sem){
   return 0;
 }
 
-
 void deleteProcessFromSem(int64_t pid){
-
   for(int i = 0; i < size; i++){
     for(int j = 0 ; j < sems[i]->waiting;j++){
       if(sems[i]->queuqe[j]->pid == pid){
@@ -142,8 +146,40 @@ void deleteProcessFromSem(int64_t pid){
       }
     }
   }
+}
 
+void normalizeTable(char *buf, char *data, int field){
+  static int fields[]={6, 5, 65};
+  int n = fields[field]-strlen(data);
+  strcat(buf, data);
+  for(int i=0; i<n; i++){
+    strcat(buf, " ");
+  }
+  strcat(buf, "  "); //Separate fields
+}
 
+void getAllSems(char *buffer){
+  strcat(buffer, "SEM_ID  Value  Blocked PIDs\n");
+  char idStr[6];
+  char valueStr[5];
+  pcb * waitingPids;
+  int j;
+  for(int i=0; i < size; i++){
+    uintToBase(sems[i]->id, idStr, 10);
+    normalizeTable(buffer, idStr, ID);
+    
+    uintToBase(sems[i]->value, valueStr, 10);
+    normalizeTable(buffer, valueStr, VALUE);
+
+    for(j=0; j < sems[i]->waiting; j++){
+      uintToBase(sems[i]->queuqe[j]->pid, idStr, 10);
+      strcat(buffer, idStr);
+      if(j!=sems[i]->waiting-1){
+        strcat(buffer, " - ");
+      }
+    }
+    strcat(buffer, "\n");
+  }
 }
 
 

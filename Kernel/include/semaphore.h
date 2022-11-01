@@ -18,4 +18,6 @@ int sem_post(semPointer sem);
 
 int sem_close(semPointer semToClose);
 
+void getAllSems(char *buffer);
+
 #endif

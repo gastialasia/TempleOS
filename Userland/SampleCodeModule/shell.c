@@ -165,7 +165,9 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     else if (!strcmp("testsync", str))
     {
         toRet = &test_sync;
-        *isBuiltIn=0;
+    }
+    else if (!strcmp("testnosync", str)) {
+        toRet = &test_no_sync;
     }
     else if (!strcmp("printmem", str))
     {
@@ -197,9 +199,14 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
         toRet = &blockProgram;
         *isBuiltIn=1;
     }
-    else if (!strcmp("testnosync", str)) {
-        toRet = &test_no_sync;
+    else if (!strcmp("sem", str))
+    {
+        toRet = &semProgram;
         *isBuiltIn=1;
+    }
+    else if (!strcmp("testsem", str))
+    {
+        toRet = &testsem;
     }
     else
     {

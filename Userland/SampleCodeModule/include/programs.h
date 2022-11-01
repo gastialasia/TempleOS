@@ -16,5 +16,7 @@ int psProgram();
 int killProgram(int argc, char args[6][21]);
 int niceProgram(int argc, char args[6][21]);
 int blockProgram(int argc, char args[6][21]);
+void semProgram(int argc, char args[6][21]);
+void testsem();
 
 #endif

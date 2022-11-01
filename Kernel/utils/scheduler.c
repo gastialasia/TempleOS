@@ -115,23 +115,6 @@ static char* strcpy(char* destination, const char* source) {
   return ptr;
 }
 
-static char* strcat(char* destination, const char* source)
-{
-    // make `ptr` point to the end of the destination string
-    char* ptr = destination + strlen(destination);
- 
-    // appends characters of the source to the destination string
-    while (*source != '\0') {
-        *ptr++ = *source++;
-    }
- 
-    // null terminate destination string
-    *ptr = '\0';
- 
-    // the destination is returned by standard `strcat()`
-    return destination;
-}
-
 static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,int argc,char argv[ARG_QTY][ARG_LEN],pipeUserInfo * customStdin,pipeUserInfo * customStdout,uint64_t ip){
 
   if(node == NULL){

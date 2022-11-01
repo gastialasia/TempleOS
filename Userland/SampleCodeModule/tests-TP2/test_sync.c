@@ -8,7 +8,6 @@ static void incWithSem();
 
 static void incWithoutSem();
 
-
 static int processWrapper(char * name){
   char argv[6][21];
   argv[0][0] = 'i';
@@ -17,9 +16,9 @@ static int processWrapper(char * name){
   argv[0][3] = 0;
 
   if(*name == 'i'){
-    return createProcess((uint64_t)&incWithSem,2, 2, argv, NULL, NULL);
+    return createProcess(incWithSem,2, 2, argv, NULL, NULL);
   }else
-    return createProcess((uint64_t)&incWithoutSem,2, 2, argv, NULL, NULL);
+    return createProcess(incWithoutSem,2, 2, argv, NULL, NULL);
 }
 
 #define TOTAL_PAIR_PROCESSES 2
@@ -33,7 +32,7 @@ void slowInc(int64_t *p, int64_t inc){
   int64_t aux = *p;
   aux += inc;
   for (int i = 0; i < 500000*(pid % 5 + 1); i++);
-  sys_yield();
+  yield();
   *p = aux;
 }
 

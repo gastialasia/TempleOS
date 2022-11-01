@@ -2,7 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include <programs.h>
 #include <stdint.h>
-#include <stdlib.h>
+#include "./include/stdlib.h">
 
 #define LIMIT64 0b0111111111111111111111111111111111111111111111111111111111111111 //2^(63)-1
 
@@ -213,5 +213,25 @@ int blockProgram(int argc, char args[6][21]){
         printf("Error on changing process state\n");
     }
     return 0;
+}
 
+void semProgram(int argc, char args[6][21]){
+    if(argc != 1){
+        printf("sem program does not require arguments\n");
+        return;
+    }
+
+    char buffer[2000]={0};
+    getAllSems(buffer);
+    printf(buffer);
+}
+
+//Creates a process that block waiting sem with id 15
+void testsem(){
+    Semaphore * aux = semOpen(15, 0);
+    if(aux == NULL){
+        printf("Error on creating semaphore\n");
+        exit();
+    }
+    semWait(aux);
 }

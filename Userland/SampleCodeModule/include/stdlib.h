@@ -106,4 +106,6 @@ int semPost(Semaphore * sem);
 
 int semWait(Semaphore * sem);
 
+void getAllSems(char * buf);
+
 #endif

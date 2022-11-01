@@ -5,9 +5,6 @@
 #define MAX_PIPES 20
 #define PIPE_SIZE 512 // byres de buffer del pipe
 
-
-
-
 typedef struct pipe{
   uint32_t id;
   char data[PIPE_SIZE];

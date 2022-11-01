@@ -307,4 +307,8 @@ int semWait(Semaphore * sem){
     return sys_semWait(sem);
 }
 
+void getAllSems(char * buf){
+    sys_getAllSems(buf);
+}
+
 

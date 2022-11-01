@@ -24,6 +24,7 @@ GLOBAL sys_semOpen
 GLOBAL sys_semClose
 GLOBAL sys_semPost
 GLOBAL sys_semWait
+GLOBAL sys_getAllSems
 
 section .text
 
@@ -144,6 +145,11 @@ sys_semPost:
 
 sys_semWait:
   mov rax, 24
+  int 80h
+  ret
+
+sys_getAllSems:
+  mov rax, 25
   int 80h
   ret
 

@@ -29,5 +29,6 @@ Semaphore *sys_semOpen(uint32_t id,int value);
 int sys_semClose(Semaphore * sem);
 int sys_semPost(Semaphore * sem);
 int sys_semWait(Semaphore * sem);
+void sys_getAllSems(char *buffer);
 
 #endif
