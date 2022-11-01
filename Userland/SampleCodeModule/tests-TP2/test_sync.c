@@ -37,7 +37,7 @@ void slowInc(int64_t *p, int64_t inc){
   *p = aux;
 }
 
-void inc(){
+void incWithSem(){
   uint64_t i;
   int64_t value = getpid() % 2 ? 1 : -1;
 
@@ -67,7 +67,7 @@ void inc(){
   exit(0);
 }
 
-void ninc(){
+void incWithoutSem(){
   uint64_t i;
   int64_t value = getpid() % 2 ? 1 : -1;
 
