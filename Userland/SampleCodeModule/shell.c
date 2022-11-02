@@ -57,16 +57,20 @@ void parser(const char *buffer){
         tokenQty2 = tokenizeCommand(commands[1], tokens2);
         fun2 = getFuncFromString(tokens2[0], &isBuiltIn);
 
-        if (!strcmp(tokens1[tokenQty2-1],"&")){
-            priority = BACKGROUND;
-            tokenQty2--; // Decremento nro de argumentos porque el & no cuenta
-        }
+        if(fun1 == invalid || fun2 == invalid){
+            invalid(NULL, NULL);
+        } else {
+            if (!strcmp(tokens1[tokenQty2-1],"&")){
+                priority = BACKGROUND;
+                tokenQty2--; // Decremento nro de argumentos porque el & no cuenta
+            }
 
-        fd * fd1 = createFd();
-        fd * fd2 = createFd();
-        createPipe(fd1, fd2);
-        createProcess(fun1, BACKGROUND, 1, tokens1, NULL, fd2); //Este escribe, corre en background
-        createProcess(fun2, tokenQty2, 1, tokens2, fd1, NULL); //Este lee, corre en foreground
+            fd * fd1 = createFd();
+            fd * fd2 = createFd();
+            createPipe(fd1, fd2);
+            createProcess(fun1, BACKGROUND, 1, tokens1, NULL, fd2); //Este escribe, corre en background
+            createProcess(fun2, tokenQty2, 1, tokens2, fd1, NULL); //Este lee, corre en foreground
+        }
     } else {
       if(!isBuiltIn){
 
@@ -250,6 +254,10 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     else if (!strcmp("loop", str))
     {
         toRet = &loopProgram;
+    }
+    else if (!strcmp("nothing", str))
+    {
+        toRet = &nothingProgram;
     }
     else
     {

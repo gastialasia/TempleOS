@@ -325,3 +325,7 @@ void loopProgram(int argc, char args[6][21]){
     }
     exit();
 }
+
+void nothingProgram(int argc, char args[6][21]){
+    while(1);
+}
