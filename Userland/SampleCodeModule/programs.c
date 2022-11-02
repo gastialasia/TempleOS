@@ -215,7 +215,7 @@ int blockProgram(int argc, char args[6][21]){
     return 0;
 }
 
-int semProgram(int argc, char args[6][21]){
+void semProgram(int argc, char args[6][21]){
     if(argc != 1){
         printf("sem program does not require arguments\n");
         return;
@@ -245,16 +245,26 @@ void writePipeProgram(int argc, char argv[6][21]){
 }
 
 void readPipeProgram(int argc, char argv[6][21]){
-    printf("Siiiiuuuuu\n");
     char buf1[300];
     char buf2[300];
     int i, j;
     while(1){
-        scanf(buf1);
-        for(i=10, j=0; i<20; i++, j++)
-            buf2[j]=buf1[i];
-        buf2[j]=0;
-        printf(buf2);
+        //scanf(buf1);
+        // for(i=10, j=0; i<20; i++, j++)
+        //     buf2[j]=buf1[i];
+        // buf2[j]=0;
+        //printf(buf2);
         sleep(1000);
     }
+}
+
+void pipeListProgram(int argc, char args[6][21]){
+    if(argc != 1){
+        printf("sem program does not require arguments\n");
+        return;
+    }
+
+    char buffer[2000]={0};
+    getAllPipes(buffer);
+    printf(buffer);
 }

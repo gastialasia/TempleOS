@@ -5,6 +5,10 @@
 #define MAX_PIPES 20
 #define PIPE_SIZE 512 // byres de buffer del pipe
 
+#define PIPEID 0
+#define PERMISSIONS 1
+#define BYTESTOREAD 2
+
 typedef struct pipe{
   uint32_t id;
   char data[PIPE_SIZE];
@@ -13,7 +17,7 @@ typedef struct pipe{
   uint8_t readPermition;
   uint8_t writePermition;
   uint32_t bytesToRead;
-  pcb * waitingProcess; // no se si va no me acuerdo de la consigna pero supongo debido a que son op bloqueantes
+  pcb * waitingProcess;
 }pipe;
 
 pipe * pipes[MAX_PIPES];
@@ -210,6 +214,42 @@ void deleteProcessFromPipe(int64_t pid){
 
 }
 
+void getAllPipes(char * buf) {
+  strcat(buf, "PipeID  Permissions  BytesToR  BlockedPIDs\n");
+  char idStr[6];
+  char permissions[3]={0};
+  int j, k=0;
+  for(int i=0; i < pipeSize; i++){
+    uintToBase(pipes[i]->id, idStr, 10);
+    normalizePipes(buf, idStr, PIPEID);
+    
+    strcat(permissions, pipes[i]->readPermition?"r":"-");
+    strcat(permissions, pipes[i]->writePermition?"w":"-");
+    normalizePipes(buf, permissions, PERMISSIONS);
+
+    uintToBase(pipes[i]->bytesToRead, idStr, 10);
+    normalizePipes(buf, idStr, BYTESTOREAD);
+
+    // for(j=0; j < pipes[i]->waiting; j++){
+    //   uintToBase(sems[i]->queuqe[j]->pid, idStr, 10);
+    //   strcat(buffer, idStr);
+    //   if(j!=sems[i]->waiting-1){
+    //     strcat(buffer, " - ");
+    //   }
+    // }
+    strcat(buf, "\n");
+  }
+}
+
+void normalizePipes(char *buf, char *data, int field){
+  static int fields[]={6, 11, 8};
+  int n = fields[field]-strlen(data);
+  strcat(buf, data);
+  for(int i=0; i<n; i++){
+    strcat(buf, " ");
+  }
+  strcat(buf, "  ");
+}
 
 
 

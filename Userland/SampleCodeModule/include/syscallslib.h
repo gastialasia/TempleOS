@@ -31,5 +31,6 @@ int sys_semPost(Semaphore * sem);
 int sys_semWait(Semaphore * sem);
 void sys_getAllSems(char *buffer);
 int sys_createPipe(fd *fd1, fd *fd2);
+void sys_getAllPipes(char * buf);
 
 #endif

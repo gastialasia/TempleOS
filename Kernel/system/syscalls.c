@@ -242,7 +242,3 @@ int semPost(semPointer sem){
 int createPipe(fd *fd1, fd *fd2){
   return createPipes(fd1, fd2);
 }
-
-
-
-

@@ -92,6 +92,9 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
     case 26:
         return createPipe((fd *)arg0, (fd *)arg1);
         break;
+    case 27:
+        getAllPipes((char *)arg0);
+        break;
     default:
         return -1;
     }

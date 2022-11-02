@@ -63,7 +63,7 @@ void parser(const char *buffer){
         fd * fd2 = createFd();
         createPipe(fd1, fd2);
         createProcess(fun1, 2, 1, tokens1, NULL, fd2); //Este escribe, corre en background
-        createProcess(fun2, 1, 1, tokens2, fd1, NULL); //Este lee, corre en foreground
+        createProcess(fun2, 2, 1, tokens2, fd1, NULL); //Este lee, corre en foreground
     } else {
       if(!isBuiltIn){
         int priority = FOREGROUND;
@@ -211,9 +211,14 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
         toRet = &blockProgram;
         *isBuiltIn=1;
     }
-    else if (!strcmp("sem", str))
+    else if (!strcmp("sems", str))
     {
         toRet = &semProgram;
+        *isBuiltIn=1;
+    }
+    else if (!strcmp("pipes", str))
+    {
+        toRet = &pipeListProgram;
         *isBuiltIn=1;
     }
     else if (!strcmp("testsem", str))

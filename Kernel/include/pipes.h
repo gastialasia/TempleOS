@@ -7,5 +7,5 @@ void closeUserPipe(fd * user);
 int pipeWrite(fd * userPipe, char * string);
 int pipeRead(fd * userPipe,char * buffer,int limit);
 void deleteProcessFromPipe(int64_t pid);
-
+void getAllPipes(char * buf);
 

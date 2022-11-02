@@ -322,6 +322,7 @@ void awakeKeyboardList(){
   }
   waitKeyboard->size--;
   waitKeyboard->current->process->state = 1;
+  waitKeyboard->current->process->auxPriority = 1;
   waitKeyboard->current = waitKeyboard->current->next;
 }
 

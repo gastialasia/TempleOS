@@ -336,3 +336,6 @@ fd * createFd(){
   return (fd *) malloc(sizeof(fd));
 }
 
+void getAllPipes(char * buf){
+    sys_getAllPipes(buf);
+}

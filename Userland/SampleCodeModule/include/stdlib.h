@@ -114,4 +114,6 @@ int createPipe(fd *fd1, fd *fd2);
 
 fd * createFd();
 
+void getAllPipes(char * buf);
+
 #endif
