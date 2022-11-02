@@ -324,6 +324,7 @@ void awakeKeyboardList(){
   waitKeyboard->current->process->state = 1;
   waitKeyboard->current->process->auxPriority = 1;
   waitKeyboard->current = waitKeyboard->current->next;
+  runScheduler();
 }
 
 fd * getCurrentStdin(){

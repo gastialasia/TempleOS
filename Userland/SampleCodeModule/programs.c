@@ -333,7 +333,6 @@ void nothingProgram(int argc, char args[6][21]){
 
 //PHYLOSOPHERS
 
-
 #define N 5
 #define THINKING 2
 #define HUNGRY 1
@@ -341,6 +340,8 @@ void nothingProgram(int argc, char args[6][21]){
 #define LEFT (phnum + 4) % N
 #define RIGHT (phnum + 1) % N
 #define GENERALSEMID 100
+
+void printTable();
  
 int state[N];
  
@@ -357,17 +358,17 @@ void test(int phnum)
  
         sleep(2);
  
-        printf("Philosopher ");
-        printInt(phnum + 1);
-        printf(" takes fork ");
-        printInt(LEFT + 1);
-        printf(" and ");
-        printInt(phnum + 1);
-        putchar('\n');
+        // printf("Philosopher ");
+        // printInt(phnum + 1);
+        // printf(" takes fork ");
+        // printInt(LEFT + 1);
+        // printf(" and ");
+        // printInt(phnum + 1);
+        // putchar('\n');
  
-        printf("Philosopher ");
-        printInt(phnum + 1);
-        printf(" is Eating\n");
+        // printf("Philosopher ");
+        // printInt(phnum + 1);
+        // printf(" is Eating\n");
  
         // sem_post(&S[phnum]) has no effect
         // during takefork
@@ -380,14 +381,17 @@ void test(int phnum)
 // take up chopsticks
 void take_fork(int phnum)
 {
+
+    printTable();
+
     semWait(mutex);
 
     // state that hungry
     state[phnum] = HUNGRY;
 
-    printf("Philosopher ");
-    printInt(phnum + 1);
-    printf(" is Hungry\n");
+    // printf("Philosopher ");
+    // printInt(phnum + 1);
+    // printf(" is Hungry\n");
 
     // eat if neighbours are not eating
     test(phnum);
@@ -409,17 +413,17 @@ void put_fork(int phnum)
     // state that thinking
     state[phnum] = THINKING;
  
-    printf("Philosopher ");
-    printInt(phnum + 1);
-    printf(" putting fork ");
-    printInt(LEFT + 1);
-    printf(" and ");
-    printInt(phnum + 1);
-    printf(" down\n");
+    // printf("Philosopher ");
+    // printInt(phnum + 1);
+    // printf(" putting fork ");
+    // printInt(LEFT + 1);
+    // printf(" and ");
+    // printInt(phnum + 1);
+    // printf(" down\n");
 
-    printf("Philosopher ");
-    printInt(phnum + 1);
-    printf(" is thinking\n");
+    // printf("Philosopher ");
+    // printInt(phnum + 1);
+    // printf(" is thinking\n");
  
     test(LEFT);
     test(RIGHT);
@@ -430,11 +434,12 @@ void put_fork(int phnum)
 void* philosopher(int argc, char argv[6][21])
 {
     if(argc != 2){
-        printf("Philosopher dice: Cantidad incorrecta de parametros\n");
+        //printf("Philosopher dice: Cantidad incorrecta de parametros\n");
         exit();
     }
     int num = atoi(argv[1]);
     while (1) {
+
         sleep(1000);
  
         take_fork(num);
@@ -442,6 +447,7 @@ void* philosopher(int argc, char argv[6][21])
         sleep(1000);
  
         put_fork(num);
+
     }
 }
  
@@ -464,9 +470,21 @@ int philosophers()
         // create philosopher processes
         createProcess(philosopher, 3, 2, args, NULL, NULL);
  
-        printf("Philosopher ");
-        printInt(i);
-        printf(" is thinking\n");
+        // printf("Philosopher ");
+        // printInt(i);
+        // printf(" is thinking\n");
     }
     exit();
+}
+
+void printTable(){
+    int i;
+    for(i=0; i<N; i++){
+        if(state[i]==EATING){
+            putchar('E');
+        } else {
+            putchar('.');
+        }
+    }
+    putchar('\n');
 }
