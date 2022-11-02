@@ -24,5 +24,6 @@ void pipeListProgram(int argc, char args[6][21]);
 void catProgram(int argc, char args[6][21]);
 void wcProgram(int argc, char args[6][21]);
 void filterProgram(int argc, char args[6][21]);
+void loopProgram(int argc, char args[6][21]);
 
 #endif

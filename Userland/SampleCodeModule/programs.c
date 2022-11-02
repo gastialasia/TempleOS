@@ -117,9 +117,9 @@ int printMemory(int argc, char argv[6][21]){
         for(int i=0; i < 32; i++){
             uintToBase(buffer[i],data,16);
             printf(data);
-            putchar(' ');
+            putchar(' '); 
         }
-	}else {
+	} else {
 	printf("Invalid dir");
 	}
     putchar('\n');
@@ -313,5 +313,15 @@ void filterProgram(int argc, char args[6][21]){
     res[k]=0;
     printf(res);
     putchar('\n');
+    exit();
+}
+
+void loopProgram(int argc, char args[6][21]){
+    while(1){
+        printf("I'm the process with PID ");
+        printInt(getpid());
+        putchar('\n');
+        sleep(2000);
+    }
     exit();
 }

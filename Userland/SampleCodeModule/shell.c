@@ -247,6 +247,10 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     {
         toRet = &filterProgram;
     }
+    else if (!strcmp("loop", str))
+    {
+        toRet = &loopProgram;
+    }
     else
     {
         toRet = &invalid;
