@@ -255,6 +255,10 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     {
         toRet = &loopProgram;
     }
+    else if (!strcmp("falo", str))
+    {
+        toRet = &philosophers;
+    }
     else if (!strcmp("nothing", str))
     {
         toRet = &nothingProgram;

@@ -329,3 +329,144 @@ void loopProgram(int argc, char args[6][21]){
 void nothingProgram(int argc, char args[6][21]){
     while(1);
 }
+
+
+//PHYLOSOPHERS
+
+
+#define N 5
+#define THINKING 2
+#define HUNGRY 1
+#define EATING 0
+#define LEFT (phnum + 4) % N
+#define RIGHT (phnum + 1) % N
+#define GENERALSEMID 100
+ 
+int state[N];
+ 
+Semaphore *mutex;
+Semaphore *chopsticks[N];
+ 
+void test(int phnum)
+{
+    if (state[phnum] == HUNGRY
+        && state[LEFT] != EATING
+        && state[RIGHT] != EATING) {
+        // state that eating
+        state[phnum] = EATING;
+ 
+        sleep(2);
+ 
+        printf("Philosopher ");
+        printInt(phnum + 1);
+        printf(" takes fork ");
+        printInt(LEFT + 1);
+        printf(" and ");
+        printInt(phnum + 1);
+        putchar('\n');
+ 
+        printf("Philosopher ");
+        printInt(phnum + 1);
+        printf(" is Eating\n");
+ 
+        // sem_post(&S[phnum]) has no effect
+        // during takefork
+        // used to wake up hungry philosophers
+        // during putfork
+        semPost(chopsticks[phnum]);
+    }
+}
+
+// take up chopsticks
+void take_fork(int phnum)
+{
+    semWait(mutex);
+
+    // state that hungry
+    state[phnum] = HUNGRY;
+
+    printf("Philosopher ");
+    printInt(phnum + 1);
+    printf(" is Hungry\n");
+
+    // eat if neighbours are not eating
+    test(phnum);
+
+    semPost(mutex);
+
+    // if unable to eat wait to be signalled
+    semWait(chopsticks[phnum]);
+
+    sleep(1);
+}
+ 
+// put down chopsticks
+void put_fork(int phnum)
+{
+ 
+    semWait(mutex);
+ 
+    // state that thinking
+    state[phnum] = THINKING;
+ 
+    printf("Philosopher ");
+    printInt(phnum + 1);
+    printf(" putting fork ");
+    printInt(LEFT + 1);
+    printf(" and ");
+    printInt(phnum + 1);
+    printf(" down\n");
+
+    printf("Philosopher ");
+    printInt(phnum + 1);
+    printf(" is thinking\n");
+ 
+    test(LEFT);
+    test(RIGHT);
+ 
+    semPost(mutex);
+}
+ 
+void* philosopher(int argc, char argv[6][21])
+{
+    if(argc != 2){
+        printf("Philosopher dice: Cantidad incorrecta de parametros\n");
+        exit();
+    }
+    int num = atoi(argv[1]);
+    while (1) {
+        sleep(1000);
+ 
+        take_fork(num);
+ 
+        sleep(1000);
+ 
+        put_fork(num);
+    }
+}
+ 
+int philosophers()
+{
+    int i;
+    mutex = semOpen(GENERALSEMID, 1);
+    
+    // initialize the semaphores
+    for(i=0; i<N; i++){
+        chopsticks[i]=semOpen(i, 1);
+    }
+ 
+    char args[6][21];
+    char num[3];
+    strcpy(args[0],"philo");
+    for (i = 0; i < N; i++) {
+        uintToBase(i, num, 10);
+        strcpy(args[1], num);
+        // create philosopher processes
+        createProcess(philosopher, 3, 2, args, NULL, NULL);
+ 
+        printf("Philosopher ");
+        printInt(i);
+        printf(" is thinking\n");
+    }
+    exit();
+}
