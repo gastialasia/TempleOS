@@ -239,22 +239,23 @@ int testsem(int argc, char argv[6][21]){
 //This function is supposed to write into readPipeTest process
 void writePipeProgram(int argc, char argv[6][21]){
     while(1){
-        printf("I'm writing into the pipe every 1s. I Hope there's someone reading in the other side\n");
-        sleep(1000);
+        printf("I'm writing from the wpipe process\n");
+        sleep(3000);
     }
 }
 
+//This function is supposed to read from writePipeTest process
 void readPipeProgram(int argc, char argv[6][21]){
     char buf1[300];
     char buf2[300];
     int i, j;
     while(1){
-        //scanf(buf1);
-        // for(i=10, j=0; i<20; i++, j++)
-        //     buf2[j]=buf1[i];
-        // buf2[j]=0;
-        //printf(buf2);
-        sleep(1000);
+        scanf(buf1);
+        for(i=0, j=0; i<54; i++, j++)
+            buf2[j]=buf1[i];
+        strcat(buf2, " and I'm reading from rpipe process\n");
+        printf(buf2);
+        sleep(3000);
     }
 }
 

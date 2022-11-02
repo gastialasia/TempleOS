@@ -40,6 +40,8 @@ void parser(const char *buffer){
     char commands[2][100];
     int hasPipe = pipeParser(buffer, commands);
 
+    int priority = FOREGROUND;
+
     char tokens1[ARG_QTY][ARG_LEN]={{0}};
     char tokens2[ARG_QTY][ARG_LEN]={{0}};
     int tokenQty1 = tokenizeCommand(commands[0], tokens1);
@@ -49,24 +51,24 @@ void parser(const char *buffer){
     int isBuiltIn = 0;
 
     fun1 = getFuncFromString(tokens1[0], &isBuiltIn);
-    // printf(tokens1[0]);
-    // putchar('\n');
+    int tokenQty2;
 
     if(hasPipe){
-        tokenizeCommand(commands[1], tokens2);
+        tokenQty2 = tokenizeCommand(commands[1], tokens2);
         fun2 = getFuncFromString(tokens2[0], &isBuiltIn);
 
-        // printf(tokens2[0]);
-        // putchar('\n');
+        if (!strcmp(tokens1[tokenQty2-1],"&")){
+            priority = BACKGROUND;
+            tokenQty2--; // Decremento nro de argumentos porque el & no cuenta
+        }
 
         fd * fd1 = createFd();
         fd * fd2 = createFd();
         createPipe(fd1, fd2);
-        createProcess(fun1, 2, 1, tokens1, NULL, fd2); //Este escribe, corre en background
-        createProcess(fun2, 2, 1, tokens2, fd1, NULL); //Este lee, corre en foreground
+        createProcess(fun1, BACKGROUND, 1, tokens1, NULL, fd2); //Este escribe, corre en background
+        createProcess(fun2, tokenQty2, 1, tokens2, fd1, NULL); //Este lee, corre en foreground
     } else {
       if(!isBuiltIn){
-        int priority = FOREGROUND;
 
         if (!strcmp(tokens1[tokenQty1-1],"&")){
             priority = BACKGROUND;
