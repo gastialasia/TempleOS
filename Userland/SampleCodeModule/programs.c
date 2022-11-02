@@ -350,12 +350,10 @@ Semaphore *chopsticks[N];
  
 void test(int phnum)
 {
-    if (state[phnum] == HUNGRY
-        && state[LEFT] != EATING
-        && state[RIGHT] != EATING) {
+    if (state[phnum] == HUNGRY && state[LEFT] != EATING && state[RIGHT] != EATING) {
         // state that eating
         state[phnum] = EATING;
- 
+        printTable();
         sleep(2);
  
         // printf("Philosopher ");
@@ -381,9 +379,6 @@ void test(int phnum)
 // take up chopsticks
 void take_fork(int phnum)
 {
-
-    printTable();
-
     semWait(mutex);
 
     // state that hungry
@@ -474,6 +469,7 @@ int philosophers()
         // printInt(i);
         // printf(" is thinking\n");
     }
+    
     exit();
 }
 
