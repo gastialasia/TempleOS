@@ -235,6 +235,18 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     {
         toRet = &readPipeProgram;
     }
+    else if (!strcmp("cat", str))
+    {
+        toRet = &catProgram;
+    }
+    else if (!strcmp("wc", str))
+    {
+        toRet = &wcProgram;
+    }
+    else if (!strcmp("filter", str))
+    {
+        toRet = &filterProgram;
+    }
     else
     {
         toRet = &invalid;

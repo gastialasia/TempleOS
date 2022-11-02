@@ -21,5 +21,8 @@ int testsem(int argc, char argv[6][21]);
 void writePipeProgram(int argc, char argv[6][21]);
 void readPipeProgram(int argc, char argv[6][21]);
 void pipeListProgram(int argc, char args[6][21]);
+void catProgram(int argc, char args[6][21]);
+void wcProgram(int argc, char args[6][21]);
+void filterProgram(int argc, char args[6][21]);
 
 #endif

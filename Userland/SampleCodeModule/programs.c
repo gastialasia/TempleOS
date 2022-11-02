@@ -238,10 +238,14 @@ int testsem(int argc, char argv[6][21]){
 
 //This function is supposed to write into readPipeTest process
 void writePipeProgram(int argc, char argv[6][21]){
-    while(1){
+    int i=0;
+    while(i<3){
         printf("I'm writing from the wpipe process\n");
-        sleep(3000);
+        printf("I'm writing from the wpipe process\n");
+        printf("\n");
+        //sleep(3000);
     }
+    exit();
 }
 
 //This function is supposed to read from writePipeTest process
@@ -257,6 +261,7 @@ void readPipeProgram(int argc, char argv[6][21]){
         printf(buf2);
         sleep(3000);
     }
+    exit();
 }
 
 void pipeListProgram(int argc, char args[6][21]){
@@ -268,4 +273,45 @@ void pipeListProgram(int argc, char args[6][21]){
     char buffer[2000]={0};
     getAllPipes(buffer);
     printf(buffer);
+}
+
+void catProgram(int argc, char args[6][21]){
+    char buffer[100];
+    while(1){
+        scanf(buffer);
+        printf(buffer);
+        putchar('\n');
+    }
+    exit();
+}
+
+void wcProgram(int argc, char args[6][21]){
+    char buffer[300];
+    int lines = 0;
+    while(scanf(buffer)>0){
+        lines++;
+    }
+    printf("Input lines: ");
+    printInt(lines);
+    putchar('\n');
+    exit();
+}
+
+void filterProgram(int argc, char args[6][21]){
+    char read[100];
+    char res[100];
+    scanf(read);
+    int len = strlen(read);
+    int k=0;
+    int i;
+    for(i=0;i<len;i++){
+        char c = read[i];
+        if (c!='a'&&c!='e'&&c!='i'&&c!='o'&&c!='u'&&c!='A'&&c!='E'&&c!='I'&&c!='O'&&c!='U'){
+            res[k++]=read[i];
+        }
+    }
+    res[k]=0;
+    printf(res);
+    putchar('\n');
+    exit();
 }
