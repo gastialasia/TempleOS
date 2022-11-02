@@ -23,11 +23,11 @@ typedef struct{
     uint64_t r15;
 } registersT;
 
-typedef struct pipeUserInfo{
+typedef struct fd{
   char readable;
   char writable;
   struct pipe * pipe;
-} pipeUserInfo;
+} fd;
 
 typedef struct Semaphore {
   uint32_t id;
@@ -37,6 +37,8 @@ typedef struct Semaphore {
 int strlen(const char *);
 
 int strcmp(const char *str1, const char *str2);
+
+char* strcat(char* destination, const char* source);
 
 void putchar(const char c);
 
@@ -86,7 +88,7 @@ void free(void * memToFree);
 
 void memStatus(unsigned int * status);
 
-int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
+int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], fd *customStdin, fd *customStdout);
 
 void exit();
 
@@ -107,5 +109,9 @@ int semPost(Semaphore * sem);
 int semWait(Semaphore * sem);
 
 void getAllSems(char * buf);
+
+int createPipe(fd *fd1, fd *fd2);
+
+fd * createFd();
 
 #endif

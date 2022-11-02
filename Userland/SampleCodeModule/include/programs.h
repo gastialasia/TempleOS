@@ -18,5 +18,7 @@ int niceProgram(int argc, char args[6][21]);
 int blockProgram(int argc, char args[6][21]);
 int semProgram(int argc, char args[6][21]);
 int testsem(int argc, char argv[6][21]);
+void writePipeProgram(int argc, char argv[6][21]);
+void readPipeProgram(int argc, char argv[6][21]);
 
 #endif

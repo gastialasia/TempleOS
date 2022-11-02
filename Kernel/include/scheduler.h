@@ -8,11 +8,11 @@
 #define ARG_LEN 21
 #define ARG_QTY 6
 
-typedef struct pipeUserInfo{
+typedef struct fd{
   char readable;
   char writable;
   struct pipe * pipe;
-}pipeUserInfo;
+}fd;
 
 
 typedef struct pcb{
@@ -24,19 +24,19 @@ typedef struct pcb{
   uint64_t stackPointer;
   uint64_t basePointer;
   uint64_t processMemory;
-  pipeUserInfo * stdin;
-  pipeUserInfo * stdout;
+  fd * stdin;
+  fd * stdout;
 }pcb;
 
 void initScheduler(); 
-int createProcess(uint64_t ip,uint8_t priority, uint64_t argc, char argv[ARG_QTY][ARG_LEN], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
+int createProcess(uint64_t ip,uint8_t priority, uint64_t argc, char argv[ARG_QTY][ARG_LEN], fd *customStdin, fd *customStdout);
 void awakeKeyboardList();
 void addToKeyboardList();
 void exitCurrentProcess();
 pcb * getCurrentProcess();
 int getCurrentPID();
-pipeUserInfo * getCurrentStdin();
-pipeUserInfo * getCurrentStdout();
+fd * getCurrentStdin();
+fd * getCurrentStdout();
 pcb * blockCurrentProcess();
 void getAllProcesses(char * buf);
 int changeProcessState(uint32_t pid);

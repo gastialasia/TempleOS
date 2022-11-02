@@ -49,25 +49,37 @@ void parser(const char *buffer){
     int isBuiltIn = 0;
 
     fun1 = getFuncFromString(tokens1[0], &isBuiltIn);
+    // printf(tokens1[0]);
+    // putchar('\n');
 
-    if(!isBuiltIn){
+    if(hasPipe){
+        tokenizeCommand(commands[1], tokens2);
+        fun2 = getFuncFromString(tokens2[0], &isBuiltIn);
+
+        // printf(tokens2[0]);
+        // putchar('\n');
+
+        fd * fd1 = createFd();
+        fd * fd2 = createFd();
+        createPipe(fd1, fd2);
+        createProcess(fun1, 2, 1, tokens1, NULL, fd2); //Este escribe, corre en background
+        createProcess(fun2, 1, 1, tokens2, fd1, NULL); //Este lee, corre en foreground
+    } else {
+      if(!isBuiltIn){
         int priority = FOREGROUND;
 
         if (!strcmp(tokens1[tokenQty1-1],"&")){
             priority = BACKGROUND;
             tokenQty1--; // Decremento nro de argumentos porque el & no cuenta
         }
+
         createProcess(fun1, priority, tokenQty1, tokens1, NULL, NULL);
-    } else {
+      } else {
         fun1(tokenQty1, tokens1);
+      } 
     }
 
-    isBuiltIn=0;
-
-    if(hasPipe){
-        tokenizeCommand(commands[1], tokens2);
-        fun2 = getFuncFromString(tokens2[1], &isBuiltIn);
-    }
+    
     
 }
 
@@ -207,6 +219,14 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     else if (!strcmp("testsem", str))
     {
         toRet = &testsem;
+    }
+    else if (!strcmp("wpipe", str))
+    {
+        toRet = &writePipeProgram;
+    }
+    else if (!strcmp("rpipe", str))
+    {
+        toRet = &readPipeProgram;
     }
     else
     {

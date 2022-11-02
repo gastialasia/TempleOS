@@ -1,11 +1,11 @@
 #include "scheduler.h"
 
-int createPipes(pipeUserInfo * pui1, pipeUserInfo * pui2);
-pipeUserInfo * createPipeUserInfo();
-int openPipeID(pipeUserInfo * user,uint32_t id, uint8_t permisions);
-void closeUserPipe(pipeUserInfo * user);
-int pipeWrite(pipeUserInfo * userPipe, char * string);
-int pipeRead(pipeUserInfo * userPipe,char * buffer,int limit);
+int createPipes(fd * pui1, fd * pui2);
+fd * createfd();
+int openPipeID(fd * user,uint32_t id, uint8_t permisions);
+void closeUserPipe(fd * user);
+int pipeWrite(fd * userPipe, char * string);
+int pipeRead(fd * userPipe,char * buffer,int limit);
 void deleteProcessFromPipe(int64_t pid);
 
 

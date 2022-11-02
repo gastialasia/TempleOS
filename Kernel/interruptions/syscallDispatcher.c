@@ -7,6 +7,7 @@
 #include <naiveConsole.h>
 #include <scheduler.h>
 #include <semaphore.h>
+#include <pipes.h>
 
 static int syscallnumber;
 
@@ -50,7 +51,7 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
         mStatus((void *)arg0);
         break;
     case 13:
-        return cProcess((uint64_t)arg0, (uint8_t)arg1, (uint64_t)arg2, (char **)arg3, (pipeUserInfo *)arg4, (pipeUserInfo *)arg5);
+        return cProcess((uint64_t)arg0, (uint8_t)arg1, (uint64_t)arg2, (char **)arg3, (fd *)arg4, (fd *)arg5);
         break;
     case 14:
         eProcess();
@@ -87,6 +88,9 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
         break;
     case 25:
         getAllSems((char *)arg0);
+        break;
+    case 26:
+        return createPipe((fd *)arg0, (fd *)arg1);
         break;
     default:
         return -1;

@@ -17,7 +17,7 @@ void sys_printMem(uint64_t, char*);
 void * sys_malloc(unsigned int bytes);
 void sys_free(void * memToFree);
 void sys_memStatus(unsigned int * status);
-int sys_createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
+int sys_createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], fd *customStdin, fd *customStdout);
 void sys_exit();
 int sys_getpid();
 void sys_ps(char * buffer);
@@ -30,5 +30,6 @@ int sys_semClose(Semaphore * sem);
 int sys_semPost(Semaphore * sem);
 int sys_semWait(Semaphore * sem);
 void sys_getAllSems(char *buffer);
+int sys_createPipe(fd *fd1, fd *fd2);
 
 #endif

@@ -41,7 +41,7 @@ void mfree(void * memToFree);
 
 void mStatus(unsigned int * status);
 
-int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv[], pipeUserInfo *customStdin, pipeUserInfo *customStdout);
+int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv[], fd *customStdin, fd *customStdout);
 
 void eProcess();
 
@@ -60,5 +60,7 @@ int semClose(semPointer semToClose);
 int semPost(semPointer sem);
 
 int semWait(semPointer sem);
+
+int cPipe(fd *fd1, fd *fd2);
 
 #endif

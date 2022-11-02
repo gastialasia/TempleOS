@@ -25,6 +25,7 @@ GLOBAL sys_semClose
 GLOBAL sys_semPost
 GLOBAL sys_semWait
 GLOBAL sys_getAllSems
+GLOBAL sys_createPipe
 
 section .text
 
@@ -150,6 +151,11 @@ sys_semWait:
 
 sys_getAllSems:
   mov rax, 25
+  int 80h
+  ret
+
+sys_createPipe:
+  mov rax, 26
   int 80h
   ret
 

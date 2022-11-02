@@ -137,6 +137,23 @@ int strcpy(char *dest, const char *src){
     return i;
 }
 
+char* strcat(char* destination, const char* source)
+{
+    // make `ptr` point to the end of the destination string
+    char* ptr = destination + strlen(destination);
+ 
+    // appends characters of the source to the destination string
+    while (*source != '\0') {
+        *ptr++ = *source++;
+    }
+ 
+    // null terminate destination string
+    *ptr = '\0';
+ 
+    // the destination is returned by standard `strcat()`
+    return destination;
+}
+
 char getDateComponent(int value){
     return sys_date(value);
 }
@@ -240,7 +257,7 @@ void memStatus(unsigned int * status) {
     return sys_memStatus(status);
 }
 
-int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], pipeUserInfo *customStdin, pipeUserInfo *customStdout){
+int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], fd *customStdin, fd *customStdout){
     return sys_createProcess(ip, priority, argc, argv, customStdin, customStdout);
 }
 
@@ -311,4 +328,11 @@ void getAllSems(char * buf){
     sys_getAllSems(buf);
 }
 
+int createPipe(fd *fd1, fd *fd2){
+    return sys_createPipe(fd1, fd2);
+}
+
+fd * createFd(){
+  return (fd *) malloc(sizeof(fd));
+}
 

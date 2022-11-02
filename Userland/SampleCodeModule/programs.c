@@ -226,7 +226,7 @@ int semProgram(int argc, char args[6][21]){
     printf(buffer);
 }
 
-//Creates a process that block waiting sem with id 15
+//Creates a process which blocks waiting for sem with id 15
 int testsem(int argc, char argv[6][21]){
     Semaphore * aux = semOpen(15, 0);
     if(aux == NULL){
@@ -234,4 +234,27 @@ int testsem(int argc, char argv[6][21]){
         exit();
     }
     semWait(aux);
+}
+
+//This function is supposed to write into readPipeTest process
+void writePipeProgram(int argc, char argv[6][21]){
+    while(1){
+        printf("I'm writing into the pipe every 3s. I Hope there's someone reading in the other side\n\0");
+        sleep(1000);
+    }
+}
+
+void readPipeProgram(int argc, char argv[6][21]){
+    char buf1[300];
+    char buf2[300];
+    int i, j;
+    while(1){
+        printf("Siiiiuuuuu\n");
+        scanf(buf1);
+        for(i=10, j=0; i<20; i++, j++)
+            buf2[j]=buf1[i];
+        buf2[j]=0;
+        printf(buf2);
+        sleep(1000);
+    }
 }

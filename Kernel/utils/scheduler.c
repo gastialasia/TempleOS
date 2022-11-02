@@ -115,7 +115,7 @@ static char* strcpy(char* destination, const char* source) {
   return ptr;
 }
 
-static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,int argc,char argv[ARG_QTY][ARG_LEN],pipeUserInfo * customStdin,pipeUserInfo * customStdout,uint64_t ip){
+static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t priority,int argc,char argv[ARG_QTY][ARG_LEN],fd * customStdin,fd * customStdout,uint64_t ip){
 
   if(node == NULL){
     ProcessNode * newNode = (ProcessNode *) alloc(sizeof(ProcessNode));
@@ -165,7 +165,7 @@ static ProcessNode * loadProcessData(ProcessNode * node ,uint32_t pid,uint8_t pr
 }
 
 
-int createProcess(uint64_t ip,uint8_t priority,uint64_t argc,char argv[ARG_QTY][ARG_LEN],pipeUserInfo * customStdin,pipeUserInfo * customStdout){
+int createProcess(uint64_t ip,uint8_t priority,uint64_t argc,char argv[ARG_QTY][ARG_LEN],fd * customStdin,fd * customStdout){
   if(priority == 1 && currentPid > 1){
     scheduler->foregroundInUse = 1;
   }
@@ -325,11 +325,11 @@ void awakeKeyboardList(){
   waitKeyboard->current = waitKeyboard->current->next;
 }
 
-pipeUserInfo * getCurrentStdin(){
+fd * getCurrentStdin(){
   return scheduler->current->process.stdin;
 }
 
-pipeUserInfo * getCurrentStdout(){
+fd * getCurrentStdout(){
   return scheduler->current->process.stdout;
 }
 

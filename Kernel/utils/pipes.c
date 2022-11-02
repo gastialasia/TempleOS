@@ -20,7 +20,7 @@ pipe * pipes[MAX_PIPES];
 uint32_t pipeSize = 0;
 uint32_t ids = 0; // for unique ids
 
-int createPipes(pipeUserInfo * pui1, pipeUserInfo * pui2){
+int createPipes(fd * pui1, fd * pui2){
 
   if(pipeSize == MAX_PIPES){
     return -1;
@@ -45,11 +45,7 @@ int createPipes(pipeUserInfo * pui1, pipeUserInfo * pui2){
   return 1;
 }
 
-pipeUserInfo * createPipeUserInfo(){
-  return (pipeUserInfo *) alloc(sizeof(pipeUserInfo));
-}
-
-int openPipeID(pipeUserInfo * user,uint32_t id, uint8_t permisions){
+int openPipeID(fd * user,uint32_t id, uint8_t permisions){
 
   if(id < 100){
     return -1;
@@ -62,7 +58,7 @@ int openPipeID(pipeUserInfo * user,uint32_t id, uint8_t permisions){
   }
 
   user->readable = permisions? 1:0;
-  user->writable = permisions? 0 : 1;
+  user->writable = permisions? 0:1;
 
   if(i == pipeSize){
 
@@ -113,9 +109,7 @@ static void deletePipe(pipe * pipe){
   pipeSize--;
 }
 
-
-
-void closeUserPipe(pipeUserInfo * user){
+void closeUserPipe(fd * user){
   
   if(user == NULL){
     return;
@@ -145,7 +139,7 @@ void closeUserPipe(pipeUserInfo * user){
 
 }
 
-int pipeWrite(pipeUserInfo * userPipe, char * string){
+int pipeWrite(fd * userPipe, char * string){
 
   if(!userPipe->writable || (!userPipe->pipe->readPermition && userPipe->pipe->bytesToRead == PIPE_SIZE)){
     return -1;
@@ -175,7 +169,7 @@ int pipeWrite(pipeUserInfo * userPipe, char * string){
 
 }
 
-int pipeRead(pipeUserInfo * userPipe,char * buffer,int limit){
+int pipeRead(fd * userPipe,char * buffer,int limit){
 
   if(!userPipe->readable){
     return -1;

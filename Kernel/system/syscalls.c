@@ -21,7 +21,7 @@ registersT *secondaryBackup = &secondary;
 
 int64_t write(const char *buffer, size_t count){
 
-  pipeUserInfo * stdout = getCurrentStdout();
+  fd * stdout = getCurrentStdout();
   pcb * currentProcess = getCurrentProcess();
 
   if(!stdout){
@@ -41,7 +41,7 @@ int64_t write(const char *buffer, size_t count){
 int64_t read(char *buffer, size_t count) {
   int k = 0;
   unsigned char key;
-  pipeUserInfo * stdin = getCurrentStdin();
+  fd * stdin = getCurrentStdin();
   pcb * currentProcess = getCurrentProcess();
   
   
@@ -49,7 +49,6 @@ int64_t read(char *buffer, size_t count) {
     buffer[0] = 0;
     return 0;
   }
-
 
   while (k < count || count == -1) {
     if(!stdin){
@@ -196,7 +195,7 @@ void mStatus(unsigned int * status){
 	return memStatus(status);
 }
 
-int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv[], pipeUserInfo *customStdin, pipeUserInfo *customStdout){
+int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv[], fd *customStdin, fd *customStdout){
   return createProcess(ip, priority, argc, argv, customStdin, customStdout);
 }
 
@@ -237,6 +236,10 @@ int semWait(semPointer sem){
 
 int semPost(semPointer sem){
   return sem_post(sem);
+}
+
+int createPipe(fd *fd1, fd *fd2){
+  return createPipes(fd1, fd2);
 }
 
 
