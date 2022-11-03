@@ -5,6 +5,8 @@
 #include "../include/syscall.h"
 #include "../include/scheduler.h"
 
+#define F2 18
+
 unsigned char key = 0; 
 extern unsigned char last;
 
@@ -20,5 +22,7 @@ void keyboard_handler() {
 	if(key != 0){
 		last = key;
     awakeKeyboardList();
-  }
+	if(key == F2)
+		exitCurrentProcess();
+  	}
 }
