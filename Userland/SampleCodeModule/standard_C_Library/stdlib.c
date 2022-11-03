@@ -74,10 +74,8 @@ void printInt64(unsigned long num){
     sys_write(buffer, len);
 }
 
-char getchar(){
-    char c;
-    sys_read(&c,1);
-    return c;
+void getchar(char *c){
+    sys_read(c,1);
 }
 
 int scanf(char * buffer) {

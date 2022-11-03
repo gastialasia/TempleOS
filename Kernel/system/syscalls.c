@@ -100,6 +100,7 @@ int64_t read(char *buffer, size_t count) {
         break;
       
       case F2:
+        eProcess();
         break;
 
       case 170:
@@ -110,10 +111,10 @@ int64_t read(char *buffer, size_t count) {
       default:
         if (mayusc)
           key = toMayusc(key);
-        if(!stdin)
-          ncPrintChar(key);
         if(k < 100)
           buffer[k] = key;
+        if(!stdin && count != 1)
+          ncPrintChar(key);
         k++;
         break;
     }

@@ -50,7 +50,7 @@ void inforeg(registersT * regs);
 
 void printInt(int num);
 
-char getchar();
+void getchar(char *c);
 
 int scanf(char * buffer);
 

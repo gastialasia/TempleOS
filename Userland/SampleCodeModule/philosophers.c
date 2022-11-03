@@ -1,18 +1,21 @@
-#include <stdlib.h>
+#include "./include/stdlib.h"
 #include <philosophers.h>
 
 #define N 5
 #define THINKING 2
 #define HUNGRY 1
 #define EATING 0
-#define LEFT (phnum + 4) % N
-#define RIGHT (phnum + 1) % N
+#define LEFT (phnum + n-1) % n
+#define RIGHT (phnum + 1) % n
 #define GENERALSEMID 100
+#define MAX_PHILOSOPHERS 10
 
 void printTable();
  
-int state[N];
- 
+int state[MAX_PHILOSOPHERS];
+int pids[MAX_PHILOSOPHERS];
+int n=N;
+
 Semaphore *mutex;
 Semaphore *chopsticks[N];
  
@@ -86,7 +89,31 @@ int philosophersProgram(){
     for (i = 0; i < N; i++) {
         uintToBase(i, num, 10);
         strcpy(args[1], num);
-        createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
+        pids[i] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
+    }
+    
+    int c;
+    while(1){
+        getchar(&c);
+        switch (c){
+            case 'a':   
+            case 'A':
+                if(n==MAX_PHILOSOPHERS){
+                    printf("The table is full, no new philosophers can join\n");
+                } else {
+                    printf("A philosopher just came and sat on the table\n");
+                    uintToBase(n, num, 10);
+                    strcpy(args[1], num);
+                    pids[n++] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
+                }
+                break;
+            case 'r':
+            case 'R':
+                printf("A philosopher left the rift\n");
+                break;
+            default:
+                break;
+        }
     }
     exit();
     return 0;
@@ -94,7 +121,7 @@ int philosophersProgram(){
 
 void printTable(){
     int i;
-    for(i=0; i<N; i++){
+    for(i=0; i<n; i++){
         if(state[i]==EATING){
             putchar('E');
         } else {
