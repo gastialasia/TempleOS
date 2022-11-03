@@ -16,8 +16,8 @@ int state[MAX_PHILOSOPHERS];
 int pids[MAX_PHILOSOPHERS];
 int n=N;
 
-Semaphore *mutex;
-Semaphore *chopsticks[N];
+Semaphore * mutex;
+Semaphore * chopsticks[N];
  
 void test(int phnum)
 {
@@ -111,9 +111,26 @@ int philosophersProgram(){
                 }
                 break;
             case 'r':
-            case 'R':
-                printf("A philosopher left the rift\n");
+            case 'R': {
+                if (n<=1){
+                    printf("The table can't be empty\n");
+                } else {
+                    printf("A philosopher left the rift\n");
+                    int i=0;
+                    semWait(mutex);
+                    while(i<n){
+                        if(state[i]==THINKING){
+                            kill(pids[i]);
+                            semClose(chopsticks[i]);
+                            n--;
+                            break;
+                        }
+                    }
+                    semPost(mutex);
+                }
+                
                 break;
+            }
             default:
                 break;
         }
