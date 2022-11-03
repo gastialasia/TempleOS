@@ -1,8 +1,6 @@
 #ifndef MEMORY_MANAGER_WRAPPER_H
 #define MEMORY_MANAGER_WRAPPER_H
 
-#define NULL ((void *) 0)
-
 void initMemManager(void *const restrict memoryForMemoryManager, void *const restrict managedMemory);
 
 void * alloc(unsigned int memToAlloc);

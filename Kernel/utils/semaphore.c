@@ -162,7 +162,6 @@ void getAllSems(char *buffer){
   strcat(buffer, "SEM_ID  Value  Blocked PIDs\n");
   char idStr[6];
   char valueStr[5];
-  pcb * waitingPids;
   int j;
   for(int i=0; i < size; i++){
     uintToBase(sems[i]->id, idStr, 10);

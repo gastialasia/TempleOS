@@ -4,6 +4,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <naiveConsole.h>
+#include <pipes.h>
 
 
 #define QUANTUM 1
@@ -460,4 +461,5 @@ int changeProcessPriority(uint32_t pid, uint8_t newPriority){
   }
   chosenOne->nextProcess = auxList->nextProcess;
   auxList->nextProcess = chosenOne;
+  return 0;
 }

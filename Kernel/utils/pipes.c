@@ -1,6 +1,7 @@
 #include <stdint.h>
 #include "../include/MemoryManagerWrapper.h"
 #include "../include/pipes.h"
+#include "../include/tools.h"
 
 #define MAX_PIPES 20
 #define PIPE_SIZE 512 // byres de buffer del pipe
@@ -23,6 +24,8 @@ typedef struct pipe{
 pipe * pipes[MAX_PIPES];
 uint32_t pipeSize = 0;
 uint32_t ids = 0; // for unique ids
+
+void normalizePipes(char *buf, char *data, int field);
 
 int createPipes(fd * pui1, fd * pui2){
 
@@ -218,7 +221,6 @@ void getAllPipes(char * buf) {
   strcat(buf, "PipeID  Permissions  BytesToR  BlockedPIDs\n");
   char idStr[6];
   char permissions[3]={0};
-  int j, k=0;
   for(int i=0; i < pipeSize; i++){
     uintToBase(pipes[i]->id, idStr, 10);
     normalizePipes(buf, idStr, PIPEID);
@@ -237,6 +239,7 @@ void getAllPipes(char * buf) {
     //     strcat(buffer, " - ");
     //   }
     // }
+    
     strcat(buf, "\n");
   }
 }
