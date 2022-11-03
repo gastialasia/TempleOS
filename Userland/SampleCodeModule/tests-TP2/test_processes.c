@@ -2,7 +2,7 @@
 #include "../include/stdlib.h"
 #include "../include/test_processes.h"
 
-int64_t test_processes(uint64_t argc, char argv[6][21]){
+int test_processes(int argc, char argv[6][21]){
   uint8_t rq;
   uint8_t alive = 0;
   uint8_t action;

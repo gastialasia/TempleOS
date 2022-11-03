@@ -16,15 +16,15 @@ int psProgram();
 int killProgram(int argc, char args[6][21]);
 int niceProgram(int argc, char args[6][21]);
 int blockProgram(int argc, char args[6][21]);
-void semProgram(int argc, char args[6][21]);
+int semProgram(int argc, char args[6][21]);
 int testsem(int argc, char argv[6][21]);
-void writePipeProgram(int argc, char argv[6][21]);
-void readPipeProgram(int argc, char argv[6][21]);
-void pipeListProgram(int argc, char args[6][21]);
-void catProgram(int argc, char args[6][21]);
-void wcProgram(int argc, char args[6][21]);
-void filterProgram(int argc, char args[6][21]);
-void loopProgram(int argc, char args[6][21]);
-void nothingProgram(int argc, char args[6][21]);
+int writePipeProgram(int argc, char argv[6][21]);
+int readPipeProgram(int argc, char argv[6][21]);
+int pipeListProgram(int argc, char args[6][21]);
+int catProgram(int argc, char args[6][21]);
+int wcProgram(int argc, char args[6][21]);
+int filterProgram(int argc, char args[6][21]);
+int loopProgram(int argc, char args[6][21]);
+int nothingProgram(int argc, char args[6][21]);
 
 #endif

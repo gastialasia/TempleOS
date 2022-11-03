@@ -2,7 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include <programs.h>
 #include <stdint.h>
-#include "./include/stdlib.h">
+#include "./include/stdlib.h"
 
 #define LIMIT64 0b0111111111111111111111111111111111111111111111111111111111111111 //2^(63)-1
 
@@ -153,7 +153,7 @@ int killProgram(int argc, char args[6][21]){
         return 0;
     }
     char * pidPtr = args[1];
-    uint32_t pid = atoi(pidPtr);
+    uint32_t pid = satoi(pidPtr);
     if (pid==1){
         printf("Shell can't be killed\n");
         return 0;
@@ -190,7 +190,7 @@ int blockProgram(int argc, char args[6][21]){
         printf("Invalid argunment quantity\n");
         return 0;
     }
-    uint32_t pid = atoi(args[1]);
+    uint32_t pid = satoi(args[1]);
     if (pid==1){
         printf("Shell can't be blocked\n");
         return 0;
@@ -201,7 +201,7 @@ int blockProgram(int argc, char args[6][21]){
     return 0;
 }
 
-void semProgram(int argc, char args[6][21]){
+int semProgram(int argc, char args[6][21]){
     if(argc != 1){
         printf("sem program does not require arguments\n");
         return;
@@ -218,18 +218,21 @@ int testsem(int argc, char argv[6][21]){
         exit();
     }
     semWait(aux);
+    exit();
+    return 0;
 }
 
-void writePipeProgram(int argc, char argv[6][21]){
+int writePipeProgram(int argc, char argv[6][21]){
     int i=0;
     while(i<3){
         printf("I'm writing from the wpipe process\n");
         sleep(3000);
     }
     exit();
+    return 0;
 }
 
-void readPipeProgram(int argc, char argv[6][21]){
+int readPipeProgram(int argc, char argv[6][21]){
     char buf1[300];
     char buf2[300];
     int i, j;
@@ -242,9 +245,10 @@ void readPipeProgram(int argc, char argv[6][21]){
         sleep(3000);
     }
     exit();
+    return 0;
 }
 
-void pipeListProgram(int argc, char args[6][21]){
+int pipeListProgram(int argc, char args[6][21]){
     if(argc != 1){
         printf("sem program does not require arguments\n");
         return;
@@ -252,9 +256,10 @@ void pipeListProgram(int argc, char args[6][21]){
     char buffer[2000]={0};
     getAllPipes(buffer);
     printf(buffer);
+    return 0;
 }
 
-void catProgram(int argc, char args[6][21]){
+int catProgram(int argc, char args[6][21]){
     char buffer[100];
     while(1){
         scanf(buffer);
@@ -262,9 +267,10 @@ void catProgram(int argc, char args[6][21]){
         putchar('\n');
     }
     exit();
+    return 0;
 }
 
-void wcProgram(int argc, char args[6][21]){
+int wcProgram(int argc, char args[6][21]){
     char buffer[300];
     int lines = 0;
     while(scanf(buffer)>0){
@@ -274,9 +280,10 @@ void wcProgram(int argc, char args[6][21]){
     printInt(lines);
     putchar('\n');
     exit();
+    return 0;
 }
 
-void filterProgram(int argc, char args[6][21]){
+int filterProgram(int argc, char args[6][21]){
     char read[100];
     char res[100];
     scanf(read);
@@ -293,9 +300,10 @@ void filterProgram(int argc, char args[6][21]){
     printf(res);
     putchar('\n');
     exit();
+    return 0;
 }
 
-void loopProgram(int argc, char args[6][21]){
+int loopProgram(int argc, char args[6][21]){
     while(1){
         printf("I'm the process with PID ");
         printInt(getpid());
@@ -303,9 +311,11 @@ void loopProgram(int argc, char args[6][21]){
         sleep(2000);
     }
     exit();
+    return 0;
 }
 
-void nothingProgram(int argc, char args[6][21]){
+int nothingProgram(int argc, char args[6][21]){
     while(1);
+    return 0;
 }
 

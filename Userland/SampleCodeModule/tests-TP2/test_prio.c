@@ -4,9 +4,9 @@
 
 int64_t prio[TOTAL_PROCESSES] = {LOWEST, MEDIUM, HIGHEST};
 
-void test_prio(){
+int test_prio(int argc, char argv[6][21]){
   int64_t pids[TOTAL_PROCESSES];
-  char *argv[] = {0};
+  char *args[] = {0};
   uint64_t i;
 
   char aux[6][21];
@@ -44,4 +44,5 @@ void test_prio(){
     kill(pids[i]);
 
   exit();
+  return 0;
 }

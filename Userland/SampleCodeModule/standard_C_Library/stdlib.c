@@ -281,8 +281,7 @@ int kill(uint32_t pid){
     return sys_kill(pid);
 }
 
-int atoi(const char* S)
-{
+int atoi(const char* S){
     int num = 0;
  
     int i = 0;

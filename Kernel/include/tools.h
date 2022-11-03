@@ -2,6 +2,7 @@
 #define TOOLS_H_
 
 #include <stdint.h>
+#define NULL ((void *) 0)
 
 char isAlpha(char c);
 char toMayusc(char c);

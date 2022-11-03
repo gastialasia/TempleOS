@@ -1,5 +1,6 @@
 #include "../include/MemoryManagerWrapper.h"
 #include "../include/MemoryManagmentADT.h"
+#include "../include/tools.h"
 
 static MemoryManagmentADT mm;
 

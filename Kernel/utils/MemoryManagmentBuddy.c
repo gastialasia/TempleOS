@@ -2,6 +2,8 @@
 
 #include "../include/MemoryManagmentADT.h"
 #include <stdint.h>
+#include "../include/tools.h"
+
 // source:https://github.com/Infineon/freertos/blob/master/Source/portable/MemMang/heap_2.c
 
 #define MINIMUM_BLOCK_SIZE 512

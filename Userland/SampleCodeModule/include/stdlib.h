@@ -100,6 +100,10 @@ int block(uint32_t pid);
 
 void yield();
 
+void ps();
+
+int nice(uint32_t pid, uint8_t newPriority);
+
 Semaphore *semOpen(uint32_t id,int value);
 
 int semClose(Semaphore * sem);

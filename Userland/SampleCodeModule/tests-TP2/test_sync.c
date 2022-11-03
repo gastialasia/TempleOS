@@ -82,7 +82,7 @@ void incWithoutSem(){
   exit(0);
 }
 
-void test_sync(){
+int test_sync(int argc, char argv[6][21]){
   uint64_t i;
 
   global = 0;
@@ -100,7 +100,7 @@ void test_sync(){
   exit(0);
 }
 
-void test_no_sync(){
+int test_no_sync(int argc, char argv[6][21]){
   uint64_t i;
 
   global = 0;

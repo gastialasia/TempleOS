@@ -11,6 +11,6 @@
 #define MEDIUM 5 //TODO: Change as required
 #define HIGHEST 9 //TODO: Change as required
 
-void test_prio();
+int test_prio(int argc, char argv[6][21]);
 
 #endif

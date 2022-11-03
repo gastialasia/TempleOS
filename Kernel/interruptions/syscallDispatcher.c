@@ -42,7 +42,7 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
         snapshotRegs();
         break;
     case 10:
-        return malloc((unsigned int)arg0);
+        return (int64_t)malloc((unsigned int)arg0);
         break;
     case 11:
         mfree((void *)arg0);
@@ -90,7 +90,7 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
         getAllSems((char *)arg0);
         break;
     case 26:
-        return createPipe((fd *)arg0, (fd *)arg1);
+        return createPipes((fd *)arg0, (fd *)arg1);
         break;
     case 27:
         getAllPipes((char *)arg0);

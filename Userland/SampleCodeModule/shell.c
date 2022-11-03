@@ -199,12 +199,12 @@ function_type getFuncFromString(char *str, int * isBuiltIn) {
         toRet = &blockProgram;
         *isBuiltIn=1;
     }
-    else if (!strcmp("sems", str))
+    else if (!strcmp("sem", str))
     {
         toRet = &semProgram;
         *isBuiltIn=1;
     }
-    else if (!strcmp("pipes", str))
+    else if (!strcmp("pipe", str))
     {
         toRet = &pipeListProgram;
         *isBuiltIn=1;

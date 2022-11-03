@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-void test_sync();
-void test_no_sync();
+int test_sync(int argc, char argv[6][21]);
+int test_no_sync(int argc, char argv[6][21]);
 #endif
