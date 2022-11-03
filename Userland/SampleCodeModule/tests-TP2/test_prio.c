@@ -6,14 +6,13 @@ int64_t prio[TOTAL_PROCESSES] = {LOWEST, MEDIUM, HIGHEST};
 
 int test_prio(int argc, char argv[6][21]){
   int64_t pids[TOTAL_PROCESSES];
-  char *args[] = {0};
   uint64_t i;
 
   char aux[6][21];
   strcpy(aux[0], "_loop");
 
   for(i = 0; i < TOTAL_PROCESSES; i++)
-    pids[i] = createProcess(endless_loop, 3, 1, aux, NULL, NULL);
+    pids[i] = createProcess((uint64_t)endless_loop, 3, 1, aux, NULL, NULL);
 
   bussy_wait(WAIT);
   printf("\nCHANGING PRIORITIES...\n");

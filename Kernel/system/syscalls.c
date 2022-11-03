@@ -100,8 +100,6 @@ int64_t read(char *buffer, size_t count) {
         break;
       
       case F2:
-        ncPrint("AAAAAA\n\n");
-        eProcess();
         break;
 
       case 170:

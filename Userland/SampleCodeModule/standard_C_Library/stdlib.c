@@ -274,7 +274,6 @@ void ps(){
     sys_ps(buffer);
     printf(buffer);
     buffer[0]=0;
-    return 0;
 }
 
 int kill(uint32_t pid){

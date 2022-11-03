@@ -58,7 +58,7 @@ void* philosopher(int argc, char argv[6][21])
         exit();
     }
 
-    int num = satoi(argv[1]);
+    int num = atoi(argv[1]);
     while (1) {
 
         sleep(1000);
@@ -86,9 +86,10 @@ int philosophersProgram(){
     for (i = 0; i < N; i++) {
         uintToBase(i, num, 10);
         strcpy(args[1], num);
-        createProcess(&philosopher, 3, 2, args, NULL, NULL);
+        createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
     }
     exit();
+    return 0;
 }
 
 void printTable(){

@@ -153,7 +153,7 @@ int killProgram(int argc, char args[6][21]){
         return 0;
     }
     char * pidPtr = args[1];
-    uint32_t pid = satoi(pidPtr);
+    uint32_t pid = atoi(pidPtr);
     if (pid==1){
         printf("Shell can't be killed\n");
         return 0;
@@ -190,7 +190,7 @@ int blockProgram(int argc, char args[6][21]){
         printf("Invalid argunment quantity\n");
         return 0;
     }
-    uint32_t pid = satoi(args[1]);
+    uint32_t pid = atoi(args[1]);
     if (pid==1){
         printf("Shell can't be blocked\n");
         return 0;
@@ -204,11 +204,12 @@ int blockProgram(int argc, char args[6][21]){
 int semProgram(int argc, char args[6][21]){
     if(argc != 1){
         printf("sem program does not require arguments\n");
-        return;
+        return 1;
     }
     char buffer[2000]={0};
     getAllSems(buffer);
     printf(buffer);
+    return 0;
 }
 
 int testsem(int argc, char argv[6][21]){
@@ -251,7 +252,7 @@ int readPipeProgram(int argc, char argv[6][21]){
 int pipeListProgram(int argc, char args[6][21]){
     if(argc != 1){
         printf("sem program does not require arguments\n");
-        return;
+        return 1;
     }
     char buffer[2000]={0};
     getAllPipes(buffer);

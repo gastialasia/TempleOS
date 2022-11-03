@@ -7,11 +7,10 @@ int test_processes(int argc, char argv[6][21]){
   uint8_t alive = 0;
   uint8_t action;
   uint64_t max_processes;
-  char * argvAux[] = {0};
 
   if (argc != 2) return -1;
 
-  if ((max_processes = satoi(argv[1])) <= 0) return -1;
+  if ((max_processes = atoi(argv[1])) <= 0) return -1;
 
   p_rq p_rqs[max_processes];
 
@@ -22,7 +21,7 @@ int test_processes(int argc, char argv[6][21]){
 
     // Create max_processes processes
     for(rq = 0; rq < max_processes; rq++){
-      p_rqs[rq].pid = createProcess(endless_loop, 3, 1, aux, NULL, NULL);
+      p_rqs[rq].pid = createProcess((uint64_t)endless_loop, 3, 1, aux, NULL, NULL);
 
       if (p_rqs[rq].pid == -1){
         printf("test_processes: ERROR creating process\n");

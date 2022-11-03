@@ -5,6 +5,8 @@
 
 #define NULL ((void *) 0)
 
+typedef int (*function_type)(int argc, char argv[6][21]);
+
 typedef struct{
 	uint64_t rax;
     uint64_t rbx;
@@ -119,5 +121,7 @@ int createPipe(fd *fd1, fd *fd2);
 fd * createFd();
 
 void getAllPipes(char * buf);
+
+int atoi(const char* S);
 
 #endif

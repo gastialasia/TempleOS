@@ -14,14 +14,13 @@
 #define LENGTH 100
 #define MAXBUFFER 100
 #define F1_KEY 17
-#define NULL ((void *) 0)
 #define FOREGROUND 1
 #define BACKGROUND 2
 #define ARG_LEN 21
 #define ARG_QTY 6
 
 int pipeParser(const char *buffer, char commands[2][100]);
-int tokenizeCommand(const char command[100], char tokens[ARG_QTY][ARG_LEN]);
+int tokenizeCommand(char command[100], char tokens[ARG_QTY][ARG_LEN]);
 
 void shell(void)
 {
@@ -70,8 +69,8 @@ void parser(const char *buffer){
             fd * fd1 = createFd();
             fd * fd2 = createFd();
             createPipe(fd1, fd2);
-            createProcess(fun1, BACKGROUND, 1, tokens1, NULL, fd2); 
-            createProcess(fun2, tokenQty2, 1, tokens2, fd1, NULL);
+            createProcess((uint64_t)fun1, BACKGROUND, 1, tokens1, NULL, fd2); 
+            createProcess((uint64_t)fun2, tokenQty2, 1, tokens2, fd1, NULL);
         }
     } else {
       if(!isBuiltIn){
@@ -81,7 +80,7 @@ void parser(const char *buffer){
             tokenQty1--; 
         }
 
-        createProcess(fun1, priority, tokenQty1, tokens1, NULL, NULL);
+        createProcess((uint64_t)fun1, priority, tokenQty1, tokens1, NULL, NULL);
       } else {
         fun1(tokenQty1, tokens1);
       } 
@@ -113,10 +112,10 @@ int pipeParser(const char *buffer, char commands[2][100]){
     return flag;
 }
 
-int tokenizeCommand(const char command[100], char tokens[ARG_QTY][ARG_LEN]){
+int tokenizeCommand(char command[100], char tokens[ARG_QTY][ARG_LEN]){
     int i = 0;
     strcpy(tokens[i++], strtok(command, " "));
-    char *token=' ';
+    char * token = " ";
     while(token)
     {
         token = strtok(NULL, " ");
