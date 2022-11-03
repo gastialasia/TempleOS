@@ -10,13 +10,13 @@ typedef struct MemBlock{
   unsigned char free;
   int history;
   struct MemBlock * nextMemBlock;
-  int blockSize;
+  unsigned int blockSize;
 }MemBlock;
 
 typedef struct MemoryManagmentCDT{
   MemBlock start;
   MemBlock end;
-  int freeBytesRemaining;
+  unsigned int freeBytesRemaining;
 }MemoryManagmentCDT;
 
 static const uint16_t STRUCT_SIZE = ((sizeof(MemBlock) +(BYTE_ALIGMENT -1)) & ~MASK_BYTE_ALIGMENT);
@@ -91,9 +91,9 @@ static int insertBlockIntoFreeList(MemoryManagmentADT memoryManager, MemBlock * 
     removeBlockFromList(memoryManager,buddy);
     return insertBlockIntoFreeList(memoryManager,blockToInsert,1);
   }//else if(auxMerge == 2){
-    //blockToInsert->history = blockToInsert->history >> 1;
-    //removeBlockFromList(memoryManager,auxBuddy);
-    //return insertBlockIntoFreeList(memoryManager,blockToInsert,1);
+  //  blockToInsert->history = blockToInsert->history >> 1;
+  //  removeBlockFromList(memoryManager,auxBuddy);
+  //  return insertBlockIntoFreeList(memoryManager,blockToInsert,1);
   //}
 
   MemBlock * iter = &memoryManager->start;
@@ -143,8 +143,8 @@ void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAlloca
   if(currentBlock == &memoryManager->end){
     return NULL;
   }
-  
-  blockToReturn = (void *) (((uint8_t *) previousBlock->nextMemBlock) + STRUCT_SIZE);
+  blockToReturn = (void *) (((uint8_t *)previousBlock->nextMemBlock) + STRUCT_SIZE);
+
   previousBlock->nextMemBlock = currentBlock->nextMemBlock;
   
   while(currentBlock->blockSize/2 >= MINIMUM_BLOCK_SIZE && currentBlock->blockSize / 2 >= memToAllocate){
@@ -160,7 +160,7 @@ void * memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAlloca
 
   memoryManager->freeBytesRemaining -=currentBlock->blockSize;
   currentBlock->free = 0;
-
+  
   return blockToReturn;
 
 } 
@@ -180,8 +180,10 @@ void freeMem(MemoryManagmentADT const memoryManager, void * block){
 
   blockToFree = (void *) memToFree;
 
+  unsigned int aux = blockToFree->blockSize;
+  
   int freedMem = insertBlockIntoFreeList(memoryManager,((MemBlock *) blockToFree),1);
-  memoryManager->freeBytesRemaining += freedMem;
+  memoryManager->freeBytesRemaining += aux;
 
 }
 
