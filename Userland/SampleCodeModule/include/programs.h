@@ -26,6 +26,5 @@ void wcProgram(int argc, char args[6][21]);
 void filterProgram(int argc, char args[6][21]);
 void loopProgram(int argc, char args[6][21]);
 void nothingProgram(int argc, char args[6][21]);
-int philosophers();
 
 #endif

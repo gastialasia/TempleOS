@@ -9,7 +9,7 @@
 static char buff[300];
 
 int help(int argc, char argv[6][21]){
-    printf("-fibonacci\n-primos\n-date\n-opcode\n-divzero\n-help\n-clear\n-mem\n-ps\n-kill [pid])\n-nice [pid] [priority]\n-block [pid]\n-sem\n-cat [input]\n-wc [input]\n-filter [input]\n-pipe\n-phylo\n-testmm [max memory]\n-testproc [max processes]\n-testprio\n-testsync FALTA VER ARGUMENTOS\n-testsync FALTA VER ARGUMENTOS\n-testnosync\n");
+    printf("- fibonacci\n- primos\n- date\n- help\n- clear\n- mem\n- ps\n- kill [pid])\n- nice [pid] [priority]\n- block [pid]\n- sem\n- cat [input]\n- wc [input]\n- filter [input]\n- pipe\n- philo\n- testmm [max memory]\n- testproc [max processes]\n- testprio\n- testsync\n- testnosync\n");
     return 0;
 }
 
@@ -45,8 +45,6 @@ int date(int argc, char argv[6][21]){
 }
 
 int fibo(int argc, char argv[6][21]){
-    // Deja en el buffer el numero convertido a string
-    // Devuelve 1 si el programa sigue corriendo, 0 sino
     uint64_t aux=0, fibo1=0, fibo2=1;
     while(aux<LIMIT64){
         aux = fibo1;
@@ -60,9 +58,7 @@ int fibo(int argc, char argv[6][21]){
     return 0;
 }
 
-int primos(int argc, char argv[6][21]){ //Esta funcion es una criba de Eratosthenes casera
-  // deja en el buffer el numeor convertido a string
-  // devuelve 1 si el programa no termino, 0 si termino
+int primos(int argc, char argv[6][21]){
     uint64_t j, limit, lastPrimo=0;
     int isPrimo;
     for(uint64_t i=lastPrimo+1; i <= LIMIT64; i++){
@@ -124,16 +120,6 @@ int printMemory(int argc, char argv[6][21]){
 	}
     putchar('\n');
 	return 0;
-}
-
-int opcodeProgram(int argc, char argv[6][21]){
-    opcode();
-    return 0;
-}
-
-int divzeroProgram(int argc, char argv[6][21]){
-    divzero();
-    return 0;
 }
 
 int clearProgram(int argc, char argv[6][21]){
@@ -220,13 +206,11 @@ void semProgram(int argc, char args[6][21]){
         printf("sem program does not require arguments\n");
         return;
     }
-
     char buffer[2000]={0};
     getAllSems(buffer);
     printf(buffer);
 }
 
-//Creates a process which blocks waiting for sem with id 15
 int testsem(int argc, char argv[6][21]){
     Semaphore * aux = semOpen(15, 0);
     if(aux == NULL){
@@ -236,19 +220,15 @@ int testsem(int argc, char argv[6][21]){
     semWait(aux);
 }
 
-//This function is supposed to write into readPipeTest process
 void writePipeProgram(int argc, char argv[6][21]){
     int i=0;
     while(i<3){
         printf("I'm writing from the wpipe process\n");
-        printf("I'm writing from the wpipe process\n");
-        printf("\n");
-        //sleep(3000);
+        sleep(3000);
     }
     exit();
 }
 
-//This function is supposed to read from writePipeTest process
 void readPipeProgram(int argc, char argv[6][21]){
     char buf1[300];
     char buf2[300];
@@ -269,7 +249,6 @@ void pipeListProgram(int argc, char args[6][21]){
         printf("sem program does not require arguments\n");
         return;
     }
-
     char buffer[2000]={0};
     getAllPipes(buffer);
     printf(buffer);
@@ -330,157 +309,3 @@ void nothingProgram(int argc, char args[6][21]){
     while(1);
 }
 
-
-//PHYLOSOPHERS
-
-#define N 5
-#define THINKING 2
-#define HUNGRY 1
-#define EATING 0
-#define LEFT (phnum + 4) % N
-#define RIGHT (phnum + 1) % N
-#define GENERALSEMID 100
-
-void printTable();
- 
-int state[N];
- 
-Semaphore *mutex;
-Semaphore *chopsticks[N];
- 
-void test(int phnum)
-{
-    if (state[phnum] == HUNGRY && state[LEFT] != EATING && state[RIGHT] != EATING) {
-        // state that eating
-        state[phnum] = EATING;
-        printTable();
-        sleep(2);
- 
-        // printf("Philosopher ");
-        // printInt(phnum + 1);
-        // printf(" takes fork ");
-        // printInt(LEFT + 1);
-        // printf(" and ");
-        // printInt(phnum + 1);
-        // putchar('\n');
- 
-        // printf("Philosopher ");
-        // printInt(phnum + 1);
-        // printf(" is Eating\n");
- 
-        // sem_post(&S[phnum]) has no effect
-        // during takefork
-        // used to wake up hungry philosophers
-        // during putfork
-        semPost(chopsticks[phnum]);
-    }
-}
-
-// take up chopsticks
-void take_fork(int phnum)
-{
-    semWait(mutex);
-
-    // state that hungry
-    state[phnum] = HUNGRY;
-
-    // printf("Philosopher ");
-    // printInt(phnum + 1);
-    // printf(" is Hungry\n");
-
-    // eat if neighbours are not eating
-    test(phnum);
-
-    semPost(mutex);
-
-    // if unable to eat wait to be signalled
-    semWait(chopsticks[phnum]);
-
-    sleep(1);
-}
- 
-// put down chopsticks
-void put_fork(int phnum)
-{
- 
-    semWait(mutex);
- 
-    // state that thinking
-    state[phnum] = THINKING;
- 
-    // printf("Philosopher ");
-    // printInt(phnum + 1);
-    // printf(" putting fork ");
-    // printInt(LEFT + 1);
-    // printf(" and ");
-    // printInt(phnum + 1);
-    // printf(" down\n");
-
-    // printf("Philosopher ");
-    // printInt(phnum + 1);
-    // printf(" is thinking\n");
- 
-    test(LEFT);
-    test(RIGHT);
- 
-    semPost(mutex);
-}
- 
-void* philosopher(int argc, char argv[6][21])
-{
-    if(argc != 2){
-        //printf("Philosopher dice: Cantidad incorrecta de parametros\n");
-        exit();
-    }
-    int num = atoi(argv[1]);
-    while (1) {
-
-        sleep(1000);
- 
-        take_fork(num);
- 
-        sleep(1000);
- 
-        put_fork(num);
-
-    }
-}
- 
-int philosophers()
-{
-    int i;
-    mutex = semOpen(GENERALSEMID, 1);
-    
-    // initialize the semaphores
-    for(i=0; i<N; i++){
-        chopsticks[i]=semOpen(i, 1);
-    }
- 
-    char args[6][21];
-    char num[3];
-    strcpy(args[0],"philo");
-    for (i = 0; i < N; i++) {
-        uintToBase(i, num, 10);
-        strcpy(args[1], num);
-        // create philosopher processes
-        createProcess(philosopher, 3, 2, args, NULL, NULL);
- 
-        // printf("Philosopher ");
-        // printInt(i);
-        // printf(" is thinking\n");
-    }
-    
-    exit();
-}
-
-void printTable(){
-    int i;
-    for(i=0; i<N; i++){
-        if(state[i]==EATING){
-            putchar('E');
-        } else {
-            putchar('.');
-        }
-    }
-    putchar('\n');
-}

@@ -8,6 +8,8 @@
 #include <test_processes.h>
 #include <test_prio.h>
 #include <test_sync.h>
+#include <philosophers.h>
+
 
 #define LENGTH 100
 #define MAXBUFFER 100
@@ -62,21 +64,21 @@ void parser(const char *buffer){
         } else {
             if (!strcmp(tokens1[tokenQty2-1],"&")){
                 priority = BACKGROUND;
-                tokenQty2--; // Decremento nro de argumentos porque el & no cuenta
+                tokenQty2--;
             }
 
             fd * fd1 = createFd();
             fd * fd2 = createFd();
             createPipe(fd1, fd2);
-            createProcess(fun1, BACKGROUND, 1, tokens1, NULL, fd2); //Este escribe, corre en background
-            createProcess(fun2, tokenQty2, 1, tokens2, fd1, NULL); //Este lee, corre en foreground
+            createProcess(fun1, BACKGROUND, 1, tokens1, NULL, fd2); 
+            createProcess(fun2, tokenQty2, 1, tokens2, fd1, NULL);
         }
     } else {
       if(!isBuiltIn){
 
         if (!strcmp(tokens1[tokenQty1-1],"&")){
             priority = BACKGROUND;
-            tokenQty1--; // Decremento nro de argumentos porque el & no cuenta
+            tokenQty1--; 
         }
 
         createProcess(fun1, priority, tokenQty1, tokens1, NULL, NULL);
@@ -111,7 +113,6 @@ int pipeParser(const char *buffer, char commands[2][100]){
     return flag;
 }
 
-//Returns token count
 int tokenizeCommand(const char command[100], char tokens[ARG_QTY][ARG_LEN]){
     int i = 0;
     strcpy(tokens[i++], strtok(command, " "));
@@ -127,8 +128,7 @@ int tokenizeCommand(const char command[100], char tokens[ARG_QTY][ARG_LEN]){
 }
 
 
-function_type getFuncFromString(char *str, int * isBuiltIn)
-{
+function_type getFuncFromString(char *str, int * isBuiltIn) {
     function_type toRet;
     if (!strcmp("date", str))
     {
@@ -150,22 +150,9 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
         toRet = &primos;
         *isBuiltIn=1;
     }
-    else if (!strcmp("opcode", str))
-    {
-        toRet = &opcodeProgram;
-    }
-    else if (!strcmp("divzero", str))
-    {
-        toRet = &divzeroProgram;
-    }
     else if (!strcmp("clear", str))
     {
         toRet = &clearProgram;
-        *isBuiltIn=1;
-    }
-    else if (!strcmp("inforeg", str))
-    {
-        toRet = &infoRegisters;
         *isBuiltIn=1;
     }
     else if (!strcmp("testmm", str))
@@ -186,11 +173,6 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     }
     else if (!strcmp("testnosync", str)) {
         toRet = &test_no_sync;
-    }
-    else if (!strcmp("printmem", str))
-    {
-        toRet = &printMemory;
-        *isBuiltIn=1;
     }
     else if (!strcmp("mem", str))
     {
@@ -255,9 +237,9 @@ function_type getFuncFromString(char *str, int * isBuiltIn)
     {
         toRet = &loopProgram;
     }
-    else if (!strcmp("falo", str))
+    else if (!strcmp("philo", str))
     {
-        toRet = &philosophers;
+        toRet = &philosophersProgram;
     }
     else if (!strcmp("nothing", str))
     {

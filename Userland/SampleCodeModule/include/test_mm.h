@@ -8,6 +8,6 @@ typedef struct MM_rq{
   uint32_t size;
 }mm_rq;
 
-char test_mm(); //test_mm(uint64_t argc, char *argv[])
+int test_mm(int argc, char argv[6][21]);
 
 #endif
