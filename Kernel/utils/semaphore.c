@@ -2,8 +2,8 @@
 #include "../include/scheduler.h"
 #include "../include/tools.h"
 
-#define MAX_SEM 10
-#define MAX_PROCESS 10
+#define MAX_SEM 15
+#define MAX_PROCESS 15
 
 #define ID 0
 #define VALUE 1

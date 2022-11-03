@@ -30,6 +30,7 @@ void test(int phnum)
 }
 
 void take_fork(int phnum) {
+
     semWait(mutex);
 
     state[phnum] = HUNGRY;
@@ -104,7 +105,9 @@ int philosophersProgram(){
                     printf("A philosopher just came and sat on the table\n");
                     uintToBase(n, num, 10);
                     strcpy(args[1], num);
-                    pids[n++] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
+                    chopsticks[n] = semOpen(n, i);
+                    if(chopsticks[n] != NULL)
+                        pids[n++] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
                 }
                 break;
             case 'r':
