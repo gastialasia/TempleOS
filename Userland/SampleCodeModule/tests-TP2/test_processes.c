@@ -33,8 +33,8 @@ int test_processes(int argc, char argv[6][21]){
     }
 
     ps();
-
-    sleep(3000);
+    putchar('\n');
+    sleep(2000);
 
     // Randomly kills, blocks or unblocks processes until every one has been killed
     while (alive > 0){
@@ -78,8 +78,8 @@ int test_processes(int argc, char argv[6][21]){
       }
 
       ps();
-
-        sleep(3000);
+      putchar('\n');
+      sleep(2000);
     } 
   }
 }

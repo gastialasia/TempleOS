@@ -9,7 +9,7 @@
 #include <test_prio.h>
 #include <test_sync.h>
 #include <philosophers.h>
-
+#include <test_prio_2.h>
 
 #define LENGTH 100
 #define MAXBUFFER 100
@@ -240,9 +240,9 @@ function_type getFuncFromString(char *str, int * isBuiltIn) {
     {
         toRet = &philosophersProgram;
     }
-    else if (!strcmp("nothing", str))
+    else if (!strcmp("testprio2", str))
     {
-        toRet = &nothingProgram;
+        toRet = &test_prio_2;
     }
     else
     {

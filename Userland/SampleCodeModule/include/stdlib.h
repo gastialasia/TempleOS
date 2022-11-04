@@ -124,4 +124,6 @@ void getAllPipes(char * buf);
 
 int atoi(const char* S);
 
+int itos(int value, char* target);
+
 #endif

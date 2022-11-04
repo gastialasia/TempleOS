@@ -9,7 +9,7 @@
 static char buff[300];
 
 int help(int argc, char argv[6][21]){
-    printf("- fibonacci\n- primos\n- date\n- help\n- clear\n- mem\n- ps\n- kill [pid])\n- nice [pid] [priority]\n- block [pid]\n- sem\n- cat [input]\n- wc [input]\n- filter [input]\n- pipe\n- philo\n- testmm [max memory]\n- testproc [max processes]\n- testprio\n- testsync\n- testnosync\n");
+    printf("- fibonacci\n- primos\n- date\n- help\n- clear\n- mem\n- ps\n- kill [pid]\n- nice [pid] [priority]\n- block [pid]\n- sem\n- cat\n- wc\n- filter\n- pipe\n- philo\n- testmm [max memory]\n- testproc [max processes]\n- testprio\n- testprio2\n- testsync\n- testnosync\n");
     return 0;
 }
 
@@ -320,15 +320,6 @@ int loopProgram(int argc, char args[6][21]){
         sleep(2000);
     }
     exit();
-    return 0;
-}
-
-int nothingProgram(int argc, char args[6][21]){
-    while(1){
-        printInt(getpid());
-        putchar(' ');
-        sleep(100);
-    }
     return 0;
 }
 

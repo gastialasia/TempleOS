@@ -100,7 +100,8 @@ int64_t read(char *buffer, size_t count) {
         break;
       
       case F2:
-        eProcess();
+        if(currentPID() != 1)
+          eProcess();
         break;
 
       case 170:

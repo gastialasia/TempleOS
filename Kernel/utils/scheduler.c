@@ -297,7 +297,9 @@ static ProcessNode * deleteProcessRec(ProcessNode * node,uint64_t pid, int * fou
 }
 
 void exitCurrentProcess(){
-
+  if(scheduler->current->process.pid == 1){
+    return;
+  }
   if(scheduler->current->process.priority == 1){
     scheduler->foregroundInUse = 0;
   }
