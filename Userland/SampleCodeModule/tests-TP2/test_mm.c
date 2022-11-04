@@ -31,7 +31,7 @@ int test_mm(int argc, char argv[6][21]) {
     exit();
   }
 
-  max_memory=0.7*134217728;
+  //max_memory=0.7*134217728;
 
   while (1) {
     rq = 0;
