@@ -43,7 +43,7 @@ int incWithSem(int argc, char argv[6][21]){
 
   if (sem == NULL){
     printf("ERROR OPENING SEM\n");
-    exit(0);
+    exit();
     return 0;
   }
   
@@ -58,16 +58,18 @@ int incWithSem(int argc, char argv[6][21]){
   putchar('\n');
   
   char resultStr[20];
-  printf("Final value: ");
-  uintToBase(global, resultStr, 10);
+  printf("value: ");
+  itos(global, resultStr);
   printf(resultStr);
   putchar('\n');
   semPost(sem);
-  exit(0);
+  semClose(sem);
+  exit();
   return 0;
 }
 
 int incWithoutSem(int argc, char argv[6][21]){
+  
   uint64_t i;
   int64_t value = getpid() % 2 ? 1 : -1;
 
@@ -76,22 +78,25 @@ int incWithoutSem(int argc, char argv[6][21]){
   }
   
   char resultStr[20];
-  printf("Final value: ");
-  uintToBase(global, resultStr, 10);
+  printf("value: ");
+  itos(global, resultStr);
   printf(resultStr);
   putchar('\n');
-  exit(0);
+  exit();
   return 0;
 }
 
 int test_sync(int argc, char argv[6][21]){
+  global = 0;
+  
   uint64_t i;
 
-  global = 0;
-
   Semaphore *sem = semOpen(SEM, 1);
+  printf("After ");
+  printInt(TOTAL_PAIR_PROCESSES*2);
+  printf(" prints final value should be 0\n");
 
-  printf("CREATING PROCESSES...(WITH SEM)\n");
+  printf("CREATING PROCESSES(WITH SEM)... Please wait\n");
 
   for(i = 0; i < TOTAL_PAIR_PROCESSES; i++){
     processWrapper("i");
@@ -99,21 +104,25 @@ int test_sync(int argc, char argv[6][21]){
   }
 
   semClose(sem);
-  exit(0);
+  exit();
   return 0;
 }
 
 int test_no_sync(int argc, char argv[6][21]){
-  uint64_t i;
+  printf("After ");
+  printInt(TOTAL_PAIR_PROCESSES*2);
+  printf(" prints final value is not 0\n");
 
   global = 0;
 
-  printf("CREATING PROCESSES...(WITHOUT SEM)\n");
+  uint64_t i;
+
+  printf("CREATING PROCESSES(WITHOUT SEM)... Please wait\n");
 
   for(i = 0; i < TOTAL_PAIR_PROCESSES; i++){
     processWrapper("n");
     processWrapper("n");
   }
-  exit(0);
+  exit();
   return 0;
 }

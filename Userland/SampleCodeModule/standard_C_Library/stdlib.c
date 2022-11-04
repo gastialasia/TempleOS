@@ -62,6 +62,31 @@ uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base)
     return digits;
 }
 
+//Integer to string
+int itos(int value, char* target){
+    int initialIndex = 0;
+    int digit; 
+    int sign = 1; 
+    int i = -1, j = initialIndex;
+    char aux[11];
+    if(value < 0){
+        sign = 0;
+        value *= -1;
+    }
+    do {
+      i++;
+      digit = value % 10;
+      aux[i] = digit + '0'; // 48 = '0' 
+      value /= 10; 
+    } while(value > 0);
+    if (!sign)
+      target[j++] = '-';
+    while(i > -1)
+      target[j++] = aux[i--];
+    target[j] = 0;
+    return j;
+}
+
 void printInt(int num){
     char buffer[10];
     int len = uintToBase(num,buffer,10);

@@ -94,41 +94,6 @@ void runShell(){
 
 int main()
 {
-	ncClear();
-	ncPrint("[Kernel Main]");
-	ncNewline();
-	ncPrint("IDT loaded succesfully!");
-	ncNewline();
-	ncNewline();
-	ncNewline();
-	ncPrint("                             WELCOME TO TEMPLE OS");
-	ncNewline();
-	ncNewline();
-	ncNewline();
-	ncPrint("                                     +");
-	ncNewline();
-	ncPrint("                                     |");
-	ncNewline();
-	ncPrint("                                    /o\\");
-	ncNewline();
-	ncPrint("                                    |~|");
-	ncNewline();
-	ncPrint("                                 ,  | |  ,");
-	ncNewline();
-	ncPrint("                                 /\\/ _ \\/\\");
-	ncNewline();
-	ncPrint("                           .-.-.-|| (_) ||-.-.-.");
-	ncNewline();
-	ncPrint("                           | # # ||  _  || # # |");
-	ncNewline();
-	ncPrint("                          _|     || ||| ||     |_");
-	ncNewline();
-	ncPrint("                            ********===********");
-	ncNewline();
-	ncPrint("                                    ===");
-	ncNewline();
-  
-
   initMemManager(memManagerAddress,heapModuleAddress);
   ncPrint("Paso el initmem");
   initScheduler();
@@ -137,8 +102,6 @@ int main()
   ncPrint("Se cargo la shell");
   load_idt();
   ncClear();
-
-  
 
   ncPrint("TE pasaste");
 	return 0;

@@ -184,7 +184,7 @@ int niceProgram(int argc, char args[6][21]){
         printf("Shell's priority can't be modified\n");
         return 0;
     }
-    
+
     if (nice(pid, newPriority) == 2) {
         printf("There is no process with ID ");
         printInt(pid);
@@ -324,7 +324,11 @@ int loopProgram(int argc, char args[6][21]){
 }
 
 int nothingProgram(int argc, char args[6][21]){
-    while(1);
+    while(1){
+        printInt(getpid());
+        putchar(' ');
+        sleep(100);
+    }
     return 0;
 }
 
