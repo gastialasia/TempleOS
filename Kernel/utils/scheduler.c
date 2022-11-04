@@ -427,6 +427,12 @@ int changeProcessState(uint32_t pid){
 int killPid(uint32_t pid){
   int found = 0;
   if (pid>1){
+    pcb * aux = getPCB(scheduler->startList, pid);
+    if(aux == NULL){
+      return 1;
+    }
+    closeUserPipe(aux->stdin);
+    closeUserPipe(aux->stdout);
     scheduler->startList = deleteProcessRec(scheduler->startList, pid, &found);
   }
   return found;
