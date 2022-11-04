@@ -175,12 +175,20 @@ int niceProgram(int argc, char args[6][21]){
 
     uint8_t newPriority = (uint8_t)atoi(args[2]);
 
+    if(newPriority <= 1 || newPriority > 10){
+        printf("Invalid priority\n");
+        return 0;
+    }
+
     if (pid==1){
         printf("Shell's priority can't be modified\n");
         return 0;
     }
-    if (!nice(pid, newPriority)) {
-        printf("Error on reasigning priority\n");
+    
+    if (nice(pid, newPriority) == 2) {
+        printf("There is no process with ID ");
+        printInt(pid);
+        putchar('\n');
     }
     return 0;
 }
