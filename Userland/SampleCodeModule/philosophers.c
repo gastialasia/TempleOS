@@ -93,7 +93,7 @@ int philosophersProgram(){
         pids[i] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
     }
     
-    int c;
+    char c;
     while(1){
         getchar(&c);
         switch (c){
@@ -127,7 +127,6 @@ int philosophersProgram(){
                 if (n<=2){
                     printf("No more philosophers can leave\n");
                 } else {
-                    int i=0;
                     printf("A philosopher is leaving\n");
                     while(1){
                         semWait(mutex);

@@ -1,4 +1,5 @@
 #include <stdint.h>
+#include <stdlib.h>
 
 
 //Random
@@ -42,7 +43,7 @@ void endless_loop_print(uint64_t wait){
   int64_t pid = getpid();
 
   while(1){
-    printf("%d ",pid);
+    printInt(pid);
     bussy_wait(wait);
   }
 }

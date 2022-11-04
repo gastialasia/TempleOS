@@ -59,7 +59,7 @@ void parser(const char *buffer){
         fun2 = getFuncFromString(tokens2[0], &isBuiltIn);
 
         if(fun1 == invalid || fun2 == invalid){
-            invalid(NULL, NULL);
+            invalid(0, NULL);
         } else {
             if (!strcmp(tokens1[tokenQty2-1],"&")){
                 priority = BACKGROUND;

@@ -2,8 +2,10 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
 
-#include "./include/stdlib.h">
+#include "./include/stdlib.h"
 #include <shell.h>
+
+void welcome();
 
 int main() {
 	welcome();

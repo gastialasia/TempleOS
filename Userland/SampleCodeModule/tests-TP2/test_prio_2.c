@@ -18,7 +18,7 @@ static void loop_prio(int argc, char argv[6][21]){
     }
 }
 
-void test_prio_2(int argc, char argv[6][21]){
+int test_prio_2(int argc, char argv[6][21]){
     if(argc != MAX_ARGS){
         printf("Incorrect number of arguments. You should input 3 numbers\n");
         exit();
@@ -32,6 +32,6 @@ void test_prio_2(int argc, char argv[6][21]){
         priority = atoi(argv[i]);
         createProcess((uint64_t)loop_prio, (uint8_t)priority, ARGS_COUNT, args, NULL, NULL);
     }
-
     exit();
+    return 0;
 }
