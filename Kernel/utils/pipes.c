@@ -3,6 +3,8 @@
 #include "../include/pipes.h"
 #include "../include/tools.h"
 
+
+#define NULL ((void *)0)
 #define MAX_PIPES 20
 #define PIPE_SIZE 512 // byres de buffer del pipe
 
@@ -146,7 +148,7 @@ void closeUserPipe(fd * user){
 
 }
 
-int pipeWrite(fd * userPipe, char * string){
+int pipeWrite(fd * userPipe,const char * string){
 
   if(!userPipe->writable || (!userPipe->pipe->readPermition && userPipe->pipe->bytesToRead == PIPE_SIZE)){
     return -1;

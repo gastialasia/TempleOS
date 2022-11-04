@@ -2,7 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include "../include/keyboard.h"
 #include "../include/lib.h"
-#include "../include/syscall.h"
+#include "../include/syscalls.h"
 #include "../include/scheduler.h"
 
 #define F2 18

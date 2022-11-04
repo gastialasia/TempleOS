@@ -22,7 +22,6 @@ registersT *secondaryBackup = &secondary;
 int64_t write(const char *buffer, size_t count){
 
   fd * stdout = getCurrentStdout();
-  pcb * currentProcess = getCurrentProcess();
 
   if(!stdout){
 	  for (int i = 0; i < count; i++){

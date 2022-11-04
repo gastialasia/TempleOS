@@ -8,6 +8,7 @@
 #include "include/idtLoader.h"
 #include <syscalls.h>
 #include "include/scheduler.h"
+#include "./include/tools.h"
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -95,14 +96,19 @@ void runShell(){
 int main()
 {
   initMemManager(memManagerAddress,heapModuleAddress);
-  ncPrint("Paso el initmem");
   initScheduler();
-  ncPrint("paso el initScheduler");
-  createProcess((uint64_t)sampleCodeModuleAddress, 1, 1, "shell", NULL, NULL);
-  ncPrint("Se cargo la shell");
-  load_idt();
-  ncClear();
 
-  ncPrint("TE pasaste");
+  char argv[6][21];
+  argv[0][0] = 'S';
+  argv[0][1] = 'h';
+  argv[0][2] = 'e';
+  argv[0][3] = 'l';
+  argv[0][4] = 'l';
+  argv[0][5] = 0;
+
+  createProcess((uint64_t)sampleCodeModuleAddress, 1, 1,argv, NULL, NULL);
+  
+  load_idt();
+
 	return 0;
 }

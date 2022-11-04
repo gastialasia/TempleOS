@@ -1,6 +1,8 @@
 #ifndef MEMORY_MANAGMENT_ADT_H
 #define MEMORY_MANAGMENT_ADT_H
 
+#include "tools.h"
+
 #define NULL ((void *) 0)
 #define BYTE_ALIGMENT 8
 #define MASK_BYTE_ALIGMENT 0x07
