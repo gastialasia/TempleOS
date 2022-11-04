@@ -105,9 +105,11 @@ int philosophersProgram(){
                     printf("A philosopher just came and sat on the table\n");
                     uintToBase(n, num, 10);
                     strcpy(args[1], num);
+                    //semWait(mutex);
                     chopsticks[n] = semOpen(n, i);
                     if(chopsticks[n] != NULL)
                         pids[n++] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
+                    //semPost(mutex);
                 }
                 break;
             case 'r':
@@ -115,22 +117,24 @@ int philosophersProgram(){
                 if (n<=1){
                     printf("The table can't be empty\n");
                 } else {
-                    printf("A philosopher left the rift\n");
                     int i=0;
-                    semWait(mutex);
-                    while(i<n){
-                        if(state[i]==THINKING){
-                            kill(pids[i]);
-                            semClose(chopsticks[i]);
+                    printf("A philosopher is leaving\n");
+                    while(1){
+                        semWait(mutex);
+                        if(state[n-1]==EATING){
+                            kill(pids[n-1]);
                             n--;
+                            printf("A philosopher left the rift\n");
+                            semPost(mutex);
                             break;
                         }
+                        semPost(mutex);
+                        sleep(100);
                     }
-                    semPost(mutex);
+
                 }
-                
-                break;
             }
+            break;
             default:
                 break;
         }
