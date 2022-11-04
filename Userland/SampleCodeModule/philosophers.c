@@ -102,20 +102,30 @@ int philosophersProgram(){
                 if(n==MAX_PHILOSOPHERS){
                     printf("The table is full, no new philosophers can join\n");
                 } else {
-                    printf("A philosopher just came and sat on the table\n");
+                    printf("A philosopher entered the establishment\n");
                     uintToBase(n, num, 10);
                     strcpy(args[1], num);
                     //semWait(mutex);
-                    chopsticks[n] = semOpen(n, i);
-                    if(chopsticks[n] != NULL)
-                        pids[n++] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
+                    
                     //semPost(mutex);
+                    while(1){
+                        semWait(mutex);
+                        if(state[n-1]==THINKING && state[0]==THINKING){
+                            chopsticks[n] = semOpen(n, i);
+                            pids[n++] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
+                            semPost(mutex);
+                            printf("The philosopher sat on the table\n");
+                            break;
+                        }
+                        semPost(mutex);
+                        sleep(100);
+                    }
                 }
                 break;
             case 'r':
             case 'R': {
-                if (n<=1){
-                    printf("The table can't be empty\n");
+                if (n<=2){
+                    printf("No more philosophers can leave\n");
                 } else {
                     int i=0;
                     printf("A philosopher is leaving\n");
@@ -124,7 +134,7 @@ int philosophersProgram(){
                         if(state[n-1]==EATING){
                             kill(pids[n-1]);
                             n--;
-                            printf("A philosopher left the rift\n");
+                            printf("The philosopher left the rift\n");
                             semPost(mutex);
                             break;
                         }
