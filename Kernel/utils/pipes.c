@@ -188,16 +188,19 @@ int pipeRead(fd * userPipe,char * buffer,int limit){
   }
 
   int i = 0;
-  while(userPipe->pipe->bytesToRead > 0 && i < limit){
+  while(userPipe->pipe->bytesToRead > 0){
 
     userPipe->pipe->bytesToRead--;
-    
+
     if(userPipe->pipe->readPos == PIPE_SIZE){
       userPipe->pipe->readPos = 0;
     }
-
+    if(limit == 1){
+      i = (int) userPipe->pipe->data[userPipe->pipe->readPos++];
+      break;
+    }else{
     buffer[i++] = userPipe->pipe->data[userPipe->pipe->readPos++];
-
+    }
   }
 
   if(userPipe->pipe->waitingProcess != NULL){

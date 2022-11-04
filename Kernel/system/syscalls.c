@@ -55,8 +55,8 @@ int64_t read(char *buffer, size_t count) {
       addToKeyboardList();
       key = readKey();
     }else {
-      key = (unsigned char) pipeRead(stdin, buffer, 1);
-      key = buffer[0];
+      key = (unsigned char) pipeRead(stdin,NULL, 1);
+      //key = buffer[0];
     }
     
     switch (key) {
