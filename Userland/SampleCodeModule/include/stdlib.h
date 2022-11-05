@@ -3,35 +3,36 @@
 
 #include <stdint.h>
 
-#define NULL ((void *) 0)
+#define NULL ((void *)0)
 
-typedef int (*function_type)(int argc, char argv[6][21]);
-
-typedef struct{
-	uint64_t rax;
-    uint64_t rbx;
-    uint64_t rcx;
-    uint64_t rdx;
-    uint64_t rbp;
-    uint64_t rdi;
-    uint64_t rsi;
-    uint64_t r8;
-    uint64_t r9;
-    uint64_t r10;
-    uint64_t r11;
-    uint64_t r12;
-    uint64_t r13;
-    uint64_t r14;
-    uint64_t r15;
+typedef struct
+{
+  uint64_t rax;
+  uint64_t rbx;
+  uint64_t rcx;
+  uint64_t rdx;
+  uint64_t rbp;
+  uint64_t rdi;
+  uint64_t rsi;
+  uint64_t r8;
+  uint64_t r9;
+  uint64_t r10;
+  uint64_t r11;
+  uint64_t r12;
+  uint64_t r13;
+  uint64_t r14;
+  uint64_t r15;
 } registersT;
 
-typedef struct fd{
+typedef struct fd
+{
   char readable;
   char writable;
-  struct pipe * pipe;
+  struct pipe *pipe;
 } fd;
 
-typedef struct Semaphore {
+typedef struct Semaphore
+{
   uint32_t id;
   int value;
 } Semaphore;
@@ -40,19 +41,19 @@ int strlen(const char *);
 
 int strcmp(const char *str1, const char *str2);
 
-char* strcat(char* destination, const char* source);
+char *strcat(char *destination, const char *source);
 
 void putchar(const char c);
 
 void printf(const char *);
 
-void inforeg(registersT * regs);
+void inforeg(registersT *regs);
 
 void printInt(int num);
 
 void getchar(char *c);
 
-int scanf(char * buffer);
+int scanf(char *buffer);
 
 void clear();
 
@@ -74,21 +75,21 @@ int strcpy(char *dest, const char *src);
 
 void takeSnapShot();
 
-uint32_t uintToBase(uint64_t value, char * buffer, uint32_t base);
+uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base);
 
 uint64_t hex2int(char *hex, int *ok);
 
 void printReg(const char *regName, uint64_t regValue);
 
-void printMem(uint64_t pointer, char*buffer);
+void printMem(uint64_t pointer, char *buffer);
 
 char *strtok(char *srcString, char *delim);
 
-void * malloc(unsigned int bytes);
+void *malloc(unsigned int bytes);
 
-void free(void * memToFree);
+void free(void *memToFree);
 
-void memStatus(unsigned int * status);
+void memStatus(unsigned int *status);
 
 int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], fd *customStdin, fd *customStdout);
 
@@ -106,24 +107,24 @@ void ps();
 
 int nice(uint32_t pid, uint8_t newPriority);
 
-Semaphore *semOpen(uint32_t id,int value);
+Semaphore *semOpen(uint32_t id, int value);
 
-int semClose(Semaphore * sem);
+int semClose(Semaphore *sem);
 
-int semPost(Semaphore * sem);
+int semPost(Semaphore *sem);
 
-int semWait(Semaphore * sem);
+int semWait(Semaphore *sem);
 
-void getAllSems(char * buf);
+void getAllSems(char *buf);
 
 int createPipe(fd *fd1, fd *fd2);
 
-fd * createFd();
+fd *createFd();
 
-void getAllPipes(char * buf);
+void getAllPipes(char *buf);
 
-int atoi(const char* S);
+int atoi(const char *S);
 
-int itos(int value, char* target);
+int itos(int value, char *target);
 
 #endif

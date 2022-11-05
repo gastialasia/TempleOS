@@ -4,6 +4,3 @@
 int philosophersProgram();
 
 #endif
-
-
-

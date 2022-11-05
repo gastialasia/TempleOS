@@ -1,9 +1,9 @@
 #ifndef SCHEDULER_H
 #define SCHEDULER_H
 
-#include "MemoryManagerWrapper.h"
-#include "semaphore.h"
-#include "lib.h"
+#include <MemoryManagerWrapper.h>
+#include <semaphore.h>
+#include <lib.h>
 
 #define ARG_LEN 21
 #define ARG_QTY 6

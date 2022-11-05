@@ -2,7 +2,7 @@
 #define SEMAPHORE_H
 
 #include <stdint.h>
-#include "MemoryManagerWrapper.h"
+#include <MemoryManagerWrapper.h>
 
 typedef struct Semaphore* semPointer;
 

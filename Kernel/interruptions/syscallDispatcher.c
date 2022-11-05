@@ -11,33 +11,35 @@
 
 static int syscallnumber;
 
-void syscallsetter(int64_t syscall){
-	syscallnumber = syscall;
+void syscallsetter(int64_t syscall)
+{
+    syscallnumber = syscall;
 }
 
-int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3, int64_t arg4, int64_t arg5) {
+int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3, int64_t arg4, int64_t arg5)
+{
     switch (syscallnumber)
     {
     case 1:
-        return read((char*) arg0, (size_t) arg1);
+        return read((char *)arg0, (size_t)arg1);
     case 2:
-        return write((const char*) arg0, (size_t) arg1);
+        return write((const char *)arg0, (size_t)arg1);
     case 3:
         clear();
         break;
     case 4:
-	   	printMem((uint64_t) arg0,(unsigned char*)arg1);
-		break;
+        printMem((uint64_t)arg0, (unsigned char *)arg1);
+        break;
     case 5:
-        inforeg((registersT*)arg0);
+        inforeg((registersT *)arg0);
         break;
     case 6:
         return date((char)arg0);
-	case 7:
-		sleep((int)arg0);
-		break;
-	case 8:
-		return getLast();
+    case 7:
+        sleep((int)arg0);
+        break;
+    case 8:
+        return getLast();
     case 9:
         snapshotRegs();
         break;
@@ -75,7 +77,7 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
         rScheduler();
         break;
     case 21:
-        return (int64_t) semOpen((uint32_t)arg0,(int)arg1);
+        return (int64_t)semOpen((uint32_t)arg0, (int)arg1);
         break;
     case 22:
         return semClose((semPointer)arg0);

@@ -8,26 +8,30 @@
 #define OPCODE_EXCEPTION_ID 6
 #define TIMEOUT 3000
 
-extern void ncPrint(const char*);
+extern void ncPrint(const char *);
 
 static void zero_division();
 static void opcode();
 
-void exceptionDispatcher(int exception) {
+void exceptionDispatcher(int exception)
+{
 	if (exception == ZERO_EXCEPTION_ID)
 		zero_division();
-	else if(exception == OPCODE_EXCEPTION_ID)
+	else if (exception == OPCODE_EXCEPTION_ID)
 		opcode();
 }
 
-static void zero_division() {
+static void zero_division()
+{
 	ncPrint("ZERO DIVISION ERROR!\n");
 }
 
-static void opcode(){
+static void opcode()
+{
 	ncPrint("OPCODE EXCEPTION!\n");
 }
 
-void rebootTerm(){
+void rebootTerm()
+{
 	sleep(TIMEOUT);
 }

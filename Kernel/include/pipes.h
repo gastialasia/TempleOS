@@ -1,4 +1,4 @@
-#include "scheduler.h"
+#include <scheduler.h>
 
 int createPipes(fd * pui1, fd * pui2);
 fd * createfd();

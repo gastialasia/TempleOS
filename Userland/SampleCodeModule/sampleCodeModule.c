@@ -1,20 +1,21 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 
-
-#include "./include/stdlib.h"
+#include <stdlib.h>
 #include <shell.h>
 
 void welcome();
 
-int main() {
+int main()
+{
 	welcome();
 	sleep(1000);
 	shell();
 	return 0;
 }
 
-void welcome(){
+void welcome()
+{
 	clear();
 	printf("[Kernel Main]");
 	putchar('\n');

@@ -7,20 +7,24 @@
 
 static unsigned long ticks = 0;
 
-void timer_handler() {
+void timer_handler()
+{
 	ticks++;
 }
 
-int ticks_elapsed() {
+int ticks_elapsed()
+{
 	return ticks;
 }
 
-int seconds_elapsed() {
+int seconds_elapsed()
+{
 	return ticks / TICKSPERSECOND;
 }
 
-void tSleep(int ms){
-	int final_ticks = ticks + ms/55;///;secs*TICKSPERSECOND
-	while(ticks <= final_ticks)
+void tSleep(int ms)
+{
+	int final_ticks = ticks + ms / 55; ///;secs*TICKSPERSECOND
+	while (ticks <= final_ticks)
 		_hlt();
 }

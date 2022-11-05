@@ -6,20 +6,24 @@
 #define WHITE_ON_BLACK 0x0F
 #define GREEN_ON_BLACK 0x02
 
-static char buffer[64] = { '0' };
+static char buffer[64] = {'0'};
 static const uint32_t width = 80;
-static const uint32_t height = 25 ;
-static uint8_t * const video = (uint8_t*)0xB8000;
-static uint8_t * currentVideo = (uint8_t*)0xB8000;
+static const uint32_t height = 25;
+static uint8_t *const video = (uint8_t *)0xB8000;
+static uint8_t *currentVideo = (uint8_t *)0xB8000;
 // static showCursor=0;
 
 static char color = WHITE_ON_BLACK;
 
-void ncTogglePrintColor(){
-	if (color==WHITE_ON_BLACK) {
-		color=GREEN_ON_BLACK;
-	} else {
-		color=WHITE_ON_BLACK;
+void ncTogglePrintColor()
+{
+	if (color == WHITE_ON_BLACK)
+	{
+		color = GREEN_ON_BLACK;
+	}
+	else
+	{
+		color = WHITE_ON_BLACK;
 	}
 }
 
@@ -27,7 +31,8 @@ void ncTogglePrintColor(){
 // 	showCursor = !showCursor;
 // }
 
-void ncPrint(const char * string){
+void ncPrint(const char *string)
+{
 	int i;
 	for (i = 0; string[i] != 0; i++)
 		ncPrintChar(string[i]);
@@ -37,45 +42,53 @@ void ncPrint(const char * string){
 
 void ncPrintChar(char character)
 {
-	if(currentVideo==(video+(width*height)*2)){
+	if (currentVideo == (video + (width * height) * 2))
+	{
 		ncMoveLines();
 	}
 
-	if(character == '\n') {
+	if (character == '\n')
+	{
 		ncNewline();
 		return;
 	}
 
 	*currentVideo = character;
 	currentVideo += 1;
-	*currentVideo = color; //1111=F blanco, 0000=0 negro -> 1er: fondo, 2do: letra
+	*currentVideo = color; // 1111=F blanco, 0000=0 negro -> 1er: fondo, 2do: letra
 	currentVideo += 1;
 	*currentVideo = ' ';
-	*(currentVideo+1) = 0xF0;
+	*(currentVideo + 1) = 0xF0;
 }
 
 // ncDeleteChar(normal)
 
-void ncDeleteChar(){
-	currentVideo -=2;
+void ncDeleteChar()
+{
+	currentVideo -= 2;
 	*currentVideo = ' ';
-	*(currentVideo+3)= 0x0F;
-	*(currentVideo+1)= 0xF0;
+	*(currentVideo + 3) = 0x0F;
+	*(currentVideo + 1) = 0xF0;
 }
 
 // ncMoveLines (normal, left y right)
 
-void ncMoveLines(){
-	for(int i=0;i<height*width*2;){
-		if (i>=(height-1)*width*2){
-			video[i]=' ';
-			i+=2;
-		} else {
-			video[i]=video[i+width*2];
+void ncMoveLines()
+{
+	for (int i = 0; i < height * width * 2;)
+	{
+		if (i >= (height - 1) * width * 2)
+		{
+			video[i] = ' ';
+			i += 2;
+		}
+		else
+		{
+			video[i] = video[i + width * 2];
 			i++;
 		}
 	}
-	currentVideo=currentVideo-(width*2);
+	currentVideo = currentVideo - (width * 2);
 }
 
 // ncNewLine (normal, left y right)
@@ -85,8 +98,7 @@ void ncNewline()
 	do
 	{
 		ncPrintChar(' ');
-	}
-	while((uint64_t)(currentVideo - video) % (width * 2) != 0);
+	} while ((uint64_t)(currentVideo - video) % (width * 2) != 0);
 }
 
 // ncPrintDec (normal, left y right)
@@ -114,8 +126,8 @@ void ncPrintBin(uint64_t value)
 
 void ncPrintBase(uint64_t value, uint32_t base)
 {
-    uintToBase(value, buffer, base);
-    ncPrint(buffer);
+	uintToBase(value, buffer, base);
+	ncPrint(buffer);
 }
 
 void ncPrintReg(const char *regName, uint64_t regValue)
@@ -135,9 +147,10 @@ void ncClear()
 {
 	int i;
 
-	for (i = 0; i < height * width; i++){
+	for (i = 0; i < height * width; i++)
+	{
 		video[i * 2] = ' ';
-		video[(i * 2)+1] = WHITE_ON_BLACK;
+		video[(i * 2) + 1] = WHITE_ON_BLACK;
 	}
 	currentVideo = video;
 }

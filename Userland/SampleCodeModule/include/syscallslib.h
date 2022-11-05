@@ -5,32 +5,32 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-void sys_write(const char * buffer, size_t count);
-int sys_read(char * buffer, size_t count);
+void sys_write(const char *buffer, size_t count);
+int sys_read(char *buffer, size_t count);
 void sys_clear();
 char sys_date(char value);
 void sys_sleep(int secs);
-void sys_inforeg(registersT*);
+void sys_inforeg(registersT *);
 void sys_snapshotRegs(void);
 unsigned char sys_getLast();
-void sys_printMem(uint64_t, char*);
-void * sys_malloc(unsigned int bytes);
-void sys_free(void * memToFree);
-void sys_memStatus(unsigned int * status);
+void sys_printMem(uint64_t, char *);
+void *sys_malloc(unsigned int bytes);
+void sys_free(void *memToFree);
+void sys_memStatus(unsigned int *status);
 int sys_createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], fd *customStdin, fd *customStdout);
 void sys_exit();
 int sys_getpid();
-void sys_ps(char * buffer);
+void sys_ps(char *buffer);
 int sys_kill(uint32_t pid);
 int sys_changepriority(uint32_t pid, uint8_t newPriority);
 int sys_changestate(uint32_t pid);
 void sys_yield();
-Semaphore *sys_semOpen(uint32_t id,int value);
-int sys_semClose(Semaphore * sem);
-int sys_semPost(Semaphore * sem);
-int sys_semWait(Semaphore * sem);
+Semaphore *sys_semOpen(uint32_t id, int value);
+int sys_semClose(Semaphore *sem);
+int sys_semPost(Semaphore *sem);
+int sys_semWait(Semaphore *sem);
 void sys_getAllSems(char *buffer);
 int sys_createPipe(fd *fd1, fd *fd2);
-void sys_getAllPipes(char * buf);
+void sys_getAllPipes(char *buf);
 
 #endif
