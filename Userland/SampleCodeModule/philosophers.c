@@ -123,7 +123,8 @@ int philosophersProgram()
                 while (1)
                 {
                     semWait(mutex);
-                    if (state[n - 1] == THINKING && state[0] == THINKING)
+                    
+                    if (((state[n - 1] == THINKING || state[n - 1] == HUNGRY) && (state[0] == THINKING || state[0] == HUNGRY)) || n==2 && state[0] == THINKING)
                     {
                         chopsticks[n] = semOpen(n, i);
                         pids[n++] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
