@@ -239,6 +239,14 @@ function_type getFuncFromString(char *str, int *isBuiltIn)
     {
         toRet = &test_prio_2;
     }
+    else if (!strcmp("write", str))
+    {
+        toRet = &writeProgram;
+    }
+    else if (!strcmp("read", str))
+    {
+        toRet = &readProgram;
+    }
     else
     {
         toRet = &invalid;

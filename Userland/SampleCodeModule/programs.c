@@ -2,7 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include <programs.h>
 #include <stdint.h>
-#include <stdlib.h>
+#include "./include/stdlib.h"
 
 #define LIMIT64 0b0111111111111111111111111111111111111111111111111111111111111111 // 2^(63)-1
 
@@ -375,6 +375,34 @@ int loopProgram(int argc, char args[6][21])
         printInt(getpid());
         putchar('\n');
         sleep(2000);
+    }
+    exit();
+    return 0;
+}
+
+int writeProgram(int argc, char argv[6][21]){
+    fd * fileDescriptor = createFd();
+    openPipe(fileDescriptor, 101, 0);
+    pipeWrite(fileDescriptor, "I'm writing on the pipe");
+    closeFd(fileDescriptor);
+    exit();
+    return 0;
+}
+
+int readProgram(int argc, char argv[6][21]){
+    fd * fileDescriptor = createFd();
+    if (openPipe(fileDescriptor, 101, 1)==-1) {
+        printf("Error opening pipe");
+        putchar('\n');
+        exit();
+    }
+    sleep(3000);
+    char buffer[30];
+    int read = pipeRead(fileDescriptor, buffer);
+    closeFd(fileDescriptor);
+    if (read>0){
+        printf(buffer);
+        putchar('\n');
     }
     exit();
     return 0;

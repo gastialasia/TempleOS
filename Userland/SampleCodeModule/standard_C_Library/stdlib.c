@@ -410,7 +410,7 @@ int pipeRead(fd *userPipe, char *buffer){
 }
 
 int pipeWrite(fd *userPipe, const char *string){
-    sys_pipeWrite(userPipe, string);
+    return sys_pipeWrite(userPipe, string);
 }
 
 void closeFd(fd *user){
