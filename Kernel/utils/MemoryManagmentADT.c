@@ -63,7 +63,7 @@ static void insertBlockIntoFreeList(MemoryManagmentADT memoryManager, MemBlock *
 void *memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAllocate)
 {
 
-  MemBlock *currentBlock, *previousBlock;
+  MemBlock *currentBlock;
   void *blockToReturn = NULL;
 
   if (memToAllocate == 0)
@@ -81,8 +81,8 @@ void *memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAllocat
 
   if (memToAllocate < TOTAL_HEAP_SIZE)
   {
-
-    previousBlock = &memoryManager->start;
+    
+    MemBlock * previousBlock = &memoryManager->start;
     currentBlock = memoryManager->start.nextMemBlock;
 
     while ((currentBlock->blockSize < memToAllocate) && (currentBlock->nextMemBlock != NULL))

@@ -223,8 +223,8 @@ int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv[], fd *cus
 
 void eProcess()
 {
-  closeUserPipe(getCurrentStdin());
-  closeUserPipe(getCurrentStdout());
+  closeFd(getCurrentStdin());
+  closeFd(getCurrentStdout());
   exitCurrentProcess();
   runScheduler();
 }
@@ -272,4 +272,9 @@ int semPost(semPointer sem)
 int createPipe(fd *fd1, fd *fd2)
 {
   return createPipes(fd1, fd2);
+}
+
+int openPipe(fd *user, uint32_t id, uint8_t permisions)
+{
+  return openPipeID(user, id, permisions);
 }

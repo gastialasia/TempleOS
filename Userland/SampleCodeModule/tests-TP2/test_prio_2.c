@@ -28,6 +28,7 @@ int test_prio_2(int argc, char argv[6][21])
         printf("Incorrect number of arguments. You should input 3 numbers\n");
         exit();
     }
+    
     int priority;
     char args[6][21];
     strcpy(args[0], "_loop_prio");

@@ -32,5 +32,9 @@ int sys_semWait(Semaphore *sem);
 void sys_getAllSems(char *buffer);
 int sys_createPipe(fd *fd1, fd *fd2);
 void sys_getAllPipes(char *buf);
+int sys_openPipe(fd *user, uint32_t id, uint8_t permisions);
+int sys_pipeRead(fd *userPipe, char *buffer);
+int sys_pipeWrite(fd *userPipe, const char *string);
+void sys_closeFd(fd *user);
 
 #endif

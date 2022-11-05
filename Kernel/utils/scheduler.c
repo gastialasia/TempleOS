@@ -493,8 +493,8 @@ int killPid(uint32_t pid)
     {
       return 1;
     }
-    closeUserPipe(aux->stdin);
-    closeUserPipe(aux->stdout);
+    closeFd(aux->stdin);
+    closeFd(aux->stdout);
     scheduler->startList = deleteProcessRec(scheduler->startList, pid, &found);
   }
   return found;

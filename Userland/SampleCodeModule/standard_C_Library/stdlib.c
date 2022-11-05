@@ -69,10 +69,9 @@ uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base)
 // Integer to string
 int itos(int value, char *target)
 {
-    int initialIndex = 0;
     int digit;
     int sign = 1;
-    int i = -1, j = initialIndex;
+    int i = -1, j = 0;
     char aux[11];
     if (value < 0)
     {
@@ -82,8 +81,8 @@ int itos(int value, char *target)
     do
     {
         i++;
-        digit = value % 10;
-        aux[i] = digit + '0'; // 48 = '0'
+        int digit = value % 10;
+        aux[i] = digit + '0';
         value /= 10;
     } while (value > 0);
     if (!sign)
@@ -207,11 +206,6 @@ char getDateComponent(int value)
 void sleep(int secs)
 {
     sys_sleep(secs);
-}
-
-unsigned char getlast()
-{
-    return sys_getLast();
 }
 
 void takeSnapShot()
@@ -405,4 +399,20 @@ fd *createFd()
 void getAllPipes(char *buf)
 {
     sys_getAllPipes(buf);
+}
+
+int openPipe(fd *user, uint32_t id, uint8_t permisions){
+    return sys_openPipe(user, id, permisions);
+}
+
+int pipeRead(fd *userPipe, char *buffer){
+    return sys_pipeRead(userPipe, buffer);
+}
+
+int pipeWrite(fd *userPipe, const char *string){
+    sys_pipeWrite(userPipe, string);
+}
+
+void closeFd(fd *user){
+    sys_closeFd(user);
 }

@@ -43,7 +43,7 @@ void slowInc(int64_t *p, int64_t inc)
 int incWithSem(int argc, char argv[6][21])
 {
   uint64_t i;
-  int64_t value = getpid() % 2 ? 1 : -1;
+  int64_t value = (getpid() % 2) ? 1 : -1;
 
   Semaphore *sem = semOpen(SEM, 1);
 
@@ -80,7 +80,7 @@ int incWithoutSem(int argc, char argv[6][21])
 {
 
   uint64_t i;
-  int64_t value = getpid() % 2 ? 1 : -1;
+  int64_t value = (getpid() % 2) ? 1 : -1;
 
   for (i = 0; i < N; i++)
   {

@@ -69,8 +69,6 @@ int strcpy(char *dest, const char *src);
 
 char getDateComponent(int value);
 
-unsigned char getlast();
-
 int strcpy(char *dest, const char *src);
 
 void takeSnapShot();
@@ -122,6 +120,14 @@ int createPipe(fd *fd1, fd *fd2);
 fd *createFd();
 
 void getAllPipes(char *buf);
+
+int openPipe(fd *user, uint32_t id, uint8_t permisions);
+
+int pipeRead(fd *userPipe, char *buffer);
+
+int pipeWrite(fd *userPipe, const char *string);
+
+void closeFd(fd *user);
 
 int atoi(const char *S);
 

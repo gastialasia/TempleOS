@@ -27,6 +27,10 @@ GLOBAL sys_semWait
 GLOBAL sys_getAllSems
 GLOBAL sys_createPipe
 GLOBAL sys_getAllPipes
+GLOBAL sys_openPipe
+GLOBAL sys_closeFd
+GLOBAL sys_pipeRead
+GLOBAL sys_pipeWrite
 
 section .text
 
@@ -162,6 +166,26 @@ sys_createPipe:
 
 sys_getAllPipes:
   mov rax, 27
+  int 80h
+  ret
+
+sys_openPipe:
+  mov rax, 28
+  int 80h
+  ret
+
+sys_pipeRead:
+  mov rax, 29
+  int 80h
+  ret
+
+sys_pipeWrite:
+  mov rax, 30
+  int 80h
+  ret
+
+sys_closeFd:
+  mov rax, 31
   int 80h
   ret
 

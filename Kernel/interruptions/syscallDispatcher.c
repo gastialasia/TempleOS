@@ -97,6 +97,18 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
     case 27:
         getAllPipes((char *)arg0);
         break;
+    case 28:
+        return openPipe((fd *)arg0, (uint32_t)arg1, (uint8_t)arg2);
+        break;
+    case 29:
+        return pipeRead((fd *)arg0, (char *)arg1, 0);
+        break;
+    case 30:
+        return pipeWrite((fd *)arg0, (char *)arg1);
+        break;
+    case 31:
+        closeFd((fd *)arg0);
+        break;
     default:
         return -1;
     }

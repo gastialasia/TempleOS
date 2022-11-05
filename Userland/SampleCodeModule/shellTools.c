@@ -26,7 +26,6 @@ void parser(const char *buffer)
     int priority = FOREGROUND;
 
     char tokens1[ARG_QTY][ARG_LEN] = {{0}};
-    char tokens2[ARG_QTY][ARG_LEN] = {{0}};
     int tokenQty1 = tokenizeCommand(commands[0], tokens1);
 
     function_type fun1, fun2;
@@ -38,6 +37,7 @@ void parser(const char *buffer)
 
     if (hasPipe)
     {
+        char tokens2[ARG_QTY][ARG_LEN] = {{0}};
         tokenQty2 = tokenizeCommand(commands[1], tokens2);
         fun2 = getFuncFromString(tokens2[0], &isBuiltIn);
 

@@ -124,10 +124,10 @@ int printMemory(int argc, char argv[6][21])
     scanf(pos);
     int ok = 1;
     uint64_t pointer = hex2int(pos, &ok);
-    char buffer[32];
-    char data[3];
     if (ok)
     {
+        char buffer[32];
+        char data[3];
         printMem(pointer, buffer);
         for (int i = 0; i < 32; i++)
         {

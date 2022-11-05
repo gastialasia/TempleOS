@@ -74,7 +74,6 @@ static int insertBlockIntoFreeList(MemoryManagmentADT memoryManager, MemBlock *b
   }
 
   MemBlock *buddy = NULL;
-  MemBlock *auxBuddy = NULL;
   int auxMerge = 0;
 
   if (merge)
@@ -86,7 +85,6 @@ static int insertBlockIntoFreeList(MemoryManagmentADT memoryManager, MemBlock *b
       {
         buddy->blockSize *= 2;
         auxMerge = 1;
-        auxBuddy = blockToInsert;
         blockToInsert = buddy;
       }
     }
@@ -106,11 +104,7 @@ static int insertBlockIntoFreeList(MemoryManagmentADT memoryManager, MemBlock *b
     blockToInsert->history = blockToInsert->history >> 1;
     removeBlockFromList(memoryManager, buddy);
     return insertBlockIntoFreeList(memoryManager, blockToInsert, 1);
-  } // else if(auxMerge == 2){
-  //  blockToInsert->history = blockToInsert->history >> 1;
-  //  removeBlockFromList(memoryManager,auxBuddy);
-  //  return insertBlockIntoFreeList(memoryManager,blockToInsert,1);
-  //}
+  } 
 
   MemBlock *iter = &memoryManager->start;
   int blockSize = blockToInsert->blockSize;
@@ -202,7 +196,7 @@ void freeMem(MemoryManagmentADT const memoryManager, void *block)
 
   unsigned int aux = blockToFree->blockSize;
 
-  int freedMem = insertBlockIntoFreeList(memoryManager, ((MemBlock *)blockToFree), 1);
+  insertBlockIntoFreeList(memoryManager, ((MemBlock *)blockToFree), 1);
   memoryManager->freeBytesRemaining += aux;
 }
 

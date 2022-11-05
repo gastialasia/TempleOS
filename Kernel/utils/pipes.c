@@ -133,7 +133,7 @@ static void deletePipe(pipe *pipe)
   pipeSize--;
 }
 
-void closeUserPipe(fd *user)
+void closeFd(fd *user)
 {
 
   if (user == NULL)
