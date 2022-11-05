@@ -6,6 +6,7 @@
 #include <test_sync.h>
 #include <philosophers.h>
 #include <test_prio_2.h>
+#include <test_pipe.h>
 #include <shell.h>
 #include <stdlib.h>
 #include <shellTools.h>
@@ -239,13 +240,9 @@ function_type getFuncFromString(char *str, int *isBuiltIn)
     {
         toRet = &test_prio_2;
     }
-    else if (!strcmp("write", str))
+    else if (!strcmp("testpipe", str))
     {
-        toRet = &writeProgram;
-    }
-    else if (!strcmp("read", str))
-    {
-        toRet = &readProgram;
+        toRet = &test_pipe;
     }
     else
     {

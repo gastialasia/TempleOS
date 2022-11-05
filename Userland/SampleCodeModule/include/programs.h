@@ -26,7 +26,4 @@ int wcProgram(int argc, char args[6][21]);
 int filterProgram(int argc, char args[6][21]);
 int loopProgram(int argc, char args[6][21]);
 int nothingProgram(int argc, char args[6][21]);
-int readProgram(int argc, char argv[6][21]);
-int writeProgram(int argc, char argv[6][21]);
-
 #endif

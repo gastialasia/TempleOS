@@ -10,7 +10,7 @@ static char buff[300];
 
 int help(int argc, char argv[6][21])
 {
-    printf("- fibonacci\n- primos\n- date\n- help\n- clear\n- mem\n- ps\n- kill [pid]\n- nice [pid] [priority]\n- block [pid]\n- sem\n- cat\n- wc\n- filter\n- pipe\n- phylo\n- testmm [max memory]\n- testproc [max processes]\n- testprio\n- testprio2\n- testsync\n- testnosync\n");
+    printf("- fibonacci\n- primos\n- date\n- help\n- clear\n- mem\n- ps\n- kill [pid]\n- nice [pid] [priority]\n- block [pid]\n- sem\n- cat\n- wc\n- filter\n- pipe\n- phylo\n- testmm [max memory]\n- testproc [max processes]\n- testprio\n- testprio2\n- testsync\n- testnosync\n- testpipe\n");
     return 0;
 }
 
@@ -305,11 +305,6 @@ int readPipeProgram(int argc, char argv[6][21])
 
 int pipeListProgram(int argc, char args[6][21])
 {
-    if (argc != 1)
-    {
-        printf("sem program does not require arguments\n");
-        return 1;
-    }
     char buffer[2000] = {0};
     getAllPipes(buffer);
     printf(buffer);
@@ -375,34 +370,6 @@ int loopProgram(int argc, char args[6][21])
         printInt(getpid());
         putchar('\n');
         sleep(2000);
-    }
-    exit();
-    return 0;
-}
-
-int writeProgram(int argc, char argv[6][21]){
-    fd * fileDescriptor = createFd();
-    openPipe(fileDescriptor, 101, 0);
-    pipeWrite(fileDescriptor, "I'm writing on the pipe");
-    closeFd(fileDescriptor);
-    exit();
-    return 0;
-}
-
-int readProgram(int argc, char argv[6][21]){
-    fd * fileDescriptor = createFd();
-    if (openPipe(fileDescriptor, 101, 1)==-1) {
-        printf("Error opening pipe");
-        putchar('\n');
-        exit();
-    }
-    sleep(3000);
-    char buffer[30];
-    int read = pipeRead(fileDescriptor, buffer);
-    closeFd(fileDescriptor);
-    if (read>0){
-        printf(buffer);
-        putchar('\n');
     }
     exit();
     return 0;
