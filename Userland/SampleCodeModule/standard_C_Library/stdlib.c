@@ -81,7 +81,7 @@ int itos(int value, char *target)
     do
     {
         i++;
-        int digit = value % 10;
+        digit = value % 10;
         aux[i] = digit + '0';
         value /= 10;
     } while (value > 0);

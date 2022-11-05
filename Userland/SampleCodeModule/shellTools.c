@@ -10,6 +10,7 @@
 #include <shell.h>
 #include <stdlib.h>
 #include <shellTools.h>
+#include <test_args.h>
 
 #define MAXBUFFER 100
 #define F1_KEY 17
@@ -33,6 +34,11 @@ void parser(const char *buffer)
 
     int isBuiltIn = 0;
 
+    if (tokenQty1>6){
+        printf("Error: Maximum 5 arguments\n");
+        return;
+    }
+
     fun1 = getFuncFromString(tokens1[0], &isBuiltIn);
     int tokenQty2;
 
@@ -41,6 +47,11 @@ void parser(const char *buffer)
         char tokens2[ARG_QTY][ARG_LEN] = {{0}};
         tokenQty2 = tokenizeCommand(commands[1], tokens2);
         fun2 = getFuncFromString(tokens2[0], &isBuiltIn);
+
+        if (tokenQty2>6){
+        printf("Error: Maximum 5 arguments\n");
+        return;
+    }
 
         if (fun1 == invalid || fun2 == invalid)
         {
@@ -204,10 +215,6 @@ function_type getFuncFromString(char *str, int *isBuiltIn)
         toRet = &pipeListProgram;
         *isBuiltIn = 1;
     }
-    else if (!strcmp("testsem", str))
-    {
-        toRet = &testsem;
-    }
     else if (!strcmp("wpipe", str))
     {
         toRet = &writePipeProgram;
@@ -243,11 +250,11 @@ function_type getFuncFromString(char *str, int *isBuiltIn)
     else if (!strcmp("testpipe", str))
     {
         toRet = &test_pipe;
-    }
-    else
-    {
-        toRet = &invalid;
-        *isBuiltIn = 1;
+    } else if (!strcmp("testargs", str)) {
+      toRet = &test_args;
+    } else {
+      toRet = &invalid;
+      *isBuiltIn = 1;
     }
     return toRet;
 }

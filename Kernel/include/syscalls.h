@@ -63,4 +63,6 @@ int semWait(semPointer sem);
 
 int cPipe(fd *fd1, fd *fd2);
 
+int openPipe(fd *user, uint32_t id, uint8_t permisions);
+
 #endif

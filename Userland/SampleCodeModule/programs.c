@@ -260,19 +260,6 @@ int semProgram(int argc, char args[6][21])
     return 0;
 }
 
-int testsem(int argc, char argv[6][21])
-{
-    Semaphore *aux = semOpen(15, 0);
-    if (aux == NULL)
-    {
-        printf("Error on creating semaphore\n");
-        exit();
-    }
-    semWait(aux);
-    exit();
-    return 0;
-}
-
 int writePipeProgram(int argc, char argv[6][21])
 {
     int i = 0;
