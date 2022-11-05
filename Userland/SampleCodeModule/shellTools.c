@@ -231,7 +231,7 @@ function_type getFuncFromString(char *str, int *isBuiltIn)
     {
         toRet = &loopProgram;
     }
-    else if (!strcmp("philo", str))
+    else if (!strcmp("philo", str)||!strcmp("phylo", str))
     {
         toRet = &philosophersProgram;
     }

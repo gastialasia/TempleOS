@@ -10,7 +10,7 @@ static char buff[300];
 
 int help(int argc, char argv[6][21])
 {
-    printf("- fibonacci\n- primos\n- date\n- help\n- clear\n- mem\n- ps\n- kill [pid]\n- nice [pid] [priority]\n- block [pid]\n- sem\n- cat\n- wc\n- filter\n- pipe\n- philo\n- testmm [max memory]\n- testproc [max processes]\n- testprio\n- testprio2\n- testsync\n- testnosync\n");
+    printf("- fibonacci\n- primos\n- date\n- help\n- clear\n- mem\n- ps\n- kill [pid]\n- nice [pid] [priority]\n- block [pid]\n- sem\n- cat\n- wc\n- filter\n- pipe\n- phylo\n- testmm [max memory]\n- testproc [max processes]\n- testprio\n- testprio2\n- testsync\n- testnosync\n");
     return 0;
 }
 

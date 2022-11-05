@@ -12,3 +12,5 @@ Image/x64BareBonesImage.vmdk
 .gdb_history
 *.log
 *.json
+.config/PVS-Studio/PVS-Studio.lic
+.config/PVS-Studio/30d59484437b42b
