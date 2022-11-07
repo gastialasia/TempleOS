@@ -216,7 +216,7 @@ void mStatus(unsigned int *status)
   return memStatus(status);
 }
 
-int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char *argv[], fd *customStdin, fd *customStdout)
+int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[ARG_QTY][ARG_LEN], fd *customStdin, fd *customStdout)
 {
   return createProcess(ip, priority, argc, argv, customStdin, customStdout);
 }
