@@ -5,8 +5,6 @@
 #include <pipes.h>
 #include <tools.h>
 
-// source:https://github.com/Infineon/freertos/blob/master/Source/portable/MemMang/heap_2.c
-
 typedef struct MemBlock
 {
   struct MemBlock *nextMemBlock;

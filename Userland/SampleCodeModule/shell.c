@@ -18,7 +18,7 @@ void shell(void)
         if (length != 0)
         {
             parser(buffer);
-            sleep(1); // retraso de 1ms para evitar que el $user se imprima antes de bloquear la shell
+            sleep(1); // Retraso de 1ms para evitar que el $user se imprima antes de bloquear la shell
         }
     }
 }

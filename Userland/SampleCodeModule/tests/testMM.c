@@ -6,6 +6,7 @@
 #include <programs.h>
 
 #define MAX_BLOCKS 128
+#define MAX_MEMORY 134217728
 
 static void *myMemset(void *destination, int c, int len)
 {
@@ -32,13 +33,11 @@ void testMM(int argc, char argv[6][21])
     exit();
   }
 
-  if ((max_memory = atoi(argv[1])) <= 0)
+  if (((max_memory = atoi(argv[1])) <= 0)||(max_memory>0.9*MAX_MEMORY))
   {
-    printf("Invalid argument: please enter a valid integer\n");
+    printf("Invalid argument: please enter a valid integer between 1 and 120795955\n");
     exit();
   }
-
-  // max_memory=0.7*134217728;
 
   while (1)
   {
