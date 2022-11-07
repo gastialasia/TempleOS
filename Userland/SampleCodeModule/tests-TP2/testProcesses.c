@@ -9,11 +9,17 @@ int testProcesses(int argc, char argv[6][21])
   uint8_t action;
   uint64_t maxProcesses;
 
-  if (argc != 2)
+  if (argc != 2){
+    printf("One argument expected\n");
+    exit();
     return -1;
+  }
 
-  if ((maxProcesses = atoi(argv[1])) <= 0)
+  if ((maxProcesses = atoi(argv[1])) <= 0){
+    printf("The argument must be a number\n");
+    exit();
     return -1;
+  }
 
   p_rq p_rqs[maxProcesses];
 
