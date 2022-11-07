@@ -50,8 +50,8 @@ typedef struct Scheduler
 
 Scheduler *scheduler;
 WaitingKeyboardList *waitKeyboard;
-uint8_t firstProcess;  // como no tengo que guardar el sp del primer procesos necesito saber si es el primer procesos
-ProcessNode *starting; // primer proceso q lo unico que va a ser es un hlt y nada mas
+uint8_t firstProcess; 
+ProcessNode *starting;
 uint32_t currentPid;
 
 void normalizeSpaces(char *buf, char *data, int field);
@@ -153,7 +153,7 @@ static ProcessNode *loadProcessData(ProcessNode *node, uint32_t pid, uint8_t pri
     return node;
   }
 
-  // Caso donde la prioridad del proceso a añadir es menor
+  // Caso where the priority of the process to add is lower
   ProcessNode *newNode = (ProcessNode *)alloc(sizeof(ProcessNode));
 
   newNode->nextProcess = node->nextProcess;
@@ -188,12 +188,6 @@ int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[ARG_QT
   return currentPid - 1;
 }
 
-//@TODO:
-/*
-1)Funcion wrapper pára createProcess para que le pasen siempre un char[6][21] listo
-2)Hacer el Context Switching
-3)cambiar la syscall de read
-*/
 uint64_t contextSwitching(uint64_t sp)
 {
 
@@ -264,12 +258,12 @@ uint64_t contextSwitching(uint64_t sp)
     }
     auxMinReadyProcess = auxMinReadyProcess->nextProcess;
   }
-  // no hay proceso anterior que se pueda correr pero el proceso actual se puede vovler a corerr
+  // There is no earlier process than can be run but the current process can run again
   if (minReadyProcess->process.state != 1 && scheduler->current->process.state == 1 && scheduler->current->process.pid != 1)
   {
     minReadyProcess = scheduler->current;
   }
-  // proceso en foreground corriendo y me recomienda dummy, lo descarto
+  //Foreground process running and dummy is recommended, but it's discarded
   if (scheduler->foregroundInUse && minReadyProcess->process.pid == 1)
   {
     minReadyProcess = NULL;
@@ -517,14 +511,14 @@ int changeProcessPriority(uint32_t pid, uint8_t newPriority)
     return 2; // Error: node with that pid was not found in the list
   }
 
-  // guardamos el nodo y lo removemos de la lista
+  //The node is saved and gets removed from the list
   ProcessNode *chosenOne = auxList->nextProcess;
   auxList->nextProcess = chosenOne->nextProcess;
 
   chosenOne->process.priority = newPriority;
   chosenOne->process.auxPriority = newPriority;
 
-  // Insertamos el nodo ordenado con su nueva prioridad
+  // The node is inserted in order with the new priority
   auxList = scheduler->startList;
   while (auxList->nextProcess != NULL && newPriority >= auxList->nextProcess->process.priority)
   {

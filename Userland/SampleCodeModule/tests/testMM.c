@@ -29,15 +29,19 @@ void testMM(int argc, char argv[6][21])
 
   if (argc != 2)
   {
-    printf("Only one argument expected\n");
+    printf("One argument expected: heap percentage\n");
     exit();
   }
 
-  if (((max_memory = atoi(argv[1])) <= 0)||(max_memory>0.9*MAX_MEMORY))
+  int percentage;
+
+  if (((percentage = atoi(argv[1])) <= 0)||(percentage>100)||(percentage<0))
   {
-    printf("Invalid argument: please enter a valid integer between 1 and 120795955\n");
+    printf("Please enter a heap percentage 1 to 100\n");
     exit();
   }
+
+  max_memory = percentage/(double)100 * MAX_MEMORY;
 
   while (1)
   {

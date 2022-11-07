@@ -6,6 +6,7 @@
 #include <scheduler.h>
 #include <pipes.h>
 #include <semaphore.h>
+#include <time.h>
 
 #define STDIN 1
 #define DEFAULT_RETVALUE -1
@@ -114,8 +115,8 @@ int64_t read(char *buffer, size_t count)
       break;
 
     case F2:
-      if (currentPID() != 1)
-        eProcess();
+      if (getCurrentPID() != 1)
+        exitProcess();
       break;
 
     case 170:
@@ -141,15 +142,6 @@ int64_t read(char *buffer, size_t count)
 void snapshotRegs()
 {
   loadBackupRegs(primaryBackup, secondaryBackup);
-}
-
-void printMem(uint64_t pointer, unsigned char *buf)
-{
-  uint8_t *start = (uint8_t *)pointer;
-  for (int i = 0; i < 32; i++)
-  {
-    buf[i] = start[i];
-  }
 }
 
 void clear()
@@ -201,80 +193,10 @@ void sleep(int ms)
   tSleep(ms);
 }
 
-void *malloc(unsigned int bytes)
-{
-  return alloc(bytes);
-}
-
-void mfree(void *memToFree)
-{
-  free(memToFree);
-}
-
-void mStatus(unsigned int *status)
-{
-  return memStatus(status);
-}
-
-int cProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[ARG_QTY][ARG_LEN], fd *customStdin, fd *customStdout)
-{
-  return createProcess(ip, priority, argc, argv, customStdin, customStdout);
-}
-
-void eProcess()
+void exitProcess()
 {
   closeFd(getCurrentStdin());
   closeFd(getCurrentStdout());
   exitCurrentProcess();
   runScheduler();
-}
-
-int currentPID()
-{
-  return getCurrentPID();
-}
-
-int pKill(uint32_t pid)
-{
-  return killPid(pid);
-}
-
-int nice(uint32_t pid, uint8_t newPriority)
-{
-  return changeProcessPriority(pid, newPriority);
-}
-
-void rScheduler()
-{
-  runScheduler();
-}
-
-semPointer semOpen(uint32_t id, int value)
-{
-  return sem_open(id, value);
-}
-
-int semClose(semPointer semToClose)
-{
-  return sem_close(semToClose);
-}
-
-int semWait(semPointer sem)
-{
-  return sem_wait(sem);
-}
-
-int semPost(semPointer sem)
-{
-  return sem_post(sem);
-}
-
-int createPipe(fd *fd1, fd *fd2)
-{
-  return createPipes(fd1, fd2);
-}
-
-int openPipe(fd *user, uint32_t id, uint8_t permisions)
-{
-  return openPipeID(user, id, permisions);
 }

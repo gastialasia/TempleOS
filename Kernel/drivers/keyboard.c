@@ -26,6 +26,6 @@ void keyboard_handler()
 		last = key;
 		awakeKeyboardList();
 		if (key == F2)
-			eProcess();
+			exitProcess();
 	}
 }

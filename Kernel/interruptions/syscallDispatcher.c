@@ -27,14 +27,12 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
     case 3:
         clear();
         break;
-    case 4:
-        printMem((uint64_t)arg0, (unsigned char *)arg1);
-        break;
     case 5:
         inforeg((registersT *)arg0);
         break;
     case 6:
         return date((char)arg0);
+        break;
     case 7:
         sleep((int)arg0);
         break;
@@ -44,28 +42,28 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
         snapshotRegs();
         break;
     case 10:
-        return (int64_t)malloc((unsigned int)arg0);
+        return (int64_t)alloc((unsigned int)arg0);
         break;
     case 11:
-        mfree((void *)arg0);
+        free((void *)arg0);
         break;
     case 12:
-        mStatus((void *)arg0);
+        memStatus((void *)arg0);
         break;
     case 13:
-        return cProcess((uint64_t)arg0, (uint8_t)arg1, (uint64_t)arg2, (char (*)[21])arg3, (fd *)arg4, (fd *)arg5);
+        return createProcess((uint64_t)arg0, (uint8_t)arg1, (uint64_t)arg2, (char (*)[21])arg3, (fd *)arg4, (fd *)arg5);
         break;
     case 14:
-        eProcess();
+        exitProcess();
         break;
     case 15:
-        return currentPID();
+        return getCurrentPID();
         break;
     case 16:
         getAllProcesses((char *)arg0);
         break;
     case 17:
-        return pKill((uint32_t)arg0);
+        return killPid((uint32_t)arg0);
         break;
     case 18:
         return changeProcessPriority((uint32_t)arg0, (uint8_t)arg1);
@@ -74,19 +72,19 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
         return changeProcessState((uint32_t)arg0);
         break;
     case 20:
-        rScheduler();
+        runScheduler();
         break;
     case 21:
-        return (int64_t)semOpen((uint32_t)arg0, (int)arg1);
+        return (int64_t)sem_open((uint32_t)arg0, (int)arg1);
         break;
     case 22:
-        return semClose((semPointer)arg0);
+        return sem_close((semPointer)arg0);
         break;
     case 23:
-        return semPost((semPointer)arg0);
+        return sem_post((semPointer)arg0);
         break;
     case 24:
-        return semWait((semPointer)arg0);
+        return sem_wait((semPointer)arg0);
         break;
     case 25:
         getAllSems((char *)arg0);
@@ -98,7 +96,7 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2, int64_t arg3
         getAllPipes((char *)arg0);
         break;
     case 28:
-        return openPipe((fd *)arg0, (uint32_t)arg1, (uint8_t)arg2);
+        return openPipeID((fd *)arg0, (uint32_t)arg1, (uint8_t)arg2);
         break;
     case 29:
         return pipeRead((fd *)arg0, (char *)arg1, 0);
