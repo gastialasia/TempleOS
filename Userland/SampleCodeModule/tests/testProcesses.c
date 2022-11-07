@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <testProcesses.h>
 
-int testProcesses(int argc, char argv[6][21])
+void testProcesses(int argc, char argv[6][21])
 {
   uint8_t rq;
   uint8_t alive = 0;
@@ -12,13 +12,13 @@ int testProcesses(int argc, char argv[6][21])
   if (argc != 2){
     printf("One argument expected\n");
     exit();
-    return -1;
+    return;
   }
 
   if ((maxProcesses = atoi(argv[1])) <= 0){
     printf("The argument must be a number\n");
     exit();
-    return -1;
+    return;
   }
 
   p_rq prqs[maxProcesses];
@@ -37,7 +37,7 @@ int testProcesses(int argc, char argv[6][21])
       if (prqs[rq].pid == -1)
       {
         printf("testProcesses: ERROR creating process\n");
-        return -1;
+        return;
       }
       else
       {
@@ -66,7 +66,7 @@ int testProcesses(int argc, char argv[6][21])
             if (kill(prqs[rq].pid) == -1)
             {
               printf("testProcesses: ERROR killing process\n");
-              return -1;
+              return;
             }
             prqs[rq].state = KILLED;
             alive--;
@@ -79,7 +79,7 @@ int testProcesses(int argc, char argv[6][21])
             if (block(prqs[rq].pid) == -1)
             {
               printf("testProcesses: ERROR blocking process\n");
-              return -1;
+              return;
             }
             prqs[rq].state = BLOCKED;
           }
@@ -95,7 +95,7 @@ int testProcesses(int argc, char argv[6][21])
           if (block(prqs[rq].pid) == -1)
           {
             printf("testProcesses: ERROR unblocking process\n");
-            return -1;
+            return;
           }
           prqs[rq].state = RUNNING;
         }

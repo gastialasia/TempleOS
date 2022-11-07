@@ -9,6 +9,6 @@ typedef struct MM_rq
   uint32_t size;
 } mm_rq;
 
-int testMM(int argc, char argv[6][21]);
+void testMM(int argc, char argv[6][21]);
 
 #endif

@@ -11,6 +11,6 @@
 #define MEDIUM 5  
 #define HIGHEST 9 
 
-int testPriorities(int argc, char argv[6][21]);
+void testPriorities(int argc, char argv[6][21]);
 
 #endif

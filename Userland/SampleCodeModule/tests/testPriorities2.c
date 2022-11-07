@@ -21,7 +21,7 @@ static void loopPrio(int argc, char argv[6][21])
     }
 }
 
-int testPriorities2(int argc, char argv[6][21])
+void testPriorities2(int argc, char argv[6][21])
 {
     if (argc != MAX_ARGS)
     {
@@ -40,5 +40,4 @@ int testPriorities2(int argc, char argv[6][21])
         createProcess((uint64_t)loopPrio, (uint8_t)priority, ARGS_COUNT, args, NULL, NULL);
     }
     exit();
-    return 0;
 }

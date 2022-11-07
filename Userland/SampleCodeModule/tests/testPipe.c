@@ -31,7 +31,7 @@ static int testWrite(int arc, char arv[6][21]){
     return 0;
 }
 
-int testPipe(int arc, char arv[6][21]){
+void testPipe(int arc, char arv[6][21]){
     char args[6][21];
     printf("CREATING READ PROCESS...\n\n");
     strcpy(args[0],"_readPipe");
@@ -46,5 +46,4 @@ int testPipe(int arc, char arv[6][21]){
     strcpy(args[0],"_writePipe");
     createProcess((uint64_t)testWrite, 2, 1, args, NULL, NULL);
     exit();
-    return 0;
 }

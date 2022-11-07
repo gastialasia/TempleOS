@@ -80,7 +80,7 @@ void *philosopher(int argc, char argv[6][21])
     }
 }
 
-int philosophersProgram()
+void philosophersProgram()
 {
     int i;
     mutex = semOpen(GENERALSEMID, 1);
@@ -169,7 +169,6 @@ int philosophersProgram()
         }
     }
     exit();
-    return 0;
 }
 
 void printTable()

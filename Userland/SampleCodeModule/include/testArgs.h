@@ -1,1 +1,1 @@
-int test_args(int argc, char args[6][21]);
+void test_args(int argc, char args[6][21]);

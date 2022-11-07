@@ -4,7 +4,7 @@
 
 int64_t prio[TOTAL_PROCESSES] = {LOWEST, MEDIUM, HIGHEST};
 
-int testPriorities(int argc, char argv[6][21])
+void testPriorities(int argc, char argv[6][21])
 {
   int64_t pids[TOTAL_PROCESSES];
   uint64_t i;
@@ -79,5 +79,4 @@ int testPriorities(int argc, char argv[6][21])
   putchar('\n');
 
   exit();
-  return 0;
 }

@@ -1,29 +1,29 @@
 #ifndef _programs_
 #define _programs_
 
-int fibo(int argc, char argv[6][21]);
-int primos(int argc, char argv[6][21]);
-int help(int argc, char argv[6][21]);
-int date(int argc, char argv[6][21]);
-int invalid(int argc, char argv[6][21]);
-int infoRegisters(int argc, char argv[6][21]);
-int printMemory(int argc, char argv[6][21]);
-int opcodeProgram();
-int divzeroProgram();
-int clearProgram();
-int memStatusProgram();
-int psProgram();
-int killProgram(int argc, char args[6][21]);
-int niceProgram(int argc, char args[6][21]);
-int blockProgram(int argc, char args[6][21]);
-int semProgram(int argc, char args[6][21]);
-int testsem(int argc, char argv[6][21]);
-int writePipeProgram(int argc, char argv[6][21]);
-int readPipeProgram(int argc, char argv[6][21]);
-int pipeListProgram(int argc, char args[6][21]);
-int catProgram(int argc, char args[6][21]);
-int wcProgram(int argc, char args[6][21]);
-int filterProgram(int argc, char args[6][21]);
-int loopProgram(int argc, char args[6][21]);
-int nothingProgram(int argc, char args[6][21]);
+void fibo(int argc, char argv[6][21]);
+void primos(int argc, char argv[6][21]);
+void help(int argc, char argv[6][21]);
+void date(int argc, char argv[6][21]);
+void invalid(int argc, char argv[6][21]);
+void infoRegisters(int argc, char argv[6][21]);
+void printMemory(int argc, char argv[6][21]);
+void opcodeProgram();
+void divzeroProgram();
+void clearProgram();
+void memStatusProgram();
+void psProgram();
+void killProgram(int argc, char args[6][21]);
+void niceProgram(int argc, char args[6][21]);
+void blockProgram(int argc, char args[6][21]);
+void semProgram(int argc, char args[6][21]);
+void testsem(int argc, char argv[6][21]);
+void writePipeProgram(int argc, char argv[6][21]);
+void readPipeProgram(int argc, char argv[6][21]);
+void pipeListProgram(int argc, char args[6][21]);
+void catProgram(int argc, char args[6][21]);
+void wcProgram(int argc, char args[6][21]);
+void filterProgram(int argc, char args[6][21]);
+void loopProgram(int argc, char args[6][21]);
+void nothingProgram(int argc, char args[6][21]);
 #endif

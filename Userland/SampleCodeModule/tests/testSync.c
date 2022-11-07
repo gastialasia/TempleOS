@@ -4,8 +4,8 @@
 #include <programs.h>
 #include <stdint.h>
 #include <syscallslib.h>
-static int incWithSem(int argc, char argv[6][21]);
-static int incWithoutSem(int argc, char argv[6][21]);
+static void incWithSem(int argc, char argv[6][21]);
+static void incWithoutSem(int argc, char argv[6][21]);
 
 static int processWrapper(char *name)
 {
@@ -40,7 +40,7 @@ void slowInc(int64_t *p, int64_t inc)
   *p = aux;
 }
 
-int incWithSem(int argc, char argv[6][21])
+void incWithSem(int argc, char argv[6][21])
 {
   uint64_t i;
   int64_t value = (getpid() % 2) ? 1 : -1;
@@ -51,7 +51,7 @@ int incWithSem(int argc, char argv[6][21])
   {
     printf("ERROR OPENING SEM\n");
     exit();
-    return 0;
+    return;
   }
 
   for (i = 0; i < N; i++)
@@ -73,10 +73,9 @@ int incWithSem(int argc, char argv[6][21])
   semPost(sem);
   semClose(sem);
   exit();
-  return 0;
 }
 
-int incWithoutSem(int argc, char argv[6][21])
+void incWithoutSem(int argc, char argv[6][21])
 {
 
   uint64_t i;
@@ -92,11 +91,9 @@ int incWithoutSem(int argc, char argv[6][21])
   itos(global, resultStr);
   printf(resultStr);
   putchar('\n');
-  exit();
-  return 0;
 }
 
-int testSync(int argc, char argv[6][21])
+void testSync(int argc, char argv[6][21])
 {
   global = 0;
 
@@ -117,10 +114,9 @@ int testSync(int argc, char argv[6][21])
 
   semClose(sem);
   exit();
-  return 0;
 }
 
-int testNoSync(int argc, char argv[6][21])
+void testNoSync(int argc, char argv[6][21])
 {
   printf("After ");
   printInt(TOTAL_PAIR_PROCESSES * 2);
@@ -138,5 +134,4 @@ int testNoSync(int argc, char argv[6][21])
     processWrapper("n");
   }
   exit();
-  return 0;
 }

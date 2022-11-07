@@ -8,19 +8,17 @@
 
 static char buff[300];
 
-int help(int argc, char argv[6][21])
+void help(int argc, char argv[6][21])
 {
-    printf("- fibonacci\n- primos\n- date\n- help\n- clear\n- mem\n- ps\n- kill [pid]\n- nice [pid] [priority]\n- block [pid]\n- sem\n- cat\n- wc\n- filter\n- pipe\n- phylo\n- testmm [max memory]\n- testproc [max processes]\n- testprio\n- testprio2\n- testsync\n- testnosync\n- testpipe\n");
-    return 0;
+    printf("- fibonacci\n- primos\n- date\n- help\n- clear\n- mem\n- ps\n- kill [pid]\n- nice [pid] [priority]\n- block [pid]\n- sem\n- cat\n- wc\n- filter\n- pipe\n- phylo\n- testmm [max memory]\n- testproc [max processes]\n- testprio\n- testprio2 [prio1] [prio2] [prio3]\n- testsync\n- testnosync\n- testpipe\n");
 }
 
-int invalid(int argc, char argv[6][21])
+void invalid(int argc, char argv[6][21])
 {
     printf("Invalid command: try 'help'\n");
-    return 0;
 }
 
-int date(int argc, char argv[6][21])
+void date(int argc, char argv[6][21])
 {
     int values[5] = {7, 8, 9, 4, 2}; // En orden: D, M, Y, H, M
     char buffer[3];                  // Cada numero de la fecha no va a tener más de dos digitos, 3 contando el cero null terminated
@@ -51,10 +49,9 @@ int date(int argc, char argv[6][21])
         }
     }
     printf("UTC\n");
-    return 0;
 }
 
-int fibo(int argc, char argv[6][21])
+void fibo(int argc, char argv[6][21])
 {
     uint64_t aux = 0, fibo1 = 0, fibo2 = 1;
     while (aux < LIMIT64)
@@ -67,10 +64,9 @@ int fibo(int argc, char argv[6][21])
         putchar('\n');
         sleep(400);
     }
-    return 0;
 }
 
-int primos(int argc, char argv[6][21])
+void primos(int argc, char argv[6][21])
 {
     uint64_t j, limit, lastPrimo = 0;
     int isPrimo;
@@ -92,10 +88,9 @@ int primos(int argc, char argv[6][21])
         }
         sleep(200);
     }
-    return 0;
 }
 
-int infoRegisters(int argc, char argv[6][21])
+void infoRegisters(int argc, char argv[6][21])
 {
     registersT regs;
     inforeg(&regs);
@@ -114,10 +109,9 @@ int infoRegisters(int argc, char argv[6][21])
     printReg("r13", regs.r13);
     printReg("r14", regs.r14);
     printReg("r15", regs.r15);
-    return 0;
 }
 
-int printMemory(int argc, char argv[6][21])
+void printMemory(int argc, char argv[6][21])
 {
     char pos[8] = {0};
     printf("Ingrese 8 caracteres en hexa\n");
@@ -141,16 +135,14 @@ int printMemory(int argc, char argv[6][21])
         printf("Invalid dir");
     }
     putchar('\n');
-    return 0;
 }
 
-int clearProgram(int argc, char argv[6][21])
+void clearProgram(int argc, char argv[6][21])
 {
     clear();
-    return 0;
 }
 
-int memStatusProgram(int argc, char argv[6][21])
+void memStatusProgram(int argc, char argv[6][21])
 {
     unsigned int array[3];
     memStatus(array);
@@ -163,28 +155,26 @@ int memStatusProgram(int argc, char argv[6][21])
     printf("Heap occupied: ");
     printInt(array[2]);
     printf("\n");
-    return 0;
 }
 
-int psProgram(int argc, char argv[6][21])
+void psProgram(int argc, char argv[6][21])
 {
     ps();
-    return 0;
 }
 
-int killProgram(int argc, char args[6][21])
+void killProgram(int argc, char args[6][21])
 {
     if (argc != 2)
     {
         printf("Invalid argunment quantity\n");
-        return 0;
+        return;
     }
     char *pidPtr = args[1];
     uint32_t pid = atoi(pidPtr);
     if (pid == 1)
     {
         printf("Shell can't be killed\n");
-        return 0;
+        return;
     }
     if (!kill(pid))
     {
@@ -192,15 +182,14 @@ int killProgram(int argc, char args[6][21])
         printf(pidPtr);
         putchar('\n');
     }
-    return 0;
 }
 
-int niceProgram(int argc, char args[6][21])
+void niceProgram(int argc, char args[6][21])
 {
     if (argc != 3)
     {
         printf("Invalid argunment quantity\n");
-        return 0;
+        return;
     }
     uint32_t pid = atoi(args[1]);
 
@@ -209,13 +198,13 @@ int niceProgram(int argc, char args[6][21])
     if (newPriority <= 1 || newPriority > 10)
     {
         printf("Invalid priority\n");
-        return 0;
+        return;
     }
 
     if (pid == 1)
     {
         printf("Shell's priority can't be modified\n");
-        return 0;
+        return;
     }
 
     if (nice(pid, newPriority) == 2)
@@ -224,43 +213,40 @@ int niceProgram(int argc, char args[6][21])
         printInt(pid);
         putchar('\n');
     }
-    return 0;
 }
 
-int blockProgram(int argc, char args[6][21])
+void blockProgram(int argc, char args[6][21])
 {
     if (argc != 2)
     {
         printf("Invalid argunment quantity\n");
-        return 0;
+        return;
     }
     uint32_t pid = atoi(args[1]);
     if (pid == 1)
     {
         printf("Shell can't be blocked\n");
-        return 0;
+        return;
     }
     if (!block(pid))
     {
         printf("Error on changing process state\n");
     }
-    return 0;
 }
 
-int semProgram(int argc, char args[6][21])
+void semProgram(int argc, char args[6][21])
 {
     if (argc != 1)
     {
         printf("sem program does not require arguments\n");
-        return 1;
+        return;
     }
     char buffer[2000] = {0};
     getAllSems(buffer);
     printf(buffer);
-    return 0;
 }
 
-int writePipeProgram(int argc, char argv[6][21])
+void writePipeProgram(int argc, char argv[6][21])
 {
     int i = 0;
     while (i < 3)
@@ -269,10 +255,9 @@ int writePipeProgram(int argc, char argv[6][21])
         sleep(3000);
     }
     exit();
-    return 0;
 }
 
-int readPipeProgram(int argc, char argv[6][21])
+void readPipeProgram(int argc, char argv[6][21])
 {
     char buf1[300];
     char buf2[300];
@@ -287,18 +272,16 @@ int readPipeProgram(int argc, char argv[6][21])
         sleep(3000);
     }
     exit();
-    return 0;
 }
 
-int pipeListProgram(int argc, char args[6][21])
+void pipeListProgram(int argc, char args[6][21])
 {
     char buffer[2000] = {0};
     getAllPipes(buffer);
     printf(buffer);
-    return 0;
 }
 
-int catProgram(int argc, char args[6][21])
+void catProgram(int argc, char args[6][21])
 {
     char buffer[100];
     while (1)
@@ -308,10 +291,9 @@ int catProgram(int argc, char args[6][21])
         putchar('\n');
     }
     exit();
-    return 0;
 }
 
-int wcProgram(int argc, char args[6][21])
+void wcProgram(int argc, char args[6][21])
 {
     char buffer[300];
     int lines = 0;
@@ -323,10 +305,9 @@ int wcProgram(int argc, char args[6][21])
     printInt(lines);
     putchar('\n');
     exit();
-    return 0;
 }
 
-int filterProgram(int argc, char args[6][21])
+void filterProgram(int argc, char args[6][21])
 {
     char read[100];
     char res[100];
@@ -346,10 +327,9 @@ int filterProgram(int argc, char args[6][21])
     printf(res);
     putchar('\n');
     exit();
-    return 0;
 }
 
-int loopProgram(int argc, char args[6][21])
+void loopProgram(int argc, char args[6][21])
 {
     while (1)
     {
@@ -359,5 +339,4 @@ int loopProgram(int argc, char args[6][21])
         sleep(2000);
     }
     exit();
-    return 0;
 }

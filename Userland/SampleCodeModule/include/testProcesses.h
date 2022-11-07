@@ -16,6 +16,6 @@ typedef struct P_rq
   enum State state;
 } p_rq;
 
-int testProcesses(int argc, char argv[6][21]);
+void testProcesses(int argc, char argv[6][21]);
 
 #endif
