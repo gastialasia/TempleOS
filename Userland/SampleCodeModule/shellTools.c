@@ -249,7 +249,7 @@ functionType getFuncFromString(char *str, int *isBuiltIn)
     }
     else if (!strcmp("testpipe", str))
     {
-        toRet = &testMM;
+        toRet = &testPipe;
     } else if (!strcmp("testargs", str)) {
       toRet = &test_args;
     } else {
