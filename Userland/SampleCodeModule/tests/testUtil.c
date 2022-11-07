@@ -2,14 +2,14 @@
 #include <stdlib.h>
 
 // Random
-static uint32_t m_z = 362436069;
-static uint32_t m_w = 521288629;
+static uint32_t mz = 362436069;
+static uint32_t mw = 521288629;
 
 uint32_t GetUint()
 {
-  m_z = 36969 * (m_z & 65535) + (m_z >> 16);
-  m_w = 18000 * (m_w & 65535) + (m_w >> 16);
-  return (m_z << 16) + m_w;
+  mz = 36969 * (mz & 65535) + (mz >> 16);
+  mw = 18000 * (mw & 65535) + (mw >> 16);
+  return (mz << 16) + mw;
 }
 
 uint32_t GetUniform(uint32_t max)
