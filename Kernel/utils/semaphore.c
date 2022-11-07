@@ -26,7 +26,7 @@ void normalizeTable(char *buf, char *data, int field);
 
 // acorde a la de c si no existe se crea uno nuevo, si no se retorna el
 // existente que coincida con la id
-Semaphore *sem_open(uint32_t id, int value) {
+Semaphore *semOpen(uint32_t id, int value) {
   // agaarro el mutexSem para modificar las var globales
   while (_xchg(&mutexSem, 1) != 0)
     ;
@@ -56,7 +56,7 @@ Semaphore *sem_open(uint32_t id, int value) {
   return sems[semIter];
 }
 
-int sem_close(Semaphore *semToClose) {
+int semClose(Semaphore *semToClose) {
   if (semToClose->waiting > 0) {
     return -1;
   }
@@ -87,7 +87,7 @@ int sem_close(Semaphore *semToClose) {
   return 1;
 }
 
-int sem_post(Semaphore *sem) {
+int semPost(Semaphore *sem) {
   while (_xchg(&sem->lock, 1) != 0)
     ;
 
@@ -109,7 +109,7 @@ int sem_post(Semaphore *sem) {
   return 0;
 }
 
-int sem_wait(Semaphore *sem) {
+int semWait(Semaphore *sem) {
   while (_xchg(&sem->lock, 1) != 0)
     ;
 

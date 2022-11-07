@@ -6,17 +6,17 @@
 
 typedef struct Semaphore* semPointer;
 
-semPointer sem_open(uint32_t id,int value);
+semPointer semOpen(uint32_t id,int value);
 
 extern uint8_t _xchg(uint8_t * lock,int value);
 
 void deleteProcessFromSem(int64_t pid);
 
-int sem_wait(semPointer sem);
+int semWait(semPointer sem);
 
-int sem_post(semPointer sem);
+int semPost(semPointer sem);
 
-int sem_close(semPointer semToClose);
+int semClose(semPointer semToClose);
 
 void getAllSems(char *buffer);
 

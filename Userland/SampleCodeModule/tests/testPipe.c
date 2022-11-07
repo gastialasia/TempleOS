@@ -2,7 +2,7 @@
 #include <stdlib.h>
 #include <testUtil.h>
 
-static int testRead(int arc, char arv[6][21]) {
+static void testRead(int arc, char arv[6][21]) {
   fd* fileDescriptor = createFd();
   if (openPipe(fileDescriptor, 101, 1) == -1) {
     printf("Error opening pipe");
@@ -21,16 +21,14 @@ static int testRead(int arc, char arv[6][21]) {
     putchar('\n');
   }
   exit();
-  return 0;
 }
 
-static int testWrite(int arc, char arv[6][21]) {
+static void testWrite(int arc, char arv[6][21]) {
   fd* fileDescriptor = createFd();
   openPipe(fileDescriptor, 101, 0);
   pipeWrite(fileDescriptor, "I'm writing on the pipe from write process ");
   closeFd(fileDescriptor);
   exit();
-  return 0;
 }
 
 void testPipe(int arc, char arv[6][21]) {

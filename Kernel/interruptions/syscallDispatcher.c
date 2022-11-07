@@ -71,16 +71,16 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2,
       runScheduler();
       break;
     case 21:
-      return (int64_t)sem_open((uint32_t)arg0, (int)arg1);
+      return (int64_t)semOpen((uint32_t)arg0, (int)arg1);
       break;
     case 22:
-      return sem_close((semPointer)arg0);
+      return semClose((semPointer)arg0);
       break;
     case 23:
-      return sem_post((semPointer)arg0);
+      return semPost((semPointer)arg0);
       break;
     case 24:
-      return sem_wait((semPointer)arg0);
+      return semWait((semPointer)arg0);
       break;
     case 25:
       getAllSems((char *)arg0);

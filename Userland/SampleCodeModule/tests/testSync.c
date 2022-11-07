@@ -81,6 +81,7 @@ void incWithoutSem(int argc, char argv[6][21]) {
   itos(global, resultStr);
   printf(resultStr);
   putchar('\n');
+  exit();
 }
 
 void testSync(int argc, char argv[6][21]) {
@@ -93,7 +94,7 @@ void testSync(int argc, char argv[6][21]) {
   printInt(TOTAL_PAIR_PROCESSES * 2);
   printf(" prints final value should be 0\n");
 
-  printf("CREATING PROCESSES(WITH SEM)... Please wait\n");
+  printf("CREATING PROCESSES (WITH SEM)... Please wait\n");
 
   for (i = 0; i < TOTAL_PAIR_PROCESSES; i++) {
     processWrapper("i");
@@ -107,13 +108,13 @@ void testSync(int argc, char argv[6][21]) {
 void testNoSync(int argc, char argv[6][21]) {
   printf("After ");
   printInt(TOTAL_PAIR_PROCESSES * 2);
-  printf(" prints final value is not 0\n");
+  printf(" prints the final value should be different than 0\n");
 
   global = 0;
 
   uint64_t i;
 
-  printf("CREATING PROCESSES(WITHOUT SEM)... Please wait\n");
+  printf("CREATING PROCESSES (WITHOUT SEM)... Please wait\n");
 
   for (i = 0; i < TOTAL_PAIR_PROCESSES; i++) {
     processWrapper("n");
