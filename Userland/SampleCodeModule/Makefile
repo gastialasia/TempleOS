@@ -17,6 +17,6 @@ $(MODULE): $(SOURCES) $(OBJECTS_ASM)
 	$(ASM) $(ASMFLAGS) $< -o $@
 
 clean:
-	rm -rf ./standard_C_Library/*.o
+	rm -rf ./standard_C_Library/*.o ./tests-TP2/*.o
 
 .PHONY: all clean

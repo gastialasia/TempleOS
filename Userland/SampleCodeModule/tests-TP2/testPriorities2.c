@@ -1,16 +1,16 @@
-#include <test_util.h>
+#include <testUtil.h>
 #include <stdlib.h>
-#include <test_prio_2.h>
+#include <testPriorities2.h>
 
 #define MAX_PROCESSES 3
 #define MAX_ARGS 4
 #define ARGS_COUNT 2
 
-static void loop_prio(int argc, char argv[6][21])
+static void loopPrio(int argc, char argv[6][21])
 {
     if (argc != ARGS_COUNT)
     {
-        printf("Incorrect number of arguments for loop_prio\n");
+        printf("Incorrect number of arguments for loopPrio\n");
         exit();
     }
     while (1)
@@ -21,7 +21,7 @@ static void loop_prio(int argc, char argv[6][21])
     }
 }
 
-int test_prio_2(int argc, char argv[6][21])
+int testPriorities2(int argc, char argv[6][21])
 {
     if (argc != MAX_ARGS)
     {
@@ -37,7 +37,7 @@ int test_prio_2(int argc, char argv[6][21])
     {
         strcpy(args[1], argv[i]);
         priority = atoi(argv[i]);
-        createProcess((uint64_t)loop_prio, (uint8_t)priority, ARGS_COUNT, args, NULL, NULL);
+        createProcess((uint64_t)loopPrio, (uint8_t)priority, ARGS_COUNT, args, NULL, NULL);
     }
     exit();
     return 0;

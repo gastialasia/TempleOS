@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-int test_prio_2(int argc, char argv[6][21]);
+int testPriorities2(int argc, char argv[6][21]);
 
 #endif

@@ -104,7 +104,7 @@ int main()
 
 	createProcess((uint64_t)sampleCodeModuleAddress, 1, 1, argv, NULL, NULL);
 
-	load_idt();
+	loadIDT();
 
 	return 0;
 }

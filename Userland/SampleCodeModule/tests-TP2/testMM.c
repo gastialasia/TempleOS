@@ -1,8 +1,8 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-#include <test_mm.h>
+#include <testMM.h>
 #include <stdlib.h>
-#include <test_util.h>
+#include <testUtil.h>
 #include <programs.h>
 
 #define MAX_BLOCKS 128
@@ -18,7 +18,7 @@ static void *myMemset(void *destination, int c, int len)
   return destination;
 }
 
-int test_mm(int argc, char argv[6][21])
+int testMM(int argc, char argv[6][21])
 {
 
   mm_rq mm_rqs[MAX_BLOCKS];
@@ -75,7 +75,7 @@ int test_mm(int argc, char argv[6][21])
       if (mm_rqs[i].address)
         if (!memcheck(mm_rqs[i].address, i, mm_rqs[i].size))
         {
-          printf("test_mm ERROR\n");
+          printf("testMM ERROR\n");
           exit();
         }
 

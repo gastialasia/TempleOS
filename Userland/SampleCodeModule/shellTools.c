@@ -1,16 +1,16 @@
 #include <programs.h>
 #include <stdint.h>
-#include <test_mm.h>
-#include <test_processes.h>
-#include <test_prio.h>
-#include <test_sync.h>
+#include <testMM.h>
+#include <testProcesses.h>
+#include <testPriorities.h>
+#include <testSync.h>
 #include <philosophers.h>
-#include <test_prio_2.h>
-#include <test_pipe.h>
+#include <testPriorities2.h>
+#include <testPipe.h>
 #include <shell.h>
 #include <stdlib.h>
 #include <shellTools.h>
-#include <test_args.h>
+#include <testArgs.h>
 
 #define MAXBUFFER 100
 #define F1_KEY 17
@@ -30,7 +30,7 @@ void parser(const char *buffer)
     char tokens1[ARG_QTY][ARG_LEN] = {{0}};
     int tokenQty1 = tokenizeCommand(commands[0], tokens1);
 
-    function_type fun1, fun2;
+    functionType fun1, fun2;
 
     int isBuiltIn = 0;
 
@@ -132,9 +132,9 @@ int tokenizeCommand(char command[100], char tokens[ARG_QTY][ARG_LEN])
     return i;
 }
 
-function_type getFuncFromString(char *str, int *isBuiltIn)
+functionType getFuncFromString(char *str, int *isBuiltIn)
 {
-    function_type toRet;
+    functionType toRet;
     if (!strcmp("date", str))
     {
         toRet = &date;
@@ -162,23 +162,23 @@ function_type getFuncFromString(char *str, int *isBuiltIn)
     }
     else if (!strcmp("testmm", str))
     {
-        toRet = &test_mm;
+        toRet = &testMM;
     }
     else if (!strcmp("testproc", str))
     {
-        toRet = &test_processes;
+        toRet = &testProcesses;
     }
     else if (!strcmp("testprio", str))
     {
-        toRet = &test_prio;
+        toRet = &testPriorities;
     }
     else if (!strcmp("testsync", str))
     {
-        toRet = &test_sync;
+        toRet = &testSync;
     }
     else if (!strcmp("testnosync", str))
     {
-        toRet = &test_no_sync;
+        toRet = &testNoSync;
     }
     else if (!strcmp("mem", str))
     {
@@ -245,11 +245,11 @@ function_type getFuncFromString(char *str, int *isBuiltIn)
     }
     else if (!strcmp("testprio2", str))
     {
-        toRet = &test_prio_2;
+        toRet = &testPriorities2;
     }
     else if (!strcmp("testpipe", str))
     {
-        toRet = &test_pipe;
+        toRet = &testMM;
     } else if (!strcmp("testargs", str)) {
       toRet = &test_args;
     } else {

@@ -1,10 +1,10 @@
-#include <test_util.h>
+#include <testUtil.h>
 #include <stdlib.h>
-#include <test_prio.h>
+#include <testPriorities.h>
 
 int64_t prio[TOTAL_PROCESSES] = {LOWEST, MEDIUM, HIGHEST};
 
-int test_prio(int argc, char argv[6][21])
+int testPriorities(int argc, char argv[6][21])
 {
   int64_t pids[TOTAL_PROCESSES];
   uint64_t i;
@@ -19,7 +19,7 @@ int test_prio(int argc, char argv[6][21])
   sleep(1500);
 
   for (i = 0; i < TOTAL_PROCESSES; i++)
-    pids[i] = createProcess((uint64_t)endless_loop, 3, 1, aux, NULL, NULL);
+    pids[i] = createProcess((uint64_t)endlessLoop, 3, 1, aux, NULL, NULL);
 
   ps();
   putchar('\n');
@@ -69,7 +69,7 @@ int test_prio(int argc, char argv[6][21])
   putchar('\n');
   sleep(2000);
 
-  // bussy_wait(WAIT);
+  // bussyWait(WAIT);
   printf("\nKILLING...\n\n");
 
   for (i = 0; i < TOTAL_PROCESSES; i++)

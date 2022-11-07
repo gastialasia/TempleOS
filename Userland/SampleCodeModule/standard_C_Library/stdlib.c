@@ -406,7 +406,8 @@ int openPipe(fd *user, uint32_t id, uint8_t permisions){
 }
 
 int pipeRead(fd *userPipe, char *buffer){
-    return sys_pipeRead(userPipe, buffer);
+    return sys_pipeRead(userPipe, buffer
+);
 }
 
 int pipeWrite(fd *userPipe, const char *string){

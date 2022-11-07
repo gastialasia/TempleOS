@@ -1,6 +1,6 @@
-#include <test_sync.h>
+#include <testSync.h>
 #include <stdlib.h>
-#include <test_util.h>
+#include <testUtil.h>
 #include <programs.h>
 #include <stdint.h>
 #include <syscallslib.h>
@@ -96,7 +96,7 @@ int incWithoutSem(int argc, char argv[6][21])
   return 0;
 }
 
-int test_sync(int argc, char argv[6][21])
+int testSync(int argc, char argv[6][21])
 {
   global = 0;
 
@@ -120,7 +120,7 @@ int test_sync(int argc, char argv[6][21])
   return 0;
 }
 
-int test_no_sync(int argc, char argv[6][21])
+int testNoSync(int argc, char argv[6][21])
 {
   printf("After ");
   printInt(TOTAL_PAIR_PROCESSES * 2);
