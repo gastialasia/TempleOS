@@ -1,190 +1,190 @@
-GLOBAL sys_write
-GLOBAL sys_read
-GLOBAL sys_printMem
-GLOBAL sys_clear
-GLOBAL sys_date
-GLOBAL sys_sleep
-GLOBAL sys_inforeg
+GLOBAL sysWrite
+GLOBAL sysRead
+GLOBAL sysPrintMem
+GLOBAL sysClear
+GLOBAL sysDate
+GLOBAL sysSleep
+GLOBAL sysInforeg
 GLOBAL divzero
 GLOBAL opcode
-GLOBAL sys_getLast
-GLOBAL sys_snapshotRegs
-GLOBAL sys_malloc
-GLOBAL sys_free
-GLOBAL sys_memStatus
-GLOBAL sys_createProcess
-GLOBAL sys_exit
-GLOBAL sys_getpid
-GLOBAL sys_ps
-GLOBAL sys_kill
-GLOBAL sys_changepriority
-GLOBAL sys_changestate
-GLOBAL sys_yield
-GLOBAL sys_semOpen
-GLOBAL sys_semClose
-GLOBAL sys_semPost
-GLOBAL sys_semWait
-GLOBAL sys_getAllSems
-GLOBAL sys_createPipe
-GLOBAL sys_getAllPipes
-GLOBAL sys_openPipe
-GLOBAL sys_closeFd
-GLOBAL sys_pipeRead
-GLOBAL sys_pipeWrite
+GLOBAL sysGetLast
+GLOBAL sysSnapshotRegs
+GLOBAL sysMalloc
+GLOBAL sysFree
+GLOBAL sysMemStatus
+GLOBAL sysCreateProcess
+GLOBAL sysExit
+GLOBAL sysGetpid
+GLOBAL sysPs
+GLOBAL sysKill
+GLOBAL sysChangepriority
+GLOBAL sysChangestate
+GLOBAL sysYield
+GLOBAL sysSemOpen
+GLOBAL sysSemClose
+GLOBAL sysSemPost
+GLOBAL sysSemWait
+GLOBAL sysGetAllSems
+GLOBAL sysCreatePipe
+GLOBAL sysGetAllPipes
+GLOBAL sysOpenPipe
+GLOBAL sysCloseFd
+GLOBAL sysPipeRead
+GLOBAL sysPipeWrite
 
 section .text
 
-sys_write:          ; Los registros de rdi, rsi y rdx ya están cargados por los parámetros de C
+sysWrite:          ; Los registros de rdi, rsi y rdx ya están cargados por los parámetros de C
     mov rax,2
     int 80h
     ret
 
-sys_read:
+sysRead:
     mov rax,1
     int 80h
     ret
 
-sys_printMem:
+sysPrintMem:
     mov rax,4
     int 80h
     ret
 
-sys_clear:
+sysClear:
     mov rax,3
     int 80h
     ret
 
-sys_date:
+sysDate:
     mov rax, 6
     int 80h
     ret
 
-sys_sleep:
+sysSleep:
     mov rax, 7
     int 80h
     ret
 
-sys_inforeg:
+sysInforeg:
     mov rax, 5
     int 80h
     ret
 
-sys_getLast:
+sysGetLast:
     mov rax, 8
     int 80h
     ret
 
-sys_snapshotRegs:
+sysSnapshotRegs:
     mov rax, 9
     int 80h
     ret
 
-sys_malloc:
+sysMalloc:
     mov rax, 10
     int 80h
     ret
 
-sys_free:
+sysFree:
     mov rax, 11
     int 80h
     ret
 
-sys_memStatus:
+sysMemStatus:
     mov rax, 12
     int 80h
     ret
 
-sys_createProcess:
+sysCreateProcess:
     mov rax, 13
     int 80h
     ret
 
-sys_exit:
+sysExit:
     mov rax, 14
     int 80h
     ret
 
-sys_getpid:
+sysGetpid:
     mov rax, 15
     int 80h
     ret
 
-sys_ps:
+sysPs:
   mov rax, 16
   int 80h
   ret
 
-sys_kill:
+sysKill:
   mov rax, 17
   int 80h
   ret
 
-sys_changepriority:
+sysChangepriority:
   mov rax, 18
   int 80h
   ret
 
-sys_changestate:
+sysChangestate:
   mov rax, 19
   int 80h
   ret
 
-sys_yield:
+sysYield:
   mov rax, 20
   int 80h
   ret
 
-sys_semOpen:
+sysSemOpen:
   mov rax, 21
   int 80h
   ret
 
-sys_semClose:
+sysSemClose:
   mov rax, 22
   int 80h
   ret
 
-sys_semPost:
+sysSemPost:
   mov rax, 23
   int 80h
   ret
 
-sys_semWait:
+sysSemWait:
   mov rax, 24
   int 80h
   ret
 
-sys_getAllSems:
+sysGetAllSems:
   mov rax, 25
   int 80h
   ret
 
-sys_createPipe:
+sysCreatePipe:
   mov rax, 26
   int 80h
   ret
 
-sys_getAllPipes:
+sysGetAllPipes:
   mov rax, 27
   int 80h
   ret
 
-sys_openPipe:
+sysOpenPipe:
   mov rax, 28
   int 80h
   ret
 
-sys_pipeRead:
+sysPipeRead:
   mov rax, 29
   int 80h
   ret
 
-sys_pipeWrite:
+sysPipeWrite:
   mov rax, 30
   int 80h
   ret
 
-sys_closeFd:
+sysCloseFd:
   mov rax, 31
   int 80h
   ret

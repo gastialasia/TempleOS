@@ -21,17 +21,17 @@ int strlen(const char *str)
 
 void putchar(const char c)
 {
-    sys_write(&c, 1);
+    sysWrite(&c, 1);
 }
 
 void printf(const char *str)
 {
-    sys_write(str, strlen(str));
+    sysWrite(str, strlen(str));
 }
 
 void inforeg(registersT *regs)
 {
-    sys_inforeg(regs);
+    sysInforeg(regs);
 }
 
 uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base)
@@ -97,24 +97,24 @@ void printInt(int num)
 {
     char buffer[10];
     int len = uintToBase(num, buffer, 10);
-    sys_write(buffer, len);
+    sysWrite(buffer, len);
 }
 
 void printInt64(unsigned long num)
 {
     char buffer[20];
     int len = uintToBase(num, buffer, 10);
-    sys_write(buffer, len);
+    sysWrite(buffer, len);
 }
 
 void getchar(char *c)
 {
-    sys_read(c, 1);
+    sysRead(c, 1);
 }
 
 int scanf(char *buffer)
 {
-    return sys_read(buffer, -1);
+    return sysRead(buffer, -1);
 }
 
 uint64_t hex2int(char *hex, int *ok)
@@ -147,7 +147,7 @@ uint64_t hex2int(char *hex, int *ok)
 
 void clear()
 {
-    sys_clear();
+    sysClear();
 }
 
 // Devuelve 0 si son iguales, 1 sino
@@ -200,17 +200,17 @@ char *strcat(char *destination, const char *source)
 
 char getDateComponent(int value)
 {
-    return sys_date(value);
+    return sysDate(value);
 }
 
 void sleep(int secs)
 {
-    sys_sleep(secs);
+    sysSleep(secs);
 }
 
 void takeSnapShot()
 {
-    sys_snapshotRegs();
+    sysSnapshotRegs();
 }
 
 void printReg(const char *regName, uint64_t regValue)
@@ -227,7 +227,7 @@ void printReg(const char *regName, uint64_t regValue)
 
 void printMem(uint64_t pointer, char *buffer)
 {
-    return sys_printMem(pointer, buffer);
+    return sysPrintMem(pointer, buffer);
 }
 
 unsigned int is_delim(char c, char *delim)
@@ -290,45 +290,45 @@ char *strtok(char *srcString, char *delim)
 
 void *malloc(unsigned int bytes)
 {
-    return sys_malloc(bytes);
+    return sysMalloc(bytes);
 }
 
 void free(void *memToFree)
 {
-    sys_free(memToFree);
+    sysFree(memToFree);
 }
 
 void memStatus(unsigned int *status)
 {
-    return sys_memStatus(status);
+    return sysMemStatus(status);
 }
 
 int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], fd *customStdin, fd *customStdout)
 {
-    return sys_createProcess(ip, priority, argc, argv, customStdin, customStdout);
+    return sysCreateProcess(ip, priority, argc, argv, customStdin, customStdout);
 }
 
 void exit()
 {
-    sys_exit();
+    sysExit();
 }
 
 int getpid()
 {
-    return sys_getpid();
+    return sysGetpid();
 }
 
 void ps()
 {
     static char buffer[3000];
-    sys_ps(buffer);
+    sysPs(buffer);
     printf(buffer);
     buffer[0] = 0;
 }
 
 int kill(uint32_t pid)
 {
-    return sys_kill(pid);
+    return sysKill(pid);
 }
 
 int atoi(const char *S)
@@ -348,47 +348,47 @@ int atoi(const char *S)
 
 int nice(uint32_t pid, uint8_t newPriority)
 {
-    return sys_changepriority(pid, newPriority);
+    return sysChangepriority(pid, newPriority);
 }
 
 int block(uint32_t pid)
 {
-    return sys_changestate(pid);
+    return sysChangestate(pid);
 }
 
 void yield()
 {
-    sys_yield();
+    sysYield();
 }
 
 Semaphore *semOpen(uint32_t id, int value)
 {
-    return sys_semOpen(id, value);
+    return sysSemOpen(id, value);
 }
 
 int semClose(Semaphore *sem)
 {
-    return sys_semClose(sem);
+    return sysSemClose(sem);
 }
 
 int semPost(Semaphore *sem)
 {
-    return sys_semPost(sem);
+    return sysSemPost(sem);
 }
 
 int semWait(Semaphore *sem)
 {
-    return sys_semWait(sem);
+    return sysSemWait(sem);
 }
 
 void getAllSems(char *buf)
 {
-    sys_getAllSems(buf);
+    sysGetAllSems(buf);
 }
 
 int createPipe(fd *fd1, fd *fd2)
 {
-    return sys_createPipe(fd1, fd2);
+    return sysCreatePipe(fd1, fd2);
 }
 
 fd *createFd()
@@ -398,22 +398,22 @@ fd *createFd()
 
 void getAllPipes(char *buf)
 {
-    sys_getAllPipes(buf);
+    sysGetAllPipes(buf);
 }
 
 int openPipe(fd *user, uint32_t id, uint8_t permisions){
-    return sys_openPipe(user, id, permisions);
+    return sysOpenPipe(user, id, permisions);
 }
 
 int pipeRead(fd *userPipe, char *buffer){
-    return sys_pipeRead(userPipe, buffer
+    return sysPipeRead(userPipe, buffer
 );
 }
 
 int pipeWrite(fd *userPipe, const char *string){
-    return sys_pipeWrite(userPipe, string);
+    return sysPipeWrite(userPipe, string);
 }
 
 void closeFd(fd *user){
-    sys_closeFd(user);
+    sysCloseFd(user);
 }

@@ -5,36 +5,36 @@
 #include <stdint.h>
 #include <stdlib.h>
 
-void sys_write(const char *buffer, size_t count);
-int sys_read(char *buffer, size_t count);
-void sys_clear();
-char sys_date(char value);
-void sys_sleep(int secs);
-void sys_inforeg(registersT *);
-void sys_snapshotRegs(void);
-unsigned char sys_getLast();
-void sys_printMem(uint64_t, char *);
-void *sys_malloc(unsigned int bytes);
-void sys_free(void *memToFree);
-void sys_memStatus(unsigned int *status);
-int sys_createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], fd *customStdin, fd *customStdout);
-void sys_exit();
-int sys_getpid();
-void sys_ps(char *buffer);
-int sys_kill(uint32_t pid);
-int sys_changepriority(uint32_t pid, uint8_t newPriority);
-int sys_changestate(uint32_t pid);
-void sys_yield();
-Semaphore *sys_semOpen(uint32_t id, int value);
-int sys_semClose(Semaphore *sem);
-int sys_semPost(Semaphore *sem);
-int sys_semWait(Semaphore *sem);
-void sys_getAllSems(char *buffer);
-int sys_createPipe(fd *fd1, fd *fd2);
-void sys_getAllPipes(char *buf);
-int sys_openPipe(fd *user, uint32_t id, uint8_t permisions);
-int sys_pipeRead(fd *userPipe, char *buffer);
-int sys_pipeWrite(fd *userPipe, const char *string);
-void sys_closeFd(fd *user);
+void sysWrite(const char *buffer, size_t count);
+int sysRead(char *buffer, size_t count);
+void sysClear();
+char sysDate(char value);
+void sysSleep(int secs);
+void sysInforeg(registersT *);
+void sysSnapshotRegs(void);
+unsigned char sysGetLast();
+void sysPrintMem(uint64_t, char *);
+void *sysMalloc(unsigned int bytes);
+void sysFree(void *memToFree);
+void sysMemStatus(unsigned int *status);
+int sysCreateProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], fd *customStdin, fd *customStdout);
+void sysExit();
+int sysGetpid();
+void sysPs(char *buffer);
+int sysKill(uint32_t pid);
+int sysChangepriority(uint32_t pid, uint8_t newPriority);
+int sysChangestate(uint32_t pid);
+void sysYield();
+Semaphore *sysSemOpen(uint32_t id, int value);
+int sysSemClose(Semaphore *sem);
+int sysSemPost(Semaphore *sem);
+int sysSemWait(Semaphore *sem);
+void sysGetAllSems(char *buffer);
+int sysCreatePipe(fd *fd1, fd *fd2);
+void sysGetAllPipes(char *buf);
+int sysOpenPipe(fd *user, uint32_t id, uint8_t permisions);
+int sysPipeRead(fd *userPipe, char *buffer);
+int sysPipeWrite(fd *userPipe, const char *string);
+void sysCloseFd(fd *user);
 
 #endif

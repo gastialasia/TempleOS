@@ -21,7 +21,7 @@ static void *myMemset(void *destination, int c, int len)
 int testMM(int argc, char argv[6][21])
 {
 
-  mm_rq mm_rqs[MAX_BLOCKS];
+  mm_rq mmrqs[MAX_BLOCKS];
   uint8_t rq;
   uint32_t total;
   uint64_t max_memory;
@@ -51,12 +51,12 @@ int testMM(int argc, char argv[6][21])
     // Request as many blocks as we can
     while (rq < MAX_BLOCKS && total < max_memory)
     {
-      mm_rqs[rq].size = GetUniform(max_memory - total - 1) + 1;
-      mm_rqs[rq].address = malloc(mm_rqs[rq].size);
+      mmrqs[rq].size = GetUniform(max_memory - total - 1) + 1;
+      mmrqs[rq].address = malloc(mmrqs[rq].size);
 
-      if (mm_rqs[rq].address)
+      if (mmrqs[rq].address)
       {
-        total += mm_rqs[rq].size;
+        total += mmrqs[rq].size;
       }
       rq++;
     }
@@ -64,16 +64,16 @@ int testMM(int argc, char argv[6][21])
     // Set
     uint32_t i;
     for (i = 0; i < rq; i++)
-      if (mm_rqs[i].address)
-        myMemset(mm_rqs[i].address, i, mm_rqs[i].size);
+      if (mmrqs[i].address)
+        myMemset(mmrqs[i].address, i, mmrqs[i].size);
 
     memStatusProgram();
     sleep(2000);
 
     // Check
     for (i = 0; i < rq; i++)
-      if (mm_rqs[i].address)
-        if (!memcheck(mm_rqs[i].address, i, mm_rqs[i].size))
+      if (mmrqs[i].address)
+        if (!memcheck(mmrqs[i].address, i, mmrqs[i].size))
         {
           printf("testMM ERROR\n");
           exit();
@@ -81,8 +81,8 @@ int testMM(int argc, char argv[6][21])
 
     // Free
     for (i = 0; i < rq; i++)
-      if (mm_rqs[i].address)
-        free(mm_rqs[i].address);
+      if (mmrqs[i].address)
+        free(mmrqs[i].address);
   }
 
   exit();
