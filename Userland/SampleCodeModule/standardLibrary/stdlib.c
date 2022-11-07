@@ -28,17 +28,14 @@ uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base) {
   char *p1, *p2;
   uint32_t digits = 0;
 
-  // Calculate characters for each digit
   do {
     uint32_t remainder = value % base;
     *p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
     digits++;
   } while (value /= base);
 
-  // Terminate string in buffer.
   *p = 0;
 
-  // Reverse string in buffer.
   p1 = buffer;
   p2 = p - 1;
   while (p1 < p2) {
@@ -52,7 +49,6 @@ uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base) {
   return digits;
 }
 
-// Integer to string
 int itos(int value, char *target) {
   int digit;
   int sign = 1;
@@ -94,7 +90,6 @@ uint64_t hex2int(char *hex, int *ok) {
   uint64_t val = 0;
   int len = 0;
   while (*hex && len < 8) {
-    // get current character then increment
     uint8_t byte = *hex++;
 
     if (!(byte >= '0' && byte <= '9') && !(byte >= 'a' && byte <= 'f') &&
@@ -102,15 +97,13 @@ uint64_t hex2int(char *hex, int *ok) {
       *ok = 0;
       return 0;
     }
-    // transform hex character to the 4bit equivalent number, using the ascii
-    // table indexes
+
     if (byte <= '9')
       byte = byte - '0';
     else if (byte >= 'a')
       byte = byte - 'a' + 10;
     else if (byte >= 'A' && byte <= 'F')
       byte = byte - 'A' + 10;
-    // shift 4 to make space for new digit, and add the 4 bits of the new digit
     val = (val << 4) | (byte & 0xF);
     len++;
   }
@@ -144,18 +137,14 @@ int strcpy(char *dest, const char *src) {
 }
 
 char *strcat(char *destination, const char *source) {
-  // make `ptr` point to the end of the destination string
   char *ptr = destination + strlen(destination);
 
-  // appends characters of the source to the destination string
   while (*source != '\0') {
     *ptr++ = *source++;
   }
 
-  // null terminate destination string
   *ptr = '\0';
 
-  // the destination is returned by standard `strcat()`
   return destination;
 }
 
@@ -188,22 +177,19 @@ unsigned int is_delim(char c, char *delim) {
 }
 
 char *strtok(char *srcString, char *delim) {
-  static char *backup_string;  // start of the next search
+  static char *backup_string;  
   if (!srcString) {
     srcString = backup_string;
   }
   if (!srcString) {
-    // user is bad user
     return NULL;
   }
-  // handle beginning of the string containing delims
   while (1) {
     if (is_delim(*srcString, delim)) {
       srcString++;
       continue;
     }
     if (*srcString == '\0') {
-      // we've reached the end of the string
       return NULL;
     }
     break;
@@ -211,8 +197,6 @@ char *strtok(char *srcString, char *delim) {
   char *ret = srcString;
   while (1) {
     if (*srcString == '\0') {
-      /*end of the input string and
-      next exec will return NULL*/
       backup_string = srcString;
       return ret;
     }
@@ -232,7 +216,8 @@ void free(void *memToFree) { sysFree(memToFree); }
 void memStatus(unsigned int *status) { return sysMemStatus(status); }
 
 int createProcess(uint64_t ip, uint8_t priority, uint64_t argc,
-                  char argv[ARG_QTY][ARG_LEN], fd *customStdin, fd *customStdout) {
+                  char argv[ARG_QTY][ARG_LEN], fd *customStdin,
+                  fd *customStdout) {
   return sysCreateProcess(ip, priority, argc, argv, customStdin, customStdout);
 }
 

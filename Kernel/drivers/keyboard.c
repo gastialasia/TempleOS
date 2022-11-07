@@ -12,7 +12,6 @@ extern unsigned char last;
 
 unsigned char readKey()
 {
-	// Agregar chequeo de tecla
 	unsigned char aux = key;
 	key = 0;
 	return aux;

@@ -64,7 +64,6 @@ void testPriorities(int argc, char argv[ARG_QTY][ARG_LEN]) {
   putchar('\n');
   sleep(2000);
 
-  // bussyWait(WAIT);
   printf("\nKILLING...\n\n");
 
   for (i = 0; i < TOTAL_PROCESSES; i++) kill(pids[i]);

@@ -54,7 +54,6 @@ int64_t read(char *buffer, size_t count) {
       key = readKey();
     } else {
       key = (unsigned char)pipeRead(stdin, NULL, 1);
-      // key = buffer[0];
     }
 
     switch (key) {
@@ -77,7 +76,7 @@ int64_t read(char *buffer, size_t count) {
         buffer[k] = 0;
         return k;
 
-      case 8:  // Borrado
+      case 8:
       {
         if (k > 0) {
           ncDeleteChar();
@@ -113,7 +112,7 @@ int64_t read(char *buffer, size_t count) {
     }
   }
   buffer[k] = 0;
-  return k;  // placeholder
+  return k;
 }
 
 void snapshotRegs() { loadBackupRegs(primaryBackup, secondaryBackup); }

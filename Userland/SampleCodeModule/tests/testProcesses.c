@@ -26,7 +26,6 @@ void testProcesses(int argc, char argv[ARG_QTY][ARG_LEN]) {
   strcpy(aux[0], "_loop");
 
   while (1) {
-    // Create maxProcesses processes
     for (rq = 0; rq < maxProcesses; rq++) {
       prqs[rq].pid =
           createProcess((uint64_t)endlessLoop, 3, 1, aux, NULL, NULL);
@@ -44,8 +43,6 @@ void testProcesses(int argc, char argv[ARG_QTY][ARG_LEN]) {
     putchar('\n');
     sleep(2000);
 
-    // Randomly kills, blocks or unblocks processes until every one has been
-    // killed
     while (alive > 0) {
       for (rq = 0; rq < maxProcesses; rq++) {
         action = GetUniform(100) % 2;
@@ -74,7 +71,6 @@ void testProcesses(int argc, char argv[ARG_QTY][ARG_LEN]) {
         }
       }
 
-      // Randomly unblocks processes
       for (rq = 0; rq < maxProcesses; rq++) {
         if (prqs[rq].state == BLOCKED && GetUniform(100) % 2) {
           if (block(prqs[rq].pid) == -1) {

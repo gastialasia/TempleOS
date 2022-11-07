@@ -24,10 +24,7 @@ uint8_t mutexSem = 0;
 
 void normalizeTable(char *buf, char *data, int field);
 
-// acorde a la de c si no existe se crea uno nuevo, si no se retorna el
-// existente que coincida con la id
 Semaphore *semOpen(uint32_t id, int value) {
-  // agaarro el mutexSem para modificar las var globales
   while (_xchg(&mutexSem, 1) != 0)
     ;
 
@@ -40,14 +37,12 @@ Semaphore *semOpen(uint32_t id, int value) {
     semIter++;
   }
 
-  // si no se encontro se crea uno nuevo
   if (semIter == size) {
     sems[semIter] = (Semaphore *)alloc(sizeof(Semaphore));
     sems[semIter]->id = id;
     sems[semIter]->value = value;
-    // agregar pcb @TODO:@pato
     sems[semIter]->waiting = 0;
-    sems[semIter]->lock = 0;  // unlock
+    sems[semIter]->lock = 0;
     _xchg(&mutexSem, 0);
     return sems[size++];
   }
@@ -71,10 +66,8 @@ int semClose(Semaphore *semToClose) {
 
   if (semIter == size) {
     _xchg(&mutexSem, 0);
-    return -1;  // INVALID ID
+    return -1;
   }
-  // sejo a todo los sems en "orden", osea sin empacio para facilitar la
-  // busqueda mas adelante
   while (semIter < size - 1) {
     sems[semIter] = sems[semIter + 1];
     semIter++;
@@ -93,7 +86,6 @@ int semPost(Semaphore *sem) {
 
   sem->value++;
 
-  // no hay nadie esperando el semaforo
   if (sem->waiting == 0) {
     _xchg(&sem->lock, 0);
     return 0;
@@ -120,16 +112,13 @@ int semWait(Semaphore *sem) {
 
     sem->queuqe[sem->waiting++] = blockCurrentProcess();
 
-    _xchg(&sem->lock, 0);  // suelto el semaforo interno de cada semaforo
-    // corre el scheduler hasta que se pueda ir el procesos
+    _xchg(&sem->lock, 0);
+
     runScheduler();
   }
 
-  // si salgo del while significa que se libero un proceso
-
   sem->value--;
 
-  // suelto el lock del semaforo por si paso de una
   _xchg(&sem->lock, 0);
 
   return 0;

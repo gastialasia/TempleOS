@@ -31,7 +31,6 @@ char isPipe(char c) { return c == SLASH_ASCII; }
 
 char isAmpersand(char c) { return c == SEVEN_ASCII; }
 
-// Devuelve 0 si son iguales, 1 sino
 int strcmp(const char *str1, const char *str2) {
   int pos = 0;
   while (str1[pos] && str2[pos]) {
@@ -51,17 +50,14 @@ uint32_t uintToBase(uint64_t value, char *buffer, uint32_t base) {
   char *p1, *p2;
   uint32_t digits = 0;
 
-  // Calculate characters for each digit
   do {
     uint32_t remainder = value % base;
     *p++ = (remainder < 10) ? remainder + '0' : remainder + 'A' - 10;
     digits++;
   } while (value /= base);
 
-  // Terminate string in buffer.
   *p = 0;
 
-  // Reverse string in buffer.
   p1 = buffer;
   p2 = p - 1;
   while (p1 < p2) {
@@ -84,17 +80,13 @@ int strlen(const char *str) {
 }
 
 char *strcat(char *destination, const char *source) {
-  // make `ptr` point to the end of the destination string
   char *ptr = destination + strlen(destination);
 
-  // appends characters of the source to the destination string
   while (*source != '\0') {
     *ptr++ = *source++;
   }
 
-  // null terminate destination string
   *ptr = '\0';
 
-  // the destination is returned by standard `strcat()`
   return destination;
 }

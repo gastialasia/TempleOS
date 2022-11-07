@@ -66,7 +66,7 @@ void *memAlloc(MemoryManagmentADT const memoryManager,
   // Increase size so that it can contain a MemBlock
   memToAllocate += STRUCT_SIZE;
 
-  // byte aligment
+  // Byte aligment
   if ((memToAllocate & MASK_BYTE_ALIGMENT) != 0) {
     memToAllocate += (BYTE_ALIGMENT - (memToAllocate & MASK_BYTE_ALIGMENT));
   }
@@ -80,8 +80,6 @@ void *memAlloc(MemoryManagmentADT const memoryManager,
       previousBlock = currentBlock;
       currentBlock = currentBlock->nextMemBlock;
     }
-    // @TODO: @Pato te olvidaste algo aca que pasa si encuentra un bloque del
-    // tamaño justo
     if (currentBlock == &memoryManager->end) {
       return NULL;
     }

@@ -5,7 +5,7 @@
 
 #define NULL ((void *)0)
 #define MAX_PIPES 20
-#define PIPE_SIZE 512  // byres de buffer del pipe
+#define PIPE_SIZE 512
 
 #define PIPEID 0
 #define PERMISSIONS 1
@@ -24,7 +24,7 @@ typedef struct pipe {
 
 pipe *pipes[MAX_PIPES];
 uint32_t pipeSize = 0;
-uint32_t ids = 0;  // for unique ids
+uint32_t ids = 0;
 
 void normalizePipes(char *buf, char *data, int field);
 
@@ -166,7 +166,7 @@ int pipeWrite(fd *userPipe, const char *string) {
     userPipe->pipe->waitingProcess->state = 1;
     userPipe->pipe->waitingProcess = NULL;
   }
-  return i;  // cantidad de chars escritos
+  return i; 
 }
 
 int pipeRead(fd *userPipe, char *buffer, int limit) {
@@ -222,14 +222,6 @@ void getAllPipes(char *buf) {
 
     uintToBase(pipes[i]->bytesToRead, idStr, 10);
     normalizePipes(buf, idStr, BYTESTOREAD);
-
-    // for(j=0; j < pipes[i]->waiting; j++){
-    //   uintToBase(sems[i]->queuqe[j]->pid, idStr, 10);
-    //   strcat(buffer, idStr);
-    //   if(j!=sems[i]->waiting-1){
-    //     strcat(buffer, " - ");
-    //   }
-    // }
 
     strcat(buf, "\n");
   }

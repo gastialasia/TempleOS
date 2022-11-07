@@ -118,7 +118,7 @@ void *memAlloc(MemoryManagmentADT const memoryManager,
   // Increase size so that it can contain a MemBlock
   memToAllocate += STRUCT_SIZE;
 
-  // byte aligment
+  // Byte aligment
   if ((memToAllocate & MASK_BYTE_ALIGMENT) != 0) {
     memToAllocate += (BYTE_ALIGMENT - (memToAllocate & MASK_BYTE_ALIGMENT));
   }

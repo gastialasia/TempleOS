@@ -15,8 +15,7 @@ void shell(void) {
     int length = scanf(buffer);
     if (length != 0) {
       parser(buffer);
-      sleep(1);  // Retraso de 1ms para evitar que el $user se imprima antes de
-                 // bloquear la shell
+      sleep(1);  // 1ms delay to avoid printing $user before shell block
     }
   }
 }

@@ -93,7 +93,7 @@ void initScheduler() {
   starting->process.pid = 0;
   starting->process.stackPointer = sp;
   starting->process.processMemory = startingProcessMem;
-  starting->process.state = 1;  // hacer un enum mejor
+  starting->process.state = 1; 
   starting->process.priority = 1;
   starting->process.auxPriority = 1;
   starting->nextProcess = scheduler->startList;
@@ -146,7 +146,7 @@ static ProcessNode *loadProcessData(ProcessNode *node, uint32_t pid,
     return node;
   }
 
-  // Caso where the priority of the process to add is lower
+  // Case where the priority of the process to add is lower
   ProcessNode *newNode = (ProcessNode *)alloc(sizeof(ProcessNode));
 
   newNode->nextProcess = node->nextProcess;
@@ -250,8 +250,7 @@ uint64_t contextSwitching(uint64_t sp) {
     }
     auxMinReadyProcess = auxMinReadyProcess->nextProcess;
   }
-  // There is no earlier process than can be run but the current process can run
-  // again
+  // There is no earlier process than can be run but the current process can run again
   if (minReadyProcess->process.state != 1 &&
       scheduler->current->process.state == 1 &&
       scheduler->current->process.pid != 1) {
@@ -444,7 +443,7 @@ int killPid(uint32_t pid) {
 int changeProcessPriority(uint32_t pid, uint8_t newPriority) {
   if (pid < 1) return 1;  // Error: invalid parameter
 
-  // Reordenar la lista
+  // Reorder the list
   ProcessNode *auxList = scheduler->startList;
   while (auxList->nextProcess != NULL &&
          auxList->nextProcess->process.pid != pid) {

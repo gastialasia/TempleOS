@@ -79,8 +79,6 @@ void parser(const char *buffer) {
   }
 }
 
-// receives buffer line and array to fill with commands separated and returns 1
-// if there was a pipe, 0 otherwise
 int pipeParser(const char *buffer, char commands[2][100]) {
   int i = 0, j = 0, k = 0;
   int flag = 0;

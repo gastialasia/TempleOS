@@ -22,21 +22,18 @@ void invalid(int argc, char argv[ARG_QTY][ARG_LEN]) {
 }
 
 void date(int argc, char argv[ARG_QTY][ARG_LEN]) {
-  int values[5] = {7, 8, 9, 4, 2};  // En orden: D, M, Y, H, M
-  char buffer[3];  // Cada numero de la fecha no va a tener más de dos digitos,
-                   // 3 contando el cero null terminated
+  int values[5] = {7, 8, 9, 4, 2};
+  char buffer[3];
+
   for (int i = 0; i < 5; i++) {
     char num = getDateComponent(values[i]);
     uintToBase(num, buffer, 16);
     if (num < 0xA) {
-      // Si el numero es de un solo digito, lo muevo un lugar a la derecha y a
-      // la izquierda le pongo un cero
       char aux = buffer[0];
       buffer[0] = '0';
       buffer[1] = aux;
     }
-    buffer[2] = 0;  // Al string del numero le agrego un cero null terminated
-                    // asi puedo usar strcpy
+    buffer[2] = 0;
     printf(buffer);
     if (i < 2) {
       printf("/");

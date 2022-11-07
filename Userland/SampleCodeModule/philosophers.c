@@ -24,7 +24,6 @@ void test(int phnum) {
       state[RIGHT] != EATING) {
     state[phnum] = EATING;
     printTable();
-    sleep(2);
     semPost(chopsticks[phnum]);
   }
 }
