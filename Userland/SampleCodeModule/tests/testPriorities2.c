@@ -6,7 +6,7 @@
 #define MAX_ARGS 4
 #define ARGS_COUNT 2
 
-static void loopPrio(int argc, char argv[6][21]) {
+static void loopPrio(int argc, char argv[ARG_QTY][ARG_LEN]) {
   if (argc != ARGS_COUNT) {
     printf("Incorrect number of arguments for loopPrio\n");
     exit();
@@ -18,14 +18,14 @@ static void loopPrio(int argc, char argv[6][21]) {
   }
 }
 
-void testPriorities2(int argc, char argv[6][21]) {
+void testPriorities2(int argc, char argv[ARG_QTY][ARG_LEN]) {
   if (argc != MAX_ARGS) {
     printf("Incorrect number of arguments. You should input 3 numbers\n");
     exit();
   }
 
   int priority;
-  char args[6][21];
+  char args[ARG_QTY][ARG_LEN];
   strcpy(args[0], "_loop_prio");
 
   for (int i = 1; i <= MAX_PROCESSES; i++) {

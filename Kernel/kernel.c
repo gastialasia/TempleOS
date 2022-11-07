@@ -86,7 +86,7 @@ int main() {
   initMemManager(memManagerAddress, heapModuleAddress);
   initScheduler();
 
-  char argv[6][21];
+  char argv[ARG_QTY][ARG_LEN];
   argv[0][0] = 'S';
   argv[0][1] = 'h';
   argv[0][2] = 'e';

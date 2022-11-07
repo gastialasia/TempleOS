@@ -3,6 +3,6 @@
 
 #include <stdint.h>
 
-void testPriorities2(int argc, char argv[6][21]);
+void testPriorities2(int argc, char argv[ARG_QTY][ARG_LEN]);
 
 #endif

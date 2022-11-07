@@ -232,7 +232,7 @@ void free(void *memToFree) { sysFree(memToFree); }
 void memStatus(unsigned int *status) { return sysMemStatus(status); }
 
 int createProcess(uint64_t ip, uint8_t priority, uint64_t argc,
-                  char argv[6][21], fd *customStdin, fd *customStdout) {
+                  char argv[ARG_QTY][ARG_LEN], fd *customStdin, fd *customStdout) {
   return sysCreateProcess(ip, priority, argc, argv, customStdin, customStdout);
 }
 

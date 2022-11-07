@@ -32,7 +32,7 @@ static void testWrite(int arc, char arv[6][21]) {
 }
 
 void testPipe(int arc, char arv[6][21]) {
-  char args[6][21];
+  char args[ARG_QTY][ARG_LEN];
   printf("CREATING READ PROCESS...\n\n");
   strcpy(args[0], "_readPipe");
   createProcess((uint64_t)testRead, 2, 1, args, NULL, NULL);

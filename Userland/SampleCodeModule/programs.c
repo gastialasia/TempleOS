@@ -3,14 +3,12 @@
 #include <programs.h>
 #include <stdint.h>
 
-#include "./include/stdlib.h"
-
 #define LIMIT64 \
   0b0111111111111111111111111111111111111111111111111111111111111111  // 2^(63)-1
 
 static char buff[300];
 
-void help(int argc, char argv[6][21]) {
+void help(int argc, char argv[ARG_QTY][ARG_LEN]) {
   printf(
       "- fibonacci\n- primos\n- date\n- help\n- clear\n- mem\n- ps\n- kill "
       "[pid]\n- nice [pid] [priority]\n- block [pid]\n- sem\n- cat\n- wc\n- "
@@ -19,11 +17,11 @@ void help(int argc, char argv[6][21]) {
       "testsync\n- testnosync\n- testpipe\n");
 }
 
-void invalid(int argc, char argv[6][21]) {
+void invalid(int argc, char argv[ARG_QTY][ARG_LEN]) {
   printf("Invalid command: try 'help'\n");
 }
 
-void date(int argc, char argv[6][21]) {
+void date(int argc, char argv[ARG_QTY][ARG_LEN]) {
   int values[5] = {7, 8, 9, 4, 2};  // En orden: D, M, Y, H, M
   char buffer[3];  // Cada numero de la fecha no va a tener más de dos digitos,
                    // 3 contando el cero null terminated
@@ -51,7 +49,7 @@ void date(int argc, char argv[6][21]) {
   printf("UTC\n");
 }
 
-void fibo(int argc, char argv[6][21]) {
+void fibo(int argc, char argv[ARG_QTY][ARG_LEN]) {
   uint64_t aux = 0, fibo1 = 0, fibo2 = 1;
   while (aux < LIMIT64) {
     aux = fibo1;
@@ -64,7 +62,7 @@ void fibo(int argc, char argv[6][21]) {
   }
 }
 
-void primos(int argc, char argv[6][21]) {
+void primos(int argc, char argv[ARG_QTY][ARG_LEN]) {
   uint64_t j, limit, lastPrimo = 0;
   int isPrimo;
   for (uint64_t i = lastPrimo + 1; i <= LIMIT64; i++) {
@@ -83,7 +81,7 @@ void primos(int argc, char argv[6][21]) {
   }
 }
 
-void infoRegisters(int argc, char argv[6][21]) {
+void infoRegisters(int argc, char argv[ARG_QTY][ARG_LEN]) {
   registersT regs;
   inforeg(&regs);
   printReg("rax", regs.rax);
@@ -103,7 +101,7 @@ void infoRegisters(int argc, char argv[6][21]) {
   printReg("r15", regs.r15);
 }
 
-void printMemory(int argc, char argv[6][21]) {
+void printMemory(int argc, char argv[ARG_QTY][ARG_LEN]) {
   char pos[8] = {0};
   printf("Ingrese 8 caracteres en hexa\n");
   scanf(pos);
@@ -124,9 +122,9 @@ void printMemory(int argc, char argv[6][21]) {
   putchar('\n');
 }
 
-void clearProgram(int argc, char argv[6][21]) { clear(); }
+void clearProgram(int argc, char argv[ARG_QTY][ARG_LEN]) { clear(); }
 
-void memStatusProgram(int argc, char argv[6][21]) {
+void memStatusProgram(int argc, char argv[ARG_QTY][ARG_LEN]) {
   unsigned int array[3];
   memStatus(array);
   printf("Total heap size: ");
@@ -140,9 +138,9 @@ void memStatusProgram(int argc, char argv[6][21]) {
   printf("\n");
 }
 
-void psProgram(int argc, char argv[6][21]) { ps(); }
+void psProgram(int argc, char argv[ARG_QTY][ARG_LEN]) { ps(); }
 
-void killProgram(int argc, char args[6][21]) {
+void killProgram(int argc, char args[ARG_QTY][ARG_LEN]) {
   if (argc != 2) {
     printf("Invalid argunment quantity\n");
     return;
@@ -160,7 +158,7 @@ void killProgram(int argc, char args[6][21]) {
   }
 }
 
-void niceProgram(int argc, char args[6][21]) {
+void niceProgram(int argc, char args[ARG_QTY][ARG_LEN]) {
   if (argc != 3) {
     printf("Invalid argunment quantity\n");
     return;
@@ -186,7 +184,7 @@ void niceProgram(int argc, char args[6][21]) {
   }
 }
 
-void blockProgram(int argc, char args[6][21]) {
+void blockProgram(int argc, char args[ARG_QTY][ARG_LEN]) {
   if (argc != 2) {
     printf("Invalid argunment quantity\n");
     return;
@@ -201,7 +199,7 @@ void blockProgram(int argc, char args[6][21]) {
   }
 }
 
-void semProgram(int argc, char args[6][21]) {
+void semProgram(int argc, char args[ARG_QTY][ARG_LEN]) {
   if (argc != 1) {
     printf("sem program does not require arguments\n");
     return;
@@ -211,7 +209,7 @@ void semProgram(int argc, char args[6][21]) {
   printf(buffer);
 }
 
-void writePipeProgram(int argc, char argv[6][21]) {
+void writePipeProgram(int argc, char argv[ARG_QTY][ARG_LEN]) {
   int i = 0;
   while (i < 3) {
     printf("I'm writing from the wpipe process\n");
@@ -220,7 +218,7 @@ void writePipeProgram(int argc, char argv[6][21]) {
   exit();
 }
 
-void readPipeProgram(int argc, char argv[6][21]) {
+void readPipeProgram(int argc, char argv[ARG_QTY][ARG_LEN]) {
   char buf1[300];
   char buf2[300];
   int i, j;
@@ -234,13 +232,13 @@ void readPipeProgram(int argc, char argv[6][21]) {
   exit();
 }
 
-void pipeListProgram(int argc, char args[6][21]) {
+void pipeListProgram(int argc, char args[ARG_QTY][ARG_LEN]) {
   char buffer[2000] = {0};
   getAllPipes(buffer);
   printf(buffer);
 }
 
-void catProgram(int argc, char args[6][21]) {
+void catProgram(int argc, char args[ARG_QTY][ARG_LEN]) {
   char buffer[100];
   while (1) {
     scanf(buffer);
@@ -250,7 +248,7 @@ void catProgram(int argc, char args[6][21]) {
   exit();
 }
 
-void wcProgram(int argc, char args[6][21]) {
+void wcProgram(int argc, char args[ARG_QTY][ARG_LEN]) {
   char buffer[300];
   int lines = 0;
   while (scanf(buffer) > 0) {
@@ -262,7 +260,7 @@ void wcProgram(int argc, char args[6][21]) {
   exit();
 }
 
-void filterProgram(int argc, char args[6][21]) {
+void filterProgram(int argc, char args[ARG_QTY][ARG_LEN]) {
   char read[100];
   char res[100];
   scanf(read);
@@ -282,7 +280,7 @@ void filterProgram(int argc, char args[6][21]) {
   exit();
 }
 
-void loopProgram(int argc, char args[6][21]) {
+void loopProgram(int argc, char args[ARG_QTY][ARG_LEN]) {
   while (1) {
     printf("I'm the process with PID ");
     printInt(getpid());

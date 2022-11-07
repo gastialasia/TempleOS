@@ -17,7 +17,7 @@ static void *myMemset(void *destination, int c, int len) {
   return destination;
 }
 
-void testMM(int argc, char argv[6][21]) {
+void testMM(int argc, char argv[ARG_QTY][ARG_LEN]) {
   mm_rq mmrqs[MAX_BLOCKS];
   uint8_t rq;
   uint32_t total;

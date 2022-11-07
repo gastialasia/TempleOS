@@ -2,7 +2,7 @@
 #include <testProcesses.h>
 #include <testUtil.h>
 
-void testProcesses(int argc, char argv[6][21]) {
+void testProcesses(int argc, char argv[ARG_QTY][ARG_LEN]) {
   uint8_t rq;
   uint8_t alive = 0;
   uint8_t action;
@@ -22,7 +22,7 @@ void testProcesses(int argc, char argv[6][21]) {
 
   p_rq prqs[maxProcesses];
 
-  char aux[6][21];
+  char aux[ARG_QTY][ARG_LEN];
   strcpy(aux[0], "_loop");
 
   while (1) {

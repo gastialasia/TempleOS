@@ -54,7 +54,7 @@ void put_fork(int phnum) {
   semPost(mutex);
 }
 
-void *philosopher(int argc, char argv[6][21]) {
+void *philosopher(int argc, char argv[ARG_QTY][ARG_LEN]) {
   if (argc != 2) {
     exit();
   }
@@ -79,7 +79,7 @@ void philosophersProgram() {
     chopsticks[i] = semOpen(i, 1);
   }
 
-  char args[6][21];
+  char args[ARG_QTY][ARG_LEN];
   char num[3];
   strcpy(args[0], "philo");
   for (i = 0; i < N; i++) {

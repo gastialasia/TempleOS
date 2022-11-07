@@ -4,6 +4,8 @@
 #include <stdint.h>
 
 #define NULL ((void *)0)
+#define ARG_LEN 21
+#define ARG_QTY 6
 
 typedef struct
 {
@@ -89,7 +91,7 @@ void free(void *memToFree);
 
 void memStatus(unsigned int *status);
 
-int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[6][21], fd *customStdin, fd *customStdout);
+int createProcess(uint64_t ip, uint8_t priority, uint64_t argc, char argv[ARG_QTY][ARG_LEN], fd *customStdin, fd *customStdout);
 
 void exit();
 

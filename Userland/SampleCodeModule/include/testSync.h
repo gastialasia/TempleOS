@@ -3,7 +3,7 @@
 
 #include <stdint.h>
 
-void testSync(int argc, char argv[6][21]);
-void testNoSync(int argc, char argv[6][21]);
+void testSync(int argc, char argv[ARG_QTY][ARG_LEN]);
+void testNoSync(int argc, char argv[ARG_QTY][ARG_LEN]);
 
 #endif

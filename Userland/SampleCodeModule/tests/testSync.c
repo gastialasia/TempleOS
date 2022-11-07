@@ -4,11 +4,11 @@
 #include <syscallslib.h>
 #include <testSync.h>
 #include <testUtil.h>
-static void incWithSem(int argc, char argv[6][21]);
-static void incWithoutSem(int argc, char argv[6][21]);
+static void incWithSem(int argc, char argv[ARG_QTY][ARG_LEN]);
+static void incWithoutSem(int argc, char argv[ARG_QTY][ARG_LEN]);
 
 static int processWrapper(char *name) {
-  char argv[6][21];
+  char argv[ARG_QTY][ARG_LEN];
   argv[0][0] = 'i';
   argv[0][1] = 'n';
   argv[0][2] = 'c';
@@ -36,7 +36,7 @@ void slowInc(int64_t *p, int64_t inc) {
   *p = aux;
 }
 
-void incWithSem(int argc, char argv[6][21]) {
+void incWithSem(int argc, char argv[ARG_QTY][ARG_LEN]) {
   uint64_t i;
   int64_t value = (getpid() % 2) ? 1 : -1;
 
@@ -68,7 +68,7 @@ void incWithSem(int argc, char argv[6][21]) {
   exit();
 }
 
-void incWithoutSem(int argc, char argv[6][21]) {
+void incWithoutSem(int argc, char argv[ARG_QTY][ARG_LEN]) {
   uint64_t i;
   int64_t value = (getpid() % 2) ? 1 : -1;
 
@@ -84,7 +84,7 @@ void incWithoutSem(int argc, char argv[6][21]) {
   exit();
 }
 
-void testSync(int argc, char argv[6][21]) {
+void testSync(int argc, char argv[ARG_QTY][ARG_LEN]) {
   global = 0;
 
   uint64_t i;
@@ -105,7 +105,7 @@ void testSync(int argc, char argv[6][21]) {
   exit();
 }
 
-void testNoSync(int argc, char argv[6][21]) {
+void testNoSync(int argc, char argv[ARG_QTY][ARG_LEN]) {
   printf("After ");
   printInt(TOTAL_PAIR_PROCESSES * 2);
   printf(" prints the final value should be different than 0\n");

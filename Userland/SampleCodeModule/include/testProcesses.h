@@ -10,6 +10,6 @@ typedef struct P_rq {
   enum State state;
 } p_rq;
 
-void testProcesses(int argc, char argv[6][21]);
+void testProcesses(int argc, char argv[ARG_QTY][ARG_LEN]);
 
 #endif

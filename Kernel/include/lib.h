@@ -2,6 +2,8 @@
 #define _lib_
 
 #include <stdint.h>
+#define ARG_LEN 21
+#define ARG_QTY 6
 
 typedef struct {
   uint64_t rax;
@@ -28,7 +30,6 @@ char *cpuVendor(char *result);
 char rtcGetter(char value);
 registersT *getRegisters(void);
 
-uint64_t initProcess(uint64_t stackBase, uint64_t ip, uint32_t argc,
-                     char argv[6][21]);
+uint64_t initProcess(uint64_t stackBase, uint64_t ip, uint32_t argc, char argv[ARG_QTY][ARG_LEN]);
 void runScheduler();
 #endif

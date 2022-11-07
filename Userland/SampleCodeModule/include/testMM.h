@@ -1,5 +1,5 @@
-#ifndef _test_mm_
-#define _test_mm_
+#ifndef _testmm_
+#define _testmm_
 
 #include <stdint.h>
 
@@ -9,6 +9,6 @@ typedef struct MM_rq
   uint32_t size;
 } mm_rq;
 
-void testMM(int argc, char argv[6][21]);
+void testMM(int argc, char argv[ARG_QTY][ARG_LEN]);
 
 #endif
