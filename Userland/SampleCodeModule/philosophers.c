@@ -97,50 +97,29 @@ void philosophersProgram() {
         if (n == MAX_PHILOSOPHERS) {
           printf("The table is full, no new philosophers can join\n");
         } else {
-          printf("A philosopher entered the establishment\n");
           uintToBase(n, num, 10);
           strcpy(args[1], num);
-          // semWait(mutex);
-
-          // semPost(mutex);
-          while (1) {
-            semWait(mutex);
-
-            if (((state[n - 1] == THINKING || state[n - 1] == HUNGRY) &&
-                 (state[0] == THINKING || state[0] == HUNGRY)) ||
-                (n == 2 && state[0] == THINKING)) {
-              chopsticks[n] = semOpen(n, i);
-              pids[n++] =
-                  createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
-              semPost(mutex);
-              printf("The philosopher sat on the table\n");
-              break;
-            }
-            semPost(mutex);
-            sleep(100);
-          }
+          semWait(mutex);
+          chopsticks[n] = semOpen(n, i);
+          state[n] = THINKING;
+          pids[n++] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
+          semPost(mutex);
+          printf("The philosopher sat on the table\n");
         }
-        break;
+      break;
       case 'r':
       case 'R': {
         if (n <= 2) {
           printf("No more philosophers can leave\n");
         } else {
-          printf("A philosopher is leaving\n");
-          while (1) {
             semWait(mutex);
-            if (state[n - 1] == EATING) {
-              kill(pids[n - 1]);
-              n--;
-              printf("The philosopher left the rift\n");
-              semPost(mutex);
-              break;
-            }
+            kill(pids[n - 1]);
+            n--;
+            printf("The philosopher left the rift\n");
             semPost(mutex);
-            sleep(100);
           }
-        }
-      } break;
+      }
+      break;
       default:
         break;
     }
