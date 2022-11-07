@@ -38,6 +38,8 @@
 ```
   ./run.sh
 ```
+## Terminación de un programa
 
+Para cerrar forzadamente un proceso presionar la tecla F2. Para más detalles y lista de comandos dispobles consultar el informe del repositorio.
     
 
