@@ -3,12 +3,10 @@
 
 #include <stdint.h>
 
-
-void ncPrint(const char * string);
+void ncPrint(const char *string);
 void ncPrintChar(char character);
 
 void ncDeleteChar();
-
 
 void ncNewline(void);
 

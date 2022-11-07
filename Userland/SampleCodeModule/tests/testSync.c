@@ -1,25 +1,22 @@
-#include <testSync.h>
-#include <stdlib.h>
-#include <testUtil.h>
 #include <programs.h>
 #include <stdint.h>
+#include <stdlib.h>
 #include <syscallslib.h>
+#include <testSync.h>
+#include <testUtil.h>
 static void incWithSem(int argc, char argv[6][21]);
 static void incWithoutSem(int argc, char argv[6][21]);
 
-static int processWrapper(char *name)
-{
+static int processWrapper(char *name) {
   char argv[6][21];
   argv[0][0] = 'i';
   argv[0][1] = 'n';
   argv[0][2] = 'c';
   argv[0][3] = 0;
 
-  if (*name == 'i')
-  {
+  if (*name == 'i') {
     return createProcess((uint64_t)incWithSem, 2, 2, argv, NULL, NULL);
-  }
-  else
+  } else
     return createProcess((uint64_t)incWithoutSem, 2, 2, argv, NULL, NULL);
 }
 
@@ -27,10 +24,9 @@ static int processWrapper(char *name)
 #define SEM 50
 #define N 100
 
-int64_t global; // shared memory
+int64_t global;  // shared memory
 
-void slowInc(int64_t *p, int64_t inc)
-{
+void slowInc(int64_t *p, int64_t inc) {
   uint32_t pid = getpid();
   int64_t aux = *p;
   aux += inc;
@@ -40,22 +36,19 @@ void slowInc(int64_t *p, int64_t inc)
   *p = aux;
 }
 
-void incWithSem(int argc, char argv[6][21])
-{
+void incWithSem(int argc, char argv[6][21]) {
   uint64_t i;
   int64_t value = (getpid() % 2) ? 1 : -1;
 
   Semaphore *sem = semOpen(SEM, 1);
 
-  if (sem == NULL)
-  {
+  if (sem == NULL) {
     printf("ERROR OPENING SEM\n");
     exit();
     return;
   }
 
-  for (i = 0; i < N; i++)
-  {
+  for (i = 0; i < N; i++) {
     semWait(sem);
     slowInc(&global, value);
     semPost(sem);
@@ -75,14 +68,11 @@ void incWithSem(int argc, char argv[6][21])
   exit();
 }
 
-void incWithoutSem(int argc, char argv[6][21])
-{
-
+void incWithoutSem(int argc, char argv[6][21]) {
   uint64_t i;
   int64_t value = (getpid() % 2) ? 1 : -1;
 
-  for (i = 0; i < N; i++)
-  {
+  for (i = 0; i < N; i++) {
     slowInc(&global, value);
   }
 
@@ -93,8 +83,7 @@ void incWithoutSem(int argc, char argv[6][21])
   putchar('\n');
 }
 
-void testSync(int argc, char argv[6][21])
-{
+void testSync(int argc, char argv[6][21]) {
   global = 0;
 
   uint64_t i;
@@ -106,8 +95,7 @@ void testSync(int argc, char argv[6][21])
 
   printf("CREATING PROCESSES(WITH SEM)... Please wait\n");
 
-  for (i = 0; i < TOTAL_PAIR_PROCESSES; i++)
-  {
+  for (i = 0; i < TOTAL_PAIR_PROCESSES; i++) {
     processWrapper("i");
     processWrapper("i");
   }
@@ -116,8 +104,7 @@ void testSync(int argc, char argv[6][21])
   exit();
 }
 
-void testNoSync(int argc, char argv[6][21])
-{
+void testNoSync(int argc, char argv[6][21]) {
   printf("After ");
   printInt(TOTAL_PAIR_PROCESSES * 2);
   printf(" prints final value is not 0\n");
@@ -128,8 +115,7 @@ void testNoSync(int argc, char argv[6][21])
 
   printf("CREATING PROCESSES(WITHOUT SEM)... Please wait\n");
 
-  for (i = 0; i < TOTAL_PAIR_PROCESSES; i++)
-  {
+  for (i = 0; i < TOTAL_PAIR_PROCESSES; i++) {
     processWrapper("n");
     processWrapper("n");
   }

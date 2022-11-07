@@ -7,23 +7,16 @@
 
 static MemoryManagmentADT memMang;
 
-void initMemManager(void *const restrict memoryForMemoryManager, void *const restrict managedMemory)
-{
+void initMemManager(void *const restrict memoryForMemoryManager,
+                    void *const restrict managedMemory) {
   memMang = createMemoryManagment(memoryForMemoryManager, managedMemory);
 }
 
-void *alloc(unsigned int memToAlloc)
-{
-  return memAlloc(memMang, memToAlloc);
-}
+void *alloc(unsigned int memToAlloc) { return memAlloc(memMang, memToAlloc); }
 
-void free(void *memToFree)
-{
-  return freeMem(memMang, memToFree);
-}
+void free(void *memToFree) { return freeMem(memMang, memToFree); }
 
-void memStatus(unsigned int *status)
-{
+void memStatus(unsigned int *status) {
   status[0] = heapSize();
   status[1] = heapLeft(memMang);
   status[2] = usedHeap(memMang);

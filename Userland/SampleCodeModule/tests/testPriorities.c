@@ -1,11 +1,10 @@
-#include <testUtil.h>
 #include <stdlib.h>
 #include <testPriorities.h>
+#include <testUtil.h>
 
 int64_t prio[TOTAL_PROCESSES] = {LOWEST, MEDIUM, HIGHEST};
 
-void testPriorities(int argc, char argv[6][21])
-{
+void testPriorities(int argc, char argv[6][21]) {
   int64_t pids[TOTAL_PROCESSES];
   uint64_t i;
 
@@ -29,8 +28,7 @@ void testPriorities(int argc, char argv[6][21])
 
   sleep(1500);
 
-  for (i = 0; i < TOTAL_PROCESSES; i++)
-    nice(pids[i], prio[i]);
+  for (i = 0; i < TOTAL_PROCESSES; i++) nice(pids[i], prio[i]);
 
   ps();
   putchar('\n');
@@ -40,8 +38,7 @@ void testPriorities(int argc, char argv[6][21])
 
   sleep(1500);
 
-  for (i = 0; i < TOTAL_PROCESSES; i++)
-    block(pids[i]);
+  for (i = 0; i < TOTAL_PROCESSES; i++) block(pids[i]);
 
   ps();
   putchar('\n');
@@ -51,8 +48,7 @@ void testPriorities(int argc, char argv[6][21])
 
   sleep(1500);
 
-  for (i = 0; i < TOTAL_PROCESSES; i++)
-    nice(pids[i], MEDIUM);
+  for (i = 0; i < TOTAL_PROCESSES; i++) nice(pids[i], MEDIUM);
 
   ps();
   putchar('\n');
@@ -62,8 +58,7 @@ void testPriorities(int argc, char argv[6][21])
 
   sleep(1500);
 
-  for (i = 0; i < TOTAL_PROCESSES; i++)
-    block(pids[i]);
+  for (i = 0; i < TOTAL_PROCESSES; i++) block(pids[i]);
 
   ps();
   putchar('\n');
@@ -72,8 +67,7 @@ void testPriorities(int argc, char argv[6][21])
   // bussyWait(WAIT);
   printf("\nKILLING...\n\n");
 
-  for (i = 0; i < TOTAL_PROCESSES; i++)
-    kill(pids[i]);
+  for (i = 0; i < TOTAL_PROCESSES; i++) kill(pids[i]);
 
   ps();
   putchar('\n');

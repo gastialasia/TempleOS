@@ -1,11 +1,11 @@
 // This is a personal academic project. Dear PVS-Studio, please check it.
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
-#include <syscalls.h>
-#include <naiveConsole.h>
 #include <MemoryManagerWrapper.h>
-#include <scheduler.h>
+#include <naiveConsole.h>
 #include <pipes.h>
+#include <scheduler.h>
 #include <semaphore.h>
+#include <syscalls.h>
 #include <time.h>
 
 #define STDIN 1
@@ -20,142 +20,109 @@ registersT primary, secondary;
 registersT *primaryBackup = &primary;
 registersT *secondaryBackup = &secondary;
 
-int64_t write(const char *buffer, size_t count)
-{
-
+int64_t write(const char *buffer, size_t count) {
   fd *stdout = getCurrentStdout();
 
-  if (!stdout)
-  {
-    for (int i = 0; i < count; i++)
-    {
-      if (buffer[i] == '~')
-      {
+  if (!stdout) {
+    for (int i = 0; i < count; i++) {
+      if (buffer[i] == '~') {
         ncTogglePrintColor();
-      }
-      else
-      {
+      } else {
         ncPrintChar(buffer[i]);
       }
     }
-  }
-  else
-  {
+  } else {
     pipeWrite(stdout, buffer);
   }
   return count;
 }
 
-int64_t read(char *buffer, size_t count)
-{
+int64_t read(char *buffer, size_t count) {
   int k = 0;
   unsigned char key;
   fd *stdin = getCurrentStdin();
   pcb *currentProcess = getCurrentProcess();
 
-  if (stdin == NULL && currentProcess->priority != 1)
-  {
+  if (stdin == NULL && currentProcess->priority != 1) {
     buffer[0] = 0;
     return 0;
   }
 
-  while (k < count || count == -1)
-  {
-    if (!stdin)
-    {
+  while (k < count || count == -1) {
+    if (!stdin) {
       addToKeyboardList();
       key = readKey();
-    }
-    else
-    {
+    } else {
       key = (unsigned char)pipeRead(stdin, NULL, 1);
       // key = buffer[0];
     }
 
-    switch (key)
-    {
-    case (unsigned char)-1:
-      return -1;
+    switch (key) {
+      case (unsigned char)-1:
+        return -1;
 
-    case 0:
-      if (!stdin)
-        continue;
-      else
-      {
+      case 0:
+        if (!stdin)
+          continue;
+        else {
+          buffer[k] = 0;
+          return k;
+        }
+        break;
+
+      case '\n':
+        if (!stdin) {
+          ncNewline();
+        }
         buffer[k] = 0;
         return k;
-      }
-      break;
 
-    case '\n':
-      if (!stdin)
+      case 8:  // Borrado
       {
-        ncNewline();
+        if (k > 0) {
+          ncDeleteChar();
+          k--;
+        }
+        break;
       }
-      buffer[k] = 0;
-      return k;
 
-    case 8: // Borrado
-    {
-      if (k > 0)
-      {
-        ncDeleteChar();
-        k--;
-      }
-      break;
-    }
+      case 14:
+      case 15:
+        mayusc = 1;
+        break;
 
-    case 14:
-    case 15:
-      mayusc = 1;
-      break;
+      case F1:
+        loadBackupRegs(primaryBackup, secondaryBackup);
+        break;
 
-    case F1:
-      loadBackupRegs(primaryBackup, secondaryBackup);
-      break;
+      case F2:
+        if (getCurrentPID() != 1) exitProcess();
+        break;
 
-    case F2:
-      if (getCurrentPID() != 1)
-        exitProcess();
-      break;
+      case 170:
+      case 182:
+        mayusc = 0;
+        break;
 
-    case 170:
-    case 182:
-      mayusc = 0;
-      break;
-
-    default:
-      if (mayusc)
-        key = toMayusc(key);
-      if (k < 100)
-        buffer[k] = key;
-      if (!stdin && count != 1)
-        ncPrintChar(key);
-      k++;
-      break;
+      default:
+        if (mayusc) key = toMayusc(key);
+        if (k < 100) buffer[k] = key;
+        if (!stdin && count != 1) ncPrintChar(key);
+        k++;
+        break;
     }
   }
   buffer[k] = 0;
-  return k; // placeholder
+  return k;  // placeholder
 }
 
-void snapshotRegs()
-{
-  loadBackupRegs(primaryBackup, secondaryBackup);
-}
+void snapshotRegs() { loadBackupRegs(primaryBackup, secondaryBackup); }
 
-void clear()
-{
-  ncClear();
-}
+void clear() { ncClear(); }
 
-int64_t date(char value)
-{
-  return rtcGetter(value);
-}
+int64_t date(char value) { return rtcGetter(value); }
 
-void loadBackupRegs(registersT *regs, registersT *backup)
-{
+void loadBackupRegs(registersT *regs, registersT *backup) {
   regs->rax = backup->rax;
   regs->rbx = backup->rbx;
   regs->rcx = backup->rcx;
@@ -173,28 +140,15 @@ void loadBackupRegs(registersT *regs, registersT *backup)
   regs->r15 = backup->r15;
 }
 
-void saveBackup()
-{
-  saveRegisters(secondaryBackup);
-}
+void saveBackup() { saveRegisters(secondaryBackup); }
 
-void inforeg(registersT *regs)
-{
-  loadBackupRegs(regs, primaryBackup);
-}
+void inforeg(registersT *regs) { loadBackupRegs(regs, primaryBackup); }
 
-int64_t getLast()
-{
-  return last;
-}
+int64_t getLast() { return last; }
 
-void sleep(int ms)
-{
-  tSleep(ms);
-}
+void sleep(int ms) { tSleep(ms); }
 
-void exitProcess()
-{
+void exitProcess() {
   closeFd(getCurrentStdin());
   closeFd(getCurrentStdout());
   exitCurrentProcess();

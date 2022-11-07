@@ -1,5 +1,5 @@
-#include <stdlib.h>
 #include <philosophers.h>
+#include <stdlib.h>
 
 #define N 5
 #define THINKING 2
@@ -19,171 +19,143 @@ int n = N;
 Semaphore *mutex;
 Semaphore *chopsticks[N];
 
-void test(int phnum)
-{
-    if (state[phnum] == HUNGRY && state[LEFT] != EATING && state[RIGHT] != EATING)
-    {
-        state[phnum] = EATING;
-        printTable();
-        sleep(2);
-        semPost(chopsticks[phnum]);
-    }
+void test(int phnum) {
+  if (state[phnum] == HUNGRY && state[LEFT] != EATING &&
+      state[RIGHT] != EATING) {
+    state[phnum] = EATING;
+    printTable();
+    sleep(2);
+    semPost(chopsticks[phnum]);
+  }
 }
 
-void take_fork(int phnum)
-{
+void take_fork(int phnum) {
+  semWait(mutex);
 
-    semWait(mutex);
+  state[phnum] = HUNGRY;
 
-    state[phnum] = HUNGRY;
+  test(phnum);
 
-    test(phnum);
+  semPost(mutex);
 
-    semPost(mutex);
+  semWait(chopsticks[phnum]);
 
-    semWait(chopsticks[phnum]);
-
-    sleep(1);
+  sleep(1);
 }
 
-void put_fork(int phnum)
-{
+void put_fork(int phnum) {
+  semWait(mutex);
 
-    semWait(mutex);
+  state[phnum] = THINKING;
 
-    state[phnum] = THINKING;
+  test(LEFT);
+  test(RIGHT);
 
-    test(LEFT);
-    test(RIGHT);
-
-    semPost(mutex);
+  semPost(mutex);
 }
 
-void *philosopher(int argc, char argv[6][21])
-{
-    if (argc != 2)
-    {
-        exit();
-    }
+void *philosopher(int argc, char argv[6][21]) {
+  if (argc != 2) {
+    exit();
+  }
 
-    int num = atoi(argv[1]);
-    while (1)
-    {
+  int num = atoi(argv[1]);
+  while (1) {
+    sleep(1000);
 
-        sleep(1000);
+    take_fork(num);
 
-        take_fork(num);
+    sleep(1000);
 
-        sleep(1000);
-
-        put_fork(num);
-    }
+    put_fork(num);
+  }
 }
 
-void philosophersProgram()
-{
-    int i;
-    mutex = semOpen(GENERALSEMID, 1);
+void philosophersProgram() {
+  int i;
+  mutex = semOpen(GENERALSEMID, 1);
 
-    for (i = 0; i < N; i++)
-    {
-        chopsticks[i] = semOpen(i, 1);
-    }
+  for (i = 0; i < N; i++) {
+    chopsticks[i] = semOpen(i, 1);
+  }
 
-    char args[6][21];
-    char num[3];
-    strcpy(args[0], "philo");
-    for (i = 0; i < N; i++)
-    {
-        uintToBase(i, num, 10);
-        strcpy(args[1], num);
-        pids[i] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
-    }
+  char args[6][21];
+  char num[3];
+  strcpy(args[0], "philo");
+  for (i = 0; i < N; i++) {
+    uintToBase(i, num, 10);
+    strcpy(args[1], num);
+    pids[i] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
+  }
 
-    char c;
-    while (1)
-    {
-        getchar(&c);
-        switch (c)
-        {
-        case 'a':
-        case 'A':
-            if (n == MAX_PHILOSOPHERS)
-            {
-                printf("The table is full, no new philosophers can join\n");
-            }
-            else
-            {
-                printf("A philosopher entered the establishment\n");
-                uintToBase(n, num, 10);
-                strcpy(args[1], num);
-                // semWait(mutex);
+  char c;
+  while (1) {
+    getchar(&c);
+    switch (c) {
+      case 'a':
+      case 'A':
+        if (n == MAX_PHILOSOPHERS) {
+          printf("The table is full, no new philosophers can join\n");
+        } else {
+          printf("A philosopher entered the establishment\n");
+          uintToBase(n, num, 10);
+          strcpy(args[1], num);
+          // semWait(mutex);
 
-                // semPost(mutex);
-                while (1)
-                {
-                    semWait(mutex);
-                    
-                    if (((state[n - 1] == THINKING || state[n - 1] == HUNGRY) && (state[0] == THINKING || state[0] == HUNGRY)) || (n==2 && state[0] == THINKING))
-                    {
-                        chopsticks[n] = semOpen(n, i);
-                        pids[n++] = createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
-                        semPost(mutex);
-                        printf("The philosopher sat on the table\n");
-                        break;
-                    }
-                    semPost(mutex);
-                    sleep(100);
-                }
+          // semPost(mutex);
+          while (1) {
+            semWait(mutex);
+
+            if (((state[n - 1] == THINKING || state[n - 1] == HUNGRY) &&
+                 (state[0] == THINKING || state[0] == HUNGRY)) ||
+                (n == 2 && state[0] == THINKING)) {
+              chopsticks[n] = semOpen(n, i);
+              pids[n++] =
+                  createProcess((uint64_t)philosopher, 3, 2, args, NULL, NULL);
+              semPost(mutex);
+              printf("The philosopher sat on the table\n");
+              break;
             }
-            break;
-        case 'r':
-        case 'R':
-        {
-            if (n <= 2)
-            {
-                printf("No more philosophers can leave\n");
-            }
-            else
-            {
-                printf("A philosopher is leaving\n");
-                while (1)
-                {
-                    semWait(mutex);
-                    if (state[n - 1] == EATING)
-                    {
-                        kill(pids[n - 1]);
-                        n--;
-                        printf("The philosopher left the rift\n");
-                        semPost(mutex);
-                        break;
-                    }
-                    semPost(mutex);
-                    sleep(100);
-                }
-            }
+            semPost(mutex);
+            sleep(100);
+          }
         }
         break;
-        default:
-            break;
+      case 'r':
+      case 'R': {
+        if (n <= 2) {
+          printf("No more philosophers can leave\n");
+        } else {
+          printf("A philosopher is leaving\n");
+          while (1) {
+            semWait(mutex);
+            if (state[n - 1] == EATING) {
+              kill(pids[n - 1]);
+              n--;
+              printf("The philosopher left the rift\n");
+              semPost(mutex);
+              break;
+            }
+            semPost(mutex);
+            sleep(100);
+          }
         }
+      } break;
+      default:
+        break;
     }
-    exit();
+  }
+  exit();
 }
 
-void printTable()
-{
-    int i;
-    for (i = 0; i < n; i++)
-    {
-        if (state[i] == EATING)
-        {
-            putchar('E');
-        }
-        else
-        {
-            putchar('.');
-        }
+void printTable() {
+  int i;
+  for (i = 0; i < n; i++) {
+    if (state[i] == EATING) {
+      printf("E ");
+    } else {
+      printf(". ");
     }
-    putchar('\n');
+  }
+  putchar('\n');
 }

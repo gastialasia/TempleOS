@@ -1,18 +1,17 @@
-#include <stdint.h>
 #include <MemoryManagerWrapper.h>
 #include <pipes.h>
+#include <stdint.h>
 #include <tools.h>
 
 #define NULL ((void *)0)
 #define MAX_PIPES 20
-#define PIPE_SIZE 512 // byres de buffer del pipe
+#define PIPE_SIZE 512  // byres de buffer del pipe
 
 #define PIPEID 0
 #define PERMISSIONS 1
 #define BYTESTOREAD 2
 
-typedef struct pipe
-{
+typedef struct pipe {
   uint32_t id;
   char data[PIPE_SIZE];
   uint32_t readPos;
@@ -25,15 +24,12 @@ typedef struct pipe
 
 pipe *pipes[MAX_PIPES];
 uint32_t pipeSize = 0;
-uint32_t ids = 0; // for unique ids
+uint32_t ids = 0;  // for unique ids
 
 void normalizePipes(char *buf, char *data, int field);
 
-int createPipes(fd *pui1, fd *pui2)
-{
-
-  if (pipeSize == MAX_PIPES)
-  {
+int createPipes(fd *pui1, fd *pui2) {
+  if (pipeSize == MAX_PIPES) {
     return -1;
   }
 
@@ -56,29 +52,22 @@ int createPipes(fd *pui1, fd *pui2)
   return 1;
 }
 
-int openPipeID(fd *user, uint32_t id, uint8_t permisions)
-{
-
-  if (id < 100)
-  {
+int openPipeID(fd *user, uint32_t id, uint8_t permisions) {
+  if (id < 100) {
     return -1;
   }
 
   int i = 0;
 
-  while (i < pipeSize && pipes[i]->id != id)
-  {
+  while (i < pipeSize && pipes[i]->id != id) {
     i++;
   }
 
   user->readable = permisions ? 1 : 0;
   user->writable = permisions ? 0 : 1;
 
-  if (i == pipeSize)
-  {
-
-    if (pipeSize == MAX_PIPES)
-    {
+  if (i == pipeSize) {
+    if (pipeSize == MAX_PIPES) {
       return -1;
     }
 
@@ -94,77 +83,57 @@ int openPipeID(fd *user, uint32_t id, uint8_t permisions)
     return 0;
   }
 
-  if ((permisions && pipes[i]->readPermition) || (!permisions && pipes[i]->writePermition))
-  {
+  if ((permisions && pipes[i]->readPermition) ||
+      (!permisions && pipes[i]->writePermition)) {
     return -1;
   }
 
-  if (permisions)
-  {
+  if (permisions) {
     user->pipe->readPermition = 1;
-  }
-  else
-  {
+  } else {
     user->pipe->writePermition = 1;
   }
   user->pipe = pipes[i];
   return 1;
 }
 
-static void deletePipe(pipe *pipe)
-{
-
+static void deletePipe(pipe *pipe) {
   int pos = 0;
 
-  while (pos < pipeSize && pipes[pos]->id != pipe->id)
-  {
+  while (pos < pipeSize && pipes[pos]->id != pipe->id) {
     pos++;
   }
 
-  if (pos == pipeSize)
-  {
+  if (pos == pipeSize) {
     return;
   }
 
-  for (; pos < pipeSize - 1; pos++)
-  {
+  for (; pos < pipeSize - 1; pos++) {
     pipes[pos] = pipes[pos + 1];
   }
   pipeSize--;
 }
 
-void closeFd(fd *user)
-{
-
-  if (user == NULL)
-  {
+void closeFd(fd *user) {
+  if (user == NULL) {
     return;
   }
 
-  if (user->readable)
-  {
+  if (user->readable) {
     user->pipe->readPermition = 0;
-    if (!user->pipe->writePermition)
-    {
+    if (!user->pipe->writePermition) {
       deletePipe(user->pipe);
       free(user->pipe);
-    }
-    else if (user->pipe->waitingProcess != NULL)
-    {
+    } else if (user->pipe->waitingProcess != NULL) {
       user->pipe->waitingProcess->state = 1;
       user->pipe->waitingProcess = NULL;
     }
-  }
-  else if (user->writable)
-  {
+  } else if (user->writable) {
     user->pipe->writePermition = 0;
-    if (!user->pipe->readPermition)
-    {
+    if (!user->pipe->readPermition) {
       deletePipe(user->pipe);
       free(user->pipe);
-    }
-    else if (user->pipe->waitingProcess != NULL)
-    {
+    } else if (user->pipe->waitingProcess != NULL) {
       user->pipe->waitingProcess->state = 1;
       user->pipe->waitingProcess = NULL;
     }
@@ -173,77 +142,59 @@ void closeFd(fd *user)
   free(user);
 }
 
-int pipeWrite(fd *userPipe, const char *string)
-{
-
-  if (!userPipe->writable || (!userPipe->pipe->readPermition && userPipe->pipe->bytesToRead == PIPE_SIZE))
-  {
+int pipeWrite(fd *userPipe, const char *string) {
+  if (!userPipe->writable || (!userPipe->pipe->readPermition &&
+                              userPipe->pipe->bytesToRead == PIPE_SIZE)) {
     return -1;
   }
 
   int i = 0;
-  while (string[i])
-  {
-
-    if (userPipe->pipe->bytesToRead == PIPE_SIZE)
-    {
+  while (string[i]) {
+    if (userPipe->pipe->bytesToRead == PIPE_SIZE) {
       userPipe->pipe->waitingProcess = blockCurrentProcess();
       runScheduler();
     }
 
     userPipe->pipe->data[userPipe->pipe->writePos++] = string[i++];
-    if (userPipe->pipe->writePos == PIPE_SIZE)
-    {
+    if (userPipe->pipe->writePos == PIPE_SIZE) {
       userPipe->pipe->writePos = 0;
     }
     userPipe->pipe->bytesToRead++;
   }
 
-  if (userPipe->pipe->waitingProcess != NULL)
-  {
+  if (userPipe->pipe->waitingProcess != NULL) {
     userPipe->pipe->waitingProcess->state = 1;
     userPipe->pipe->waitingProcess = NULL;
   }
-  return i; // cantidad de chars escritos
+  return i;  // cantidad de chars escritos
 }
 
-int pipeRead(fd *userPipe, char *buffer, int limit)
-{
-
-  if (!userPipe->readable)
-  {
+int pipeRead(fd *userPipe, char *buffer, int limit) {
+  if (!userPipe->readable) {
     return -1;
   }
 
-  if (userPipe->pipe->bytesToRead == 0)
-  {
+  if (userPipe->pipe->bytesToRead == 0) {
     userPipe->pipe->waitingProcess = blockCurrentProcess();
     runScheduler();
   }
 
   int i = 0;
-  while (userPipe->pipe->bytesToRead > 0)
-  {
-
+  while (userPipe->pipe->bytesToRead > 0) {
     userPipe->pipe->bytesToRead--;
 
-    if (userPipe->pipe->readPos == PIPE_SIZE)
-    {
+    if (userPipe->pipe->readPos == PIPE_SIZE) {
       userPipe->pipe->readPos = 0;
     }
-    if (limit == 1)
-    {
+    if (limit == 1) {
       i = (int)userPipe->pipe->data[userPipe->pipe->readPos++];
       break;
-    }
-    else
-    {
+    } else {
       buffer[i++] = userPipe->pipe->data[userPipe->pipe->readPos++];
     }
   }
 
-  if (userPipe->pipe->waitingProcess != NULL)
-  {
+  if (userPipe->pipe->waitingProcess != NULL) {
     userPipe->pipe->waitingProcess->state = 1;
     userPipe->pipe->waitingProcess = NULL;
   }
@@ -251,23 +202,17 @@ int pipeRead(fd *userPipe, char *buffer, int limit)
   return i;
 }
 
-void deleteProcessFromPipe(int64_t pid)
-{
-
-  for (int i = 0; i < pipeSize; i++)
-  {
-    if (pipes[i]->waitingProcess->pid == pid)
-      pipes[i]->waitingProcess = NULL;
+void deleteProcessFromPipe(int64_t pid) {
+  for (int i = 0; i < pipeSize; i++) {
+    if (pipes[i]->waitingProcess->pid == pid) pipes[i]->waitingProcess = NULL;
   }
 }
 
-void getAllPipes(char *buf)
-{
+void getAllPipes(char *buf) {
   strcat(buf, "PipeID  Permissions  BytesToR  BlockedPIDs\n");
   char idStr[6];
   char permissions[3] = {0};
-  for (int i = 0; i < pipeSize; i++)
-  {
+  for (int i = 0; i < pipeSize; i++) {
     uintToBase(pipes[i]->id, idStr, 10);
     normalizePipes(buf, idStr, PIPEID);
 
@@ -290,13 +235,11 @@ void getAllPipes(char *buf)
   }
 }
 
-void normalizePipes(char *buf, char *data, int field)
-{
+void normalizePipes(char *buf, char *data, int field) {
   static int fields[] = {6, 11, 8};
   int n = fields[field] - strlen(data);
   strcat(buf, data);
-  for (int i = 0; i < n; i++)
-  {
+  for (int i = 0; i < n; i++) {
     strcat(buf, " ");
   }
   strcat(buf, "  ");

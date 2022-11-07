@@ -1,31 +1,31 @@
 #ifdef HEAP2
 
 #include <MemoryManagmentADT.h>
-#include <stdint.h>
 #include <pipes.h>
+#include <stdint.h>
 #include <tools.h>
 
-typedef struct MemBlock
-{
+typedef struct MemBlock {
   struct MemBlock *nextMemBlock;
   unsigned int blockSize;
 } MemBlock;
 
-typedef struct MemoryManagmentCDT
-{
+typedef struct MemoryManagmentCDT {
   MemBlock start;
   MemBlock end;
   unsigned int freeBytesRemaining;
 } MemoryManagmentCDT;
 
-static const uint16_t STRUCT_SIZE = ((sizeof(MemBlock) + (BYTE_ALIGMENT - 1)) & ~MASK_BYTE_ALIGMENT);
+static const uint16_t STRUCT_SIZE =
+    ((sizeof(MemBlock) + (BYTE_ALIGMENT - 1)) & ~MASK_BYTE_ALIGMENT);
 
 #define MINIMUM_BLOCK_SIZE ((unsigned int)(STRUCT_SIZE * 2))
 
-MemoryManagmentADT createMemoryManagment(void *const restrict memForMemoryManagment, void *const restrict managedMem)
-{
-
-  MemoryManagmentADT memoryManagment = (MemoryManagmentADT)memForMemoryManagment;
+MemoryManagmentADT createMemoryManagment(
+    void *const restrict memForMemoryManagment,
+    void *const restrict managedMem) {
+  MemoryManagmentADT memoryManagment =
+      (MemoryManagmentADT)memForMemoryManagment;
   memoryManagment->freeBytesRemaining = TOTAL_HEAP_SIZE;
 
   MemBlock *startingBlock = (void *)managedMem;
@@ -42,15 +42,12 @@ MemoryManagmentADT createMemoryManagment(void *const restrict memForMemoryManagm
   return memoryManagment;
 }
 
-static void insertBlockIntoFreeList(MemoryManagmentADT memoryManager, MemBlock *blockToInsert)
-{
-
+static void insertBlockIntoFreeList(MemoryManagmentADT memoryManager,
+                                    MemBlock *blockToInsert) {
   MemBlock *blockIterator = &memoryManager->start;
   unsigned int blockSizeToinsert = blockToInsert->blockSize;
 
-  while (blockIterator->nextMemBlock->blockSize < blockSizeToinsert)
-  {
-
+  while (blockIterator->nextMemBlock->blockSize < blockSizeToinsert) {
     blockIterator = blockIterator->nextMemBlock;
   }
 
@@ -58,49 +55,43 @@ static void insertBlockIntoFreeList(MemoryManagmentADT memoryManager, MemBlock *
   blockIterator->nextMemBlock = blockToInsert;
 }
 
-void *memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAllocate)
-{
-
+void *memAlloc(MemoryManagmentADT const memoryManager,
+               unsigned int memToAllocate) {
   MemBlock *currentBlock;
   void *blockToReturn = NULL;
 
-  if (memToAllocate == 0)
-  {
+  if (memToAllocate == 0) {
     return NULL;
   }
   // Increase size so that it can contain a MemBlock
   memToAllocate += STRUCT_SIZE;
 
   // byte aligment
-  if ((memToAllocate & MASK_BYTE_ALIGMENT) != 0)
-  {
+  if ((memToAllocate & MASK_BYTE_ALIGMENT) != 0) {
     memToAllocate += (BYTE_ALIGMENT - (memToAllocate & MASK_BYTE_ALIGMENT));
   }
 
-  if (memToAllocate < TOTAL_HEAP_SIZE)
-  {
-    
-    MemBlock * previousBlock = &memoryManager->start;
+  if (memToAllocate < TOTAL_HEAP_SIZE) {
+    MemBlock *previousBlock = &memoryManager->start;
     currentBlock = memoryManager->start.nextMemBlock;
 
-    while ((currentBlock->blockSize < memToAllocate) && (currentBlock->nextMemBlock != NULL))
-    {
-
+    while ((currentBlock->blockSize < memToAllocate) &&
+           (currentBlock->nextMemBlock != NULL)) {
       previousBlock = currentBlock;
       currentBlock = currentBlock->nextMemBlock;
     }
-    // @TODO: @Pato te olvidaste algo aca que pasa si encuentra un bloque del tamaño justo
-    if (currentBlock == &memoryManager->end)
-    {
+    // @TODO: @Pato te olvidaste algo aca que pasa si encuentra un bloque del
+    // tamaño justo
+    if (currentBlock == &memoryManager->end) {
       return NULL;
     }
 
-    blockToReturn = (void *)(((uint8_t *)previousBlock->nextMemBlock) + STRUCT_SIZE);
+    blockToReturn =
+        (void *)(((uint8_t *)previousBlock->nextMemBlock) + STRUCT_SIZE);
 
     previousBlock->nextMemBlock = currentBlock->nextMemBlock;
 
-    if ((currentBlock->blockSize - memToAllocate) > MINIMUM_BLOCK_SIZE)
-    {
+    if ((currentBlock->blockSize - memToAllocate) > MINIMUM_BLOCK_SIZE) {
       MemBlock *newBlock = (void *)(((uint8_t *)currentBlock) + memToAllocate);
 
       newBlock->blockSize = currentBlock->blockSize - memToAllocate;
@@ -115,11 +106,8 @@ void *memAlloc(MemoryManagmentADT const memoryManager, unsigned int memToAllocat
   return blockToReturn;
 }
 
-void freeMem(MemoryManagmentADT const memoryManager, void *block)
-{
-
-  if (block == NULL)
-  {
+void freeMem(MemoryManagmentADT const memoryManager, void *block) {
+  if (block == NULL) {
     return;
   }
 
@@ -134,18 +122,13 @@ void freeMem(MemoryManagmentADT const memoryManager, void *block)
   memoryManager->freeBytesRemaining += blockToFree->blockSize;
 }
 
-unsigned int heapSize()
-{
-  return TOTAL_HEAP_SIZE;
-}
+unsigned int heapSize() { return TOTAL_HEAP_SIZE; }
 
-unsigned int heapLeft(MemoryManagmentADT memoryManager)
-{
+unsigned int heapLeft(MemoryManagmentADT memoryManager) {
   return memoryManager->freeBytesRemaining;
 }
 
-unsigned int usedHeap(MemoryManagmentADT memoryManager)
-{
+unsigned int usedHeap(MemoryManagmentADT memoryManager) {
   return heapSize() - heapLeft(memoryManager);
 }
 
