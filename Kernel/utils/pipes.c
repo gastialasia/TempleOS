@@ -10,6 +10,7 @@
 #define PIPEID 0
 #define PERMISSIONS 1
 #define BYTESTOREAD 2
+#define BLOCKED_PIDS 3
 
 typedef struct pipe {
   uint32_t id;
@@ -223,12 +224,15 @@ void getAllPipes(char *buf) {
     uintToBase(pipes[i]->bytesToRead, idStr, 10);
     normalizePipes(buf, idStr, BYTESTOREAD);
 
+    uintToBase(pipes[i]->waitingProcess->pid, idStr, 10);
+    normalizePipes(buf, idStr, BLOCKED_PIDS);
+
     strcat(buf, "\n");
   }
 }
 
 void normalizePipes(char *buf, char *data, int field) {
-  static int fields[] = {6, 11, 8};
+  static int fields[] = {6, 11, 8, 49};
   int n = fields[field] - strlen(data);
   strcat(buf, data);
   for (int i = 0; i < n; i++) {
