@@ -7,6 +7,7 @@
 #include <stddef.h>
 #include <stdint.h>
 #include <syscalls.h>
+#include <shm.h>
 
 static int syscallnumber;
 
@@ -103,6 +104,9 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2,
     case 31:
       closeFd((fd *)arg0);
       break;
+    case 32:
+      return (void *)openShm((int)arg0);
+    break;
     default:
       return -1;
   }

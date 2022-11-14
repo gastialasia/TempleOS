@@ -284,3 +284,7 @@ int pipeWrite(fd *userPipe, const char *string) {
 }
 
 void closeFd(fd *user) { sysCloseFd(user); }
+
+void * openShm(int id){
+    return sysOpenShm(id);
+}
