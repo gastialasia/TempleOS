@@ -31,6 +31,7 @@ GLOBAL sysOpenPipe
 GLOBAL sysCloseFd
 GLOBAL sysPipeRead
 GLOBAL sysPipeWrite
+GLOBAL sysOpenShm
 
 section .text
 
@@ -186,6 +187,11 @@ sysPipeWrite:
 
 sysCloseFd:
   mov rax, 31
+  int 80h
+  ret
+
+sysOpenShm:
+mov rax, 32
   int 80h
   ret
 

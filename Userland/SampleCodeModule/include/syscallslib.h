@@ -36,5 +36,6 @@ int sysOpenPipe(fd *user, uint32_t id, uint8_t permisions);
 int sysPipeRead(fd *userPipe, char *buffer);
 int sysPipeWrite(fd *userPipe, const char *string);
 void sysCloseFd(fd *user);
+void * sysOpenShm(int id);
 
 #endif

@@ -135,4 +135,6 @@ int atoi(const char *S);
 
 int itos(int value, char *target);
 
+void * openShm(int id);
+
 #endif
