@@ -9,6 +9,7 @@
 #include <stdint.h>
 #include <syscalls.h>
 #include <tools.h>
+#include <shm.h>
 
 extern uint8_t text;
 extern uint8_t rodata;
@@ -84,6 +85,7 @@ void runShell() { ((EntryPoint)sampleCodeModuleAddress)(); }
 
 int main() {
   initMemManager(memManagerAddress, heapModuleAddress);
+  initSHM();
   initScheduler();
 
   char argv[ARG_QTY][ARG_LEN];
