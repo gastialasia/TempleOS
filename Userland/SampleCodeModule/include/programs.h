@@ -28,4 +28,5 @@ void wcProgram(int argc, char args[ARG_QTY][ARG_LEN]);
 void filterProgram(int argc, char args[ARG_QTY][ARG_LEN]);
 void loopProgram(int argc, char args[ARG_QTY][ARG_LEN]);
 void nothingProgram(int argc, char args[ARG_QTY][ARG_LEN]);
+void shmProgram(int argc, char args[ARG_QTY][ARG_LEN]);
 #endif

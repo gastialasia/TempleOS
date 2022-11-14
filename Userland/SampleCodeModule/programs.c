@@ -2,6 +2,7 @@
 // PVS-Studio Static Code Analyzer for C, C++ and C#: http://www.viva64.com
 #include <programs.h>
 #include <stdint.h>
+#include "include/stdlib.h"
 
 #define LIMIT64 \
   0b0111111111111111111111111111111111111111111111111111111111111111  // 2^(63)-1
@@ -286,3 +287,19 @@ void loopProgram(int argc, char args[ARG_QTY][ARG_LEN]) {
   }
   exit();
 }
+
+void shmWriteProcess(int argc, char args[ARG_QTY][ARG_LEN]){
+  int * shmPtr = (int *)openShm(0);
+  *shmPtr = 1;
+  exit();
+}
+
+void shmProgram(int argc, char args[ARG_QTY][ARG_LEN]){
+  int * shmPtr = (int *)openShm(0);
+  createProcess(shmWriteProcess, 2, 0, NULL, NULL, NULL);
+  sleep(1000);
+  printInt(*shmPtr);
+  putchar('\n');
+  exit();
+}
+

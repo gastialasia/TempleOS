@@ -178,7 +178,9 @@ functionType getFuncFromString(char *str, int *isBuiltIn) {
     toRet = &testPipe;
   } else if (!strcmp("testargs", str)) {
     toRet = &test_args;
-  } else {
+  } else if (!strcmp("shm", str)) {
+    toRet = &shmProgram;
+  }else {
     toRet = &invalid;
     *isBuiltIn = 1;
   }

@@ -3,7 +3,7 @@
 
 #define SHM_SIZE 4096
 #define MAX_SHM 10
-#define NULL ((VOID *) 0)
+#define NULL ((void *) 0)
 
 void * shm[SHM_SIZE];
 

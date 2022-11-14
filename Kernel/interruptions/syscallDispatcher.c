@@ -105,7 +105,7 @@ int64_t syscallDispatcher(int64_t arg0, int64_t arg1, int64_t arg2,
       closeFd((fd *)arg0);
       break;
     case 32:
-      return (void *)openShm((int)arg0);
+      return (void *)shmAttach((int)arg0);
     break;
     default:
       return -1;
