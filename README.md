@@ -1,5 +1,21 @@
 
-# 2do Trabajo práctico - Sistemas Operativos - 2022 2Q - ITBA
+# TempleOS
+
+Sistema operativo cli, single thread, con sopoprte para multiprocesos y division entre kernel y userland. Cuenta con  memory manager, scheduler, procesos, IPC, y manejo de syscalls. Para más información, leer el archivo 'Informe TP2 - Grupo 2.pdf'
+
+## Características principales
+
+* Doble Memory Manager, a elección del usuario al momento de compilación
+* Scheduler Round Robin basado en prioridades, con sistema de envejecimiento para evitar inanición
+* Ofrece funcionalidad para crear procesos, finalizarlos y cambiarles la prioridad
+* Implementación de semáforos basados en POSIX con syscalls para abrirlos y cerrarlos
+* Pipes basados en POSIX con sus correspondientes syscalls
+* Lectura y escritura desde file descriptors en background o foreground
+* Terminal interactiva con comandos para testear las características
+  
+## Tecnologías utilizadas
+
+Desarrollado mayoritariamente en C y Assembler
 
 ## Intrucciones de instalación y ejecución
 
